@@ -5,11 +5,11 @@ var db=[
 		ava:'',
 		quest:[
 				{
-					img:'',
+					img:'component/img/level/....',
 					ans:'chair'
 				},
 				{
-					img:'',
+					img:'component/img/level/....',
 					ans:'table'
 				}	
 			]
@@ -20,7 +20,7 @@ var db=[
 		ava:'',
 		quest:[
 				{
-					img:'',
+					img:'component/img/level/....',
 					ans:'hook'
 				}	
 			]
