@@ -137,7 +137,6 @@
 	var series_active_{{$id_map}}=0;
 	var series_active_data_{{$id_map}}=[];
 
-	$('#map-{{$id_map}}').html('');
 
 	for(var i in {{$id_map}}.series){
 
@@ -236,6 +235,8 @@
 
 
 			setTimeout(function(){
+			$('#map-{{$id_map}}').html('');
+
 			map_init_{{$id_map}}=Highcharts.mapChart('map-{{$id_map}}', option_map_{{$id_map}});
 			active_sataus_layer_{{$id_map}}(0);
 			control_layer_{{$id_map}}();
