@@ -145,8 +145,8 @@ class PDAM extends Controller
                     'name_data'=>'KOTA',
 
                     'legend'=>[
-                        'cat'=>['TIDAK TERDAPAT DATA','SEHAT BERKELANJUTAN'],
-                        'color'=>['#fff','green'],
+                        'cat'=>['TIDAK TERDAPAT DATA','SEHAT BERKELANJUTAN','SEHAT','POTENSI SEHAT','KURANG SEHAT','SAKIT'],
+                        'color'=>['#fff','#32a852','#42f2f5','#2c56d4','#d4c62c','#f56342'],
                     ],
 
                     'data'=>[]
@@ -156,9 +156,10 @@ class PDAM extends Controller
                     'name_layer'=>'PDAM PROVINSI',
                     'mapData_name'=>'ind',
                     'name_data'=>'PROVINSI',
+                    
                     'legend'=>[
-                        'cat'=>['TIDAK TERDAPAT DATA','SEHAT BERKELANJUTAN'],
-                        'color'=>['#fff','green'],
+                        'cat'=>['TIDAK TERDAPAT DATA','SEHAT BERKELANJUTAN','SEHAT','POTENSI SEHAT','KURANG SEHAT','SAKIT'],
+                        'color'=>['#fff','#32a852','#42f2f5','#2c56d4','#d4c62c','#f56342'],
                     ],
                     'data'=>[],
                     
@@ -177,19 +178,19 @@ class PDAM extends Controller
                     # code...
                     break;
                  case 4:
-                $color='#32a852';
+                $color='#42f2f5';
                     # code...
                     break;
                  case 3:
-                $color='#222';
+                $color='#2c56d4';
                     # code...
                     break;
                  case 2:
-                $color='#222';
+                $color='#d4c62c';
                     # code...
                     break;
                  case 1:
-                $color='#222';
+                $color='#f56342';
                     # code...
                     break;
                 
@@ -208,7 +209,7 @@ class PDAM extends Controller
             // ['id', 'nama', 'value','cat','link','color', 'tooltip']
 
             if((strlen($d['id_daerah'])<3) ){
-                $map_data['series'][0]['data'][]=[
+                $map_data['series'][1]['data'][]=[
                     $d['id_daerah'],
                     $d['nama_daerah'],
                     $d['nama_pdam'],
@@ -220,7 +221,7 @@ class PDAM extends Controller
 
             }else{
 
-                  $map_data['series'][1]['data'][]=[
+                  $map_data['series'][0]['data'][]=[
                     $d['id_daerah'],
                     $d['nama_daerah'],
                     $d['nama_pdam'],
@@ -234,8 +235,9 @@ class PDAM extends Controller
 
         }
 
+
       
-        $map_data=view('output.map.themplate')
+        return view('output.map.themplate')
         ->with([
             'own_content'=>true,
             'id_map'=>'map_con_888',
