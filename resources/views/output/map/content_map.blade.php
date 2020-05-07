@@ -112,8 +112,7 @@
 			var {{$id_map}}=<?php echo json_encode($current_data_db); ?>;
 		</script>
 	@else
-		<script type="text/javascript" src="{{asset('L_MAP/ind/ind.js')}}"></script>x
-<script type="text/javascript" src="{{asset('L_MAP/ind/kota.js')}}"></script>
+		
 
 
 		<script type="text/javascript" src="{{asset('L_MAP/asset/jq.js')}}"></script>
@@ -121,6 +120,9 @@
 
 		<script type="text/javascript" src="{{asset('L_MAP/asset/hi.js')}}"></script>
 		<script type="text/javascript" src="{{asset('L_MAP/asset/proj4.js')}}"></script>
+
+		<script type="text/javascript" src="{{asset('L_MAP/ind/ind.js')}}"></script>x
+		<script type="text/javascript" src="{{asset('L_MAP/ind/kota.js')}}"></script>
 
 		<script type="text/javascript" src="{{asset($data_path)}}"></script>
 	@endif
