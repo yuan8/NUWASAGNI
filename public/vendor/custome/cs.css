@@ -1,0 +1,32 @@
+.no-gutter > [class*='col-'] {
+    padding-right:0;
+    padding-left:0;
+}
+
+.box,.btn{
+	border-radius:0px;
+}
+
+.text-dark{
+	color:#222!important;
+}
+.full-w{
+	width: 100%;
+}
+.no-padding{
+	padding: 0px;
+}
+
+.pt-15{
+	padding-top:15px!important;
+}
+
+.bg-default{
+	background: #fff;
+}
+.bg-default-g{
+	background: #f1f1f1;
+}
+.text-white{
+	color:#fff;
+}
