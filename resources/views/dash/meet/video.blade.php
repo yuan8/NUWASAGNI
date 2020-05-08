@@ -4,7 +4,7 @@
 <head>
 	<title>MEETING NUWAS</title>
 	<link rel="stylesheet" type="text/css" href="{{url('vendor/adminlte/vendor/bootstrap/dist/css/bootstrap.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{url('vendor/adminlte/dist/css/adminLTE.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{url('vendor/adminlte/dist/css/AdminLTE.min.css')}}">
 	<style type="text/css">
 		*{
 			padding:0px;
