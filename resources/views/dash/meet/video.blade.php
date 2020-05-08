@@ -36,6 +36,8 @@
       <a class="navbar-brand" href="#"><img src="{{asset('logo-nuwas.png')}}" style="width:50px"></a>
     </div>
     <ul class="nav navbar-nav">
+      <li><a href="{{route('d.meet.index')}}">DASHBOARD ADMIN</a></li>
+
       <li><a href="#">SHARING FILES</a></li>
       <li><a href="#">CATATAN MEETING</a></li>
     </ul>
