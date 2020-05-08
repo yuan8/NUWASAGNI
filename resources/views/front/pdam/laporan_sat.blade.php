@@ -170,7 +170,7 @@ if($pdam->open_hours!=null){
 			    </div>
 			    <ul class="nav navbar-nav">
 			      <li class="active" ><a href="{{route('p.laporan_sat',['íd'=>$pdam->id_laporan_terahir])}}">PROFILE</a></li>
-			      <li class=""><a href="#">JARINGAN PERPIPAAN</a></li>
+			      <li class=""><a href="{{route('p.simspam.perpipaan',['id'=>$pdam->kode_daerah])}}">JARINGAN PERPIPAAN</a></li>
 			      <li><a href="#">JARINGAN NON PERPIPAAN</a></li>
 		
 			    </ul>

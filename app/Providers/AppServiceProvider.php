@@ -50,6 +50,11 @@ class AppServiceProvider extends ServiceProvider
                     ]
                 ]);
 
+                  $event->menu->add([
+                    'text' => 'ONLINE MEET',
+                    'url'=>route('d.meet.index')
+                ]);
+
 
              });
 

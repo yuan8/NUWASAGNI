@@ -29,6 +29,10 @@ Route::middleware('auth:web')->group(function(){
 
 		Route::get('/sat-laporan/{id}', 'FRONT\PDAM@sat')->name('p.laporan_sat');
 
+		Route::prefix('simspam')->group(function(){
+			Route::get('/{id}','FRONT\SIMSPAM@index')->name('p.simspam.perpipaan');
+
+		});
 	});
 
 	Route::prefix('prokeg')->group(function(){
@@ -73,12 +77,32 @@ Route::prefix('output')->group(function(){
 
 
 	});
+
+
 });
 
 
 
 Route::prefix('dash-admin')->middleware('auth:web')->group(function(){
 	Route::get('/','DASH\DASH@index');
+
+	Route::prefix('meet')->group(function(){
+
+		Route::get('/','DASH\MEET@index')->name('d.meet.index');
+		Route::get('/video-conference/','DASH\MEET@video')->name('d.meet.v');
+
+		Route::get('/video-conference/TACT_LG','DASH\MEET@video');
+		Route::get('/video-conference/DSS_TEAM','DASH\MEET@video');
+		Route::get('/video-conference/CAMPURAN','DASH\MEET@video');
+		Route::get('/video/initian','DASH\MEET@initial')->name('d.meet.initial.video');
+
+
+		Route::get('/video-conference/directory-share','DASH\MEET@share');
+
+
+
+
+	});
 	Route::prefix('output')->group(function(){
 		Route::get('/map','DASH\OUTPUT\MAP@index')->name('d.out.map.index');
 		Route::get('/map/upload','DASH\OUTPUT\MAP@upload')->name('d.out.map.upload');
