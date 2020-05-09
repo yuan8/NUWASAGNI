@@ -36,6 +36,13 @@ class PDAM extends Controller
     public function sat($id){
         $tahun=HP::fokus_tahun();
 
+        $db=DB::table('pdam')
+        ->where('kode_daerah',$id)
+        ->first();
+
+        if($db){
+            $id=$db->id_laporan_terahir;
+        }
 
         $data=DB::table('audit_sat as d')
             ->leftJoin('master_daerah as dae','dae.id','=','d.kode_daerah')
@@ -214,7 +221,7 @@ class PDAM extends Controller
                     $d['nama_daerah'],
                     $d['nama_pdam'],
                     $d['kategori_pdam'],
-                    null,
+                    route('p.laporan_sat',['id'=>$d['id_daerah']]),
                     $color,
                    $tooltip
                 ];
@@ -226,7 +233,7 @@ class PDAM extends Controller
                     $d['nama_daerah'],
                     $d['nama_pdam'],
                     $d['kategori_pdam'],
-                    null,
+                    route('p.laporan_sat',['id'=>$d['id_daerah']]),
                     $color,
                     $tooltip
                 ];

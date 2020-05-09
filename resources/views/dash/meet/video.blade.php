@@ -43,7 +43,7 @@
     </ul>
   </div>
 </nav>
-<iframe id="id_framing_{{$key}}" src="{{route('d.meet.initial.video')}}" style="width: 100%; height: calc(100vh - 100px)"></iframe>
+<iframe id="id_framing_{{$key}}" src="{{route('d.meet.initial.video')}}" allow="geolocation; microphone; camera" style="width: 100%; height: calc(100vh - 100px)"></iframe>
 
 
 </body>

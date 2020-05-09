@@ -146,6 +146,15 @@
 			    name: {{$id_map}}.series[i].name_data,
 			    joinBy: 'id',
 			    type:'map',
+			    map:{
+			    	data:{
+			    		events:{
+			    			click:function(){
+			    				console.log(this);
+			    			}
+			    		}
+			    	}
+			    },
 			    visible:series_visible_one_{{$id_map}}?true:false,
 			    mapData:Highcharts.maps[{{$id_map}}.series[i].mapData_name],
 			    dataLabels: {
@@ -212,11 +221,25 @@
                     	if((this.point.link==null)||this.point.link==""){
 
                     	}else{
-                    		link_click='<a class="btn btn-primary btn-xs" href="'+this.point.link+'" target="_blank">DETAIL</a>';
+                    		link_click='';
                     	}
 
                         return (((this.point.tooltip == null)||(this.point.tooltip == ""))? this.point.name: this.point.tooltip)+'<br>'+link_click; 
                     }
+                },
+                plotOptions:{
+                	series:{
+                		point:{
+                			cursor:"pointer",
+	                		events:{
+	                			click:function(){
+	                				if((this.link!="")&&(this.link!=null)){
+	                					window.location.href=this.link;
+	                				}
+	                			}
+	                		}
+                		}
+                	}
                 },
                  mapNavigation: {
                     enabled: true,
