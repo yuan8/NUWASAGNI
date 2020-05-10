@@ -51,13 +51,34 @@
 
 <script type="text/javascript">
 	var the_stap_{{$key}}=0;
+
 	$('#id_framing_{{$key}}').on('load',function(){
-		if(the_stap_{{$key}}==0){
-			setTimeout(function(){
-			$('#id_framing_{{$key}}').attr('src','{{env('VIDEO_PATH').'/'.$key}}');
-			the_stap_{{$key}}=1;
-			},4000);
+		var approve=0;
+		var dom=$('#id_framing_{{$key}}').attr('src');
+
+		if(the_stap_{{$key}}==1){
+			window.location.href='{{route('d.meet.index')}}';
+			$('#id_framing_{{$key}}').attr('src','{{route('d.meet.initial.video')}}');
+
+
+
 		}
+		
+		if(the_stap_{{$key}}==0){
+				if(dom=='{{env('VIDEO_PATH').'/'.$key}}'){
+					console.log('--------------------------------------------------masuk');
+					the_stap_{{$key}}=1;
+				}else{
+					setTimeout(function(){
+
+					$('#id_framing_{{$key}}').attr('src','{{env('VIDEO_PATH').'/'.$key}}');
+
+				},3000);
+			}
+			
+		}
+
+
 	});
 </script>
 </html>
