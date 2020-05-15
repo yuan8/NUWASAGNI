@@ -14,11 +14,26 @@
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/vendor/font-awesome/css/all.min.css') }}">
     <!-- Ionicons -->
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/vendor/Ionicons/css/ionicons.min.css') }}">
+    <script type="text/javascript" src="{{asset('L_MAP/asset/jq.js')}}"></script>
+    <script type="text/javascript" src="{{asset('vendor/custome/axios.js')}}"></script>
+
+    <script type="text/javascript">
+
+    const TOKEN_KN='{{(Auth::User())?'Bearer '.Auth::User()->api_token:''}}';
+
+    const API_CON = axios.create({
+          timeout: 6000,
+          headers: {
+            'Authorization': TOKEN_KN,
+            'Content-Type': 'application/json',
+          }
+    });
+</script>
+
 
     @include('adminlte::plugins', ['type' => 'css'])
 
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/AdminLTE.min.css') }}">
 
     @yield('adminlte_css')
 
@@ -33,6 +48,8 @@
 <body class="hold-transition @yield('body_class')">
 
 @yield('body')
+    <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/AdminLTE.min.css') }}">
+
 
 <!-- <script src="{{ asset('vendor/adminlte/vendor/jquery/dist/jquery.min.js') }}"></script> -->
 <script type="text/javascript" src="{{asset('L_MAP/asset/jq.js')}}"></script>
@@ -52,6 +69,22 @@
 
 
 @include('adminlte::plugins', ['type' => 'js'])
+
+<script type="text/javascript">
+    $.fn.dataTable.Api.register( 'sum()', function ( ) {
+        return this.flatten().reduce( function ( a, b ) {
+            if ( typeof a === 'string' ) {
+                a = a.replace(/[^\d.-]/g, '') * 1;
+            }
+            if ( typeof b === 'string' ) {
+                b = b.replace(/[^\d.-]/g, '') * 1;
+            }
+     
+            return a + b;
+        }, 0 );
+    } );
+    
+</script>
 
 @yield('adminlte_js')
 

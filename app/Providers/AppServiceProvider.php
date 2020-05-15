@@ -8,7 +8,7 @@ use App\Policies\PostPolicy;
 use Illuminate\Support\Facades\Gate;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use Illuminate\Http\Request;
-
+use Hp;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -55,6 +55,34 @@ class AppServiceProvider extends ServiceProvider
                     'url'=>route('d.meet.index')
                 ]);
 
+              
+                $event->menu->add([
+                    'text' => 'KEBIJAKAN',
+                    'submenu'=>[
+                        [
+                            'text'=>'RPJMN',
+                            'submenu'=>[
+                                [
+                                    'text'=>'RPJMN '.Hp::fokus_tahun(),
+                                    'url'=>route('d.kb.rpjmn.index')
+                                ],
+                                // [
+                                //     'text'=>'PROKEG PENDUKUNG RPJMN '.Hp::fokus_tahun(),
+                                //     'url'=>route('d.kb.rpjmn.pemetaan')
+                                // ],
+
+                            ]
+                        ]
+
+                    ]
+                ]);
+
+                  $event->menu->add([
+                    'text' => 'PROKEG',
+                    'url'=>route('d.prokeg.index')
+                ]);
+
+
 
              });
 
@@ -65,6 +93,7 @@ class AppServiceProvider extends ServiceProvider
 
                 $event->menu->add([
                     'text' => 'PROGRAM KEGIATAN',
+                    'icon'=>'fa fa-file',
                     'submenu'=>[
                         [
                             'text'=>'PER DAERAH (AIR MINUM)',
@@ -79,21 +108,33 @@ class AppServiceProvider extends ServiceProvider
                 
                 $event->menu->add([
                     'text' => 'PROFILE PDAM',
-                    'url'=>route('p.pdam')
+                    'url'=>route('p.pdam'),
+                    'icon'=>'fa fa-door-open'
+
                 ]);
 
                 $event->menu->add([
                     'text' => 'PROFILE KEBIJAKAN',
-                    'url'=>null
+                    'url'=>null,
+                    'icon'=>'fa fa-university'
+
                 ]);
 
                 $event->menu->add([
                     'text' => 'PROFILE DAERAH',
-                    'url'=>null
+                    'url'=>null,
+                    'icon'=>'fa fa-map'
                 ]);
                  $event->menu->add([
                     'text' => 'NUWAS PROJECT ',
-                    'url'=>route('p.nuwas.index')
+                    'url'=>route('p.nuwas.index'),
+                    'icon'=>'fa fa-tint'
+
+                ]);
+                $event->menu->add([
+                    'text' => 'PINDAH TAHUN ',
+                    'url'=>route('pilih_tahun'),
+                    'icon'=>'fa fa-calendar'
                 ]);
             });
         }

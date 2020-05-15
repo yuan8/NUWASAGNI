@@ -24,17 +24,19 @@ class Dashboard extends Controller
     	->where('status',5)
     	->first();
 
+
+        $data_pdam=DB::table('pdam')->count();
+
       
 
 
      
 
 
-
-
-
     	return view('index')->with([
     		'data_kegiatan'=>$data_kegiatan,
+            'data_pdam'=>$data_pdam,
+
 
     	]);
     }

@@ -3,9 +3,15 @@
 @section('title', 'AdminLTE')
 
 @section('content_header')
-    <h1>Dashboard</h1>
+   
 @stop
 
 @section('content')
-    <p>You are logged in!</p>
+   <div class="col-md-4 col-md-offset-4 text-center animated bounceInUp">
+    	<img src="{{url('logo.png)}}" class="" style="max-width: 40%">
+    	<h2><b>BANGDA KEMENDAGRI</b></h2>
+    	<h2><b>SUPD II</b></h2>
+    	<hr>
+    	<p><b>NUWAS - {{HP::fokus_tahun()}}</b></p>
+    </div>
 @stop

@@ -19,6 +19,9 @@ Route::middleware('auth:web')->group(function(){
 		return redirect('/');
 	});
 
+	Route::get('pilih-tahun','AKSESTAHUN@index')->name('pilih_tahun');
+	Route::post('pilih-tahun','AKSESTAHUN@storing')->name('pilih_tahun.store');
+
 
 
 	Route::prefix('pdam')->group(function(){
@@ -44,7 +47,8 @@ Route::middleware('auth:web')->group(function(){
 
 		Route::get('/program-kegiatan-per-sub_urusan/{id}/{id_urusan}', 'FRONT\PROKEG@dearah_per_sub_urusan')->name('p.prokeg.per.sub_urusan_kota');
 		Route::get('/program-kegiatan-per-daerah-sub-urusan-per-program/{id}/{id_urusan}', 'FRONT\PROKEG@dearah_per_program')->name('p.prokeg.per.sub_urusan_kota.prgram');
-			Route::get('/program-kegiatan-per-daerah-sub-urusan-per-program/{id}/', 'FRONT\PROKEG@dearah_per_program')->name('pr.program.det');
+		
+		Route::get('/program-kegiatan-list-p/{id}', 'FRONT\PROKEG@detail_program')->name('pr.program.det');
 
 		Route::get('/urusan', 'FRONT\PROKEG@index')->name('p.prokeg.urusan');
 
@@ -60,6 +64,10 @@ Route::middleware('auth:web')->group(function(){
 
 	Route::prefix('nuwas_project')->group(function(){
 		Route::get('/', 'FRONT\NUWAS_PROJECT@index')->name('p.nuwas.index');
+		Route::get('/prokeg', 'FRONT\NUWAS_PROJECT@prokeg_index')->name('p.nuwas.prokeg.index');
+		Route::get('/prokeg/detail/{id}', 'FRONT\NUWAS_PROJECT@prokeg_detail')->name('p.nuwas.prokeg.detail');
+
+
 
 	});
 
@@ -90,27 +98,40 @@ Route::prefix('dash-admin')->middleware('auth:web')->group(function(){
 
 		Route::get('/','DASH\MEET@index')->name('d.meet.index');
 		Route::get('/video-conference/','DASH\MEET@video')->name('d.meet.v');
-
 		Route::get('/video-conference/TACT_LG','DASH\MEET@video');
 		Route::get('/video-conference/DSS_TEAM','DASH\MEET@video');
 		Route::get('/video-conference/CAMPURAN','DASH\MEET@video');
 		Route::get('/video/initian','DASH\MEET@initial')->name('d.meet.initial.video');
-
-
 		Route::get('/video-conference/directory-share','DASH\MEET@share');
 
 
 
 
 	});
+
+	Route::prefix('prokeg')->group(function(){
+	Route::get('/','DASH\PROKEG@index')->name('d.prokeg.index');
+	Route::get('/detail/{id}','DASH\PROKEG@detail')->name('d.prokeg.detail');
+	Route::get('/pemetaan/{id}','DASH\PROKEG@pemetaan')->name('d.prokeg.pemetaan');
+	Route::post('/pemetaan-store','DASH\PROKEG@pemetaan_store')->name('d.prokeg.pemetaan.store');
+
+
+
+
+	});
+
+	Route::prefix('kebijakan')->group(function(){
+		Route::prefix('rpjmn')->group(function(){
+			Route::get('/','DASH\KEBIJAKAN\PUSAT\RPJMN@index')->name('d.kb.rpjmn.index');
+			Route::get('/pemetaan-rpjmn','DASH\KEBIJAKAN\PUSAT\RPJMN@pemetaan')->name('d.kb.rpjmn.pemetaan');
+
+		});
+	});
+
 	Route::prefix('output')->group(function(){
 		Route::get('/map','DASH\OUTPUT\MAP@index')->name('d.out.map.index');
 		Route::get('/map/upload','DASH\OUTPUT\MAP@upload')->name('d.out.map.upload');
 		Route::post('/map/upload','DASH\OUTPUT\MAP@store')->name('d.out.map.store');
-
-
-
-
 	});
 
 
@@ -120,3 +141,5 @@ Route::prefix('dash-admin')->middleware('auth:web')->group(function(){
 
 
 include __dir__.'/webBot.php';
+include __dir__.'/apiWeb.php';
+

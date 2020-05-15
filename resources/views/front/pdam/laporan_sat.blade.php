@@ -50,12 +50,19 @@ if($pdam->open_hours!=null){
 			<div class="box-body table-responsive" >
 				<table class="table-bordered table">
 			 	<thead>
+			 	<tr>
+			 		<th colspan="2" class="text-center">LAPORAN SEBELUMNYA</th>
+			 		<th colspan="8" class="text-center">DATA TERAHIR</th>
+			 	</tr>
 				<tr>
 					<th>
 						PERIODE LAP SEBELUMYA
 					</th>
 					<th>
 						TANGGAL UPDATE LAP SEBELUNYA
+					</th>
+					<th>
+						KETEGORI PDAM
 					</th>
 					<th>
 						PENILAIAN TOTAL KINERJA
@@ -83,11 +90,29 @@ if($pdam->open_hours!=null){
 				<tbody>
 					<tr>
 						<td>
-							{{Carbon\Carbon::parse($trafik['periode_laporan'])->format('F Y')}}
+							@if($trafik['periode_laporan'])
+								{{Carbon\Carbon::parse($trafik['periode_laporan'])->format('F Y')}}
+							@endif
 						</td>
 						<td>
+							@if($trafik['updated_input_at'])
 							{{Carbon\Carbon::parse($trafik['updated_input_at'])->format('d F Y')}}
+							@endif
 							
+						</td>
+						<td>
+							@if($trafik['kategori_pdam_trf']==1)
+								<span class="text-success"><i class="fa fa-arrow-up"></i> MENINGKAT</span>
+
+							@elseif($trafik['kategori_pdam_trf']==0)
+								<span class="text-warning"><i class="fa fa-minus"></i> STABIL</span>
+
+							@else
+								<span class="text-danger"><i class="fa fa-arrow-down"></i> MENURUN</span>
+
+							@endif
+
+							<p>{{$trafik['kategori_pdam_past']}} <i class=" text-success fa fa-arrow-right"></i> {{$trafik['kategori_pdam_present']}}</p>
 						</td>
 						<td>
 							@if($trafik['kinerja_trf']==1)
@@ -150,10 +175,13 @@ if($pdam->open_hours!=null){
 							@endif
 						</td>
 						<td>
-							{{number_format($trafik['pertumbuhan_pelangan'],2,'.',',')}}%
+							<b>{{number_format($trafik['pertumbuhan_pelangan'],2,'.',',')}}%</b>
+							<p>{{number_format($trafik['pelangan_past'],0,'.',',') }} <i class=" text-success fa fa-arrow-right"></i> {{number_format($trafik['pelangan_present'],0,'.','.')}}</p>
+
 						</td>
 						<td>
-							{{number_format($trafik['pertumbuhan_sambungan_rumah'],2,'.',',')}}%
+							<b>{{number_format($trafik['pertumbuhan_sambungan_rumah'],2,'.',',')}}%</b>
+							<p>{{number_format($trafik['sr_past'],0,'.',',') }} <i class=" text-success fa fa-arrow-right"></i> {{number_format($trafik['sr_present'],0,'.','.')}}</p>
 						</td>
 					</tr>
 				</tbody>
@@ -166,10 +194,10 @@ if($pdam->open_hours!=null){
 		<nav class="navbar navbar-default bg-yellow nav-sub">
 			  <div class="container-fluid">
 			    <div class="navbar-header">
-			      <a class="navbar-brand" href="#">{{strtoupper($pdam->nama_pdam)}}</a>
+			      <a class="navbar-brand" href="#">{{strtoupper($pdam->nama_daerah)}}</a>
 			    </div>
 			    <ul class="nav navbar-nav">
-			      <li class="active" ><a href="{{route('p.laporan_sat',['íd'=>$pdam->id_laporan_terahir])}}">PROFILE</a></li>
+			      <li class="active" ><a href="{{route('p.laporan_sat',['íd'=>$pdam->id_laporan_terahir])}}">PROFILE PDAM</a></li>
 			      <li class=""><a href="{{route('p.simspam.perpipaan',['id'=>$pdam->kode_daerah])}}">JARINGAN PERPIPAAN</a></li>
 			      <li><a href="#">JARINGAN NON PERPIPAAN</a></li>
 		

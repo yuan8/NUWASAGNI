@@ -3,8 +3,8 @@
 
 @section('content_header')
 <div class="row  text-center">
-		<div class="col-md-12 bg bg-yellow">
-			<b class="text-dark">NUWAS PROJECT {{HP::fokus_tahun()}}</b>
+		<div class="col-md-12 bg bg-navy">
+			<h5><b class="">NUWAS PROJECT {{HP::fokus_tahun()}}</b></h5>
 		</div>
 	</div>
     
@@ -74,7 +74,27 @@
   vertical-align: bottom;
   padding: 10px;
 
+
 }
+.swiper-title-slide{
+  position: absolute;
+  background: rgba(255,255,255,0.3);
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  padding: 15px;
+
+}
+.swiper-content-slide{
+  position: absolute;
+  background: rgba(255,255,255,0.3);
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  bottom: 0px;
+  padding: 15px;
+}
+
 .box-content-img .content-dom a,.box-content-img .content-dom small{
   color:#fff;
   width:100%;
@@ -82,18 +102,33 @@
 
 </style>
 
-<div class="swiper-container row ">
+
+<div class="swiper-container row " style="width: 100vw">
     <!-- Additional required wrapper -->
-    <div class="swiper-wrapper">
+    <div class="swiper-wrapper text-dark">
         <!-- Slides -->
-        <div class="swiper-slide">
-        	<img src="{{asset('storage/dokumentasi_foto/1.jpg')}}" class="img-responsive">
+       @if($album!=[])
+        @foreach($album as $a)
+
+         <div class="swiper-slide">
+          <img src="{{url($a->path)}}" class="img-responsive">
+           <div class="swiper-title-slide">
+            <h5>{{$a->title}}</h5>
+          </div>
+          <div class="swiper-content-slide">
+            <h5>{{$a->content}}</h5>
+          </div>
         </div>
-        <div class="swiper-slide">
-        	<img src="{{asset('storage/dokumentasi_foto/1.jpg')}}" class="img-responsive">
-        	
+        @endforeach
+       @else
+         <div class="swiper-slide">
+          <img src="{{asset('storage/dokumentasi_foto/1.jpg')}}" class="img-responsive">
+         
         </div>
-        <div class="swiper-slide">Slide 3</div>
+
+       @endif
+       
+
     </div>
     <!-- If we need pagination -->
     <div class="swiper-pagination"></div>
@@ -113,7 +148,7 @@
                 <i class="fa fa-tint"></i>
                 <h5><b>TARGET DAERAH NUWAS</b></h5>
                 <small>{{$target_nuwas}} DAERAH</small>
-                <a href="" class="full-w btn btn-info btn-xs">Detail</a>
+                <a onclick="target_nuwas()" class="cursor-link full-w btn btn-info btn-xs">Detail</a>
             </div>
         </div>
     </div>
@@ -122,9 +157,9 @@
             <div class="box-body text-center no-padding pt-15 bg-yellow bg">
                 <i class="fa fa-file"></i>
                 <h5><b>MELAPORKAN DOK RKPD</b></h5>
-                <small>0 DAERAH</small>
+                <small>{{$rkpd_final}} DAERAH</small>
 
-                <a href="" class="full-w btn btn-warning btn-xs">Detail</a>
+                <a href="{{route('p.nuwas.prokeg.index')}}" class="full-w btn btn-warning btn-xs">Detail</a>
             </div>
         </div>
     </div>
@@ -132,8 +167,8 @@
         <div class="box box-success ">
             <div class="box-body text-center no-padding pt-15 bg bg-green">
                 <i class="fa fa-arrow-up"></i>
-                <h5><b>PENINGKATAN KUALITAS PDAM </b></h5>
-                <small>0 PDAM </small>
+                <h5><b>PENCAPAIAN KUALITAS PDAM </b></h5>
+                <small><span id="nilai_pencapaian_pdam"></span> PDAM </small>
 
                 <a href="" class="full-w btn btn-success btn-xs">Detail</a>
             </div>
@@ -150,10 +185,83 @@
             </div>
         </div>
     </div>
-
- 
-
-
+</div>
+<div class="row" style="border-bottom: 1px solid #222;"> 
+  <div class="col-md-2 col-sm-6 col-xs-12 text-dark" style="margin:0px; padding:0px;">
+    <div class="info-box" style="margin-bottom: 0px; border-radius: 0px;">
+      <span class="info-box-icon bg-teal" style=" border-radius: 0px;"><i class="fa fa-door-open"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">TIDAK MEMILIKI KATEGORI</span>
+        <span class="info-box-number">{{isset($pdam_rekap[0])?$pdam_rekap[0]->jumlah_pdam:0}} <small>PDAM</small></span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+    
+      
+  <div class="col-md-2 col-sm-6 col-xs-12 text-dark" style="margin:0px; padding:0px;">
+    <div class="info-box" style="margin-bottom: 0px; border-radius: 0px;">
+      <span class="info-box-icon bg-green" style=" border-radius: 0px;"><i class="fa fa-door-open"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">SEHAT BERKELANJUTAN</span>
+        <span class="info-box-number">{{isset($pdam_rekap[1])?$pdam_rekap[1]->jumlah_pdam:0}} <small>PDAM</small></span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+    
+      
+  <div class="col-md-2 col-sm-6 col-xs-12 text-dark" style="margin:0px; padding:0px;">
+    <div class="info-box" style="margin-bottom: 0px; border-radius: 0px;">
+      <span class="info-box-icon bg-aqua" style=" border-radius: 0px;"><i class="fa fa-door-open"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">SEHAT</span>
+        <span class="info-box-number">{{isset($pdam_rekap[2])?$pdam_rekap[2]->jumlah_pdam:0}} <small>PDAM</small></span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+    
+      
+  <div class="col-md-2 col-sm-6 col-xs-12 text-dark" style="margin:0px; padding:0px;">
+    <div class="info-box" style="margin-bottom: 0px; border-radius: 0px;">
+      <span class="info-box-icon bg-blue" style=" border-radius: 0px;"><i class="fa fa-door-open"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">POTENSI SEHAT</span>
+        <span class="info-box-number">{{isset($pdam_rekap[3])?$pdam_rekap[3]->jumlah_pdam:0}} <small>PDAM</small></span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+    
+      
+  <div class="col-md-2 col-sm-6 col-xs-12 text-dark" style="margin:0px; padding:0px;">
+    <div class="info-box" style="margin-bottom: 0px; border-radius: 0px;">
+      <span class="info-box-icon bg-yellow" style=" border-radius: 0px;"><i class="fa fa-door-open"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">KURANG SEHAT</span>
+        <span class="info-box-number">{{isset($pdam_rekap[4])?$pdam_rekap[4]->jumlah_pdam:0}} <small>PDAM</small></span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+    
+  <div class="col-md-2 col-sm-6 col-xs-12 text-dark" style="margin:0px; padding:0px;">
+    <div class="info-box" style="margin-bottom: 0px;">
+      <span class="info-box-icon bg-maroon"><i class="fa fa-door-open"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">SAKIT</span>
+        <span class="info-box-number">{{isset($pdam_rekap[5])?$pdam_rekap[5]->jumlah_pdam:0}} <small>PDAM</small></span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
 </div>
 
 <div class="row no-gutter" >
@@ -215,6 +323,26 @@
 		</div>
 
 </div>
+
+<div class="row no-gutter text-dark">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="col-md-4">
+                    @include('front.pdam.table_trafik',['status'=>1,'target_nuwas'=>true])
+                </div>
+                   <div class="col-md-4">
+                    @include('front.pdam.table_trafik',['status'=>0,'target_nuwas'=>true])
+                </div>
+
+                <div class="col-md-4">
+                    @include('front.pdam.table_trafik',['status'=>-1,'target_nuwas'=>true])
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @stop
 
 
@@ -228,9 +356,9 @@
     direction: 'horizontal',
     loop: true,
      speed: 400,
-     autoplay: {
-    	delay: 2000,
-  	},
+   //  autoplay: {
+   //  	delay: 2000,
+  	// },
 	  cubeEffect: {
 	    slideShadows: true,
 	  },
@@ -287,5 +415,28 @@
       }
     });
     },500);
+
+    API_CON.post("{{route('web_api.pdam.pencapaian')}}",{'target_nuwas':'ok','kode_list':'4,5'}).then(function(res){
+      $('#nilai_pencapaian_pdam').html(res.data.length);
+    });
+
+    function target_nuwas(){
+      API_CON.get("{{route('web_api.nuwas.daerah.target')}}").then(function(res){
+        $('#modal_target_nuwas .modal-body').html(res.data);
+        $('#modal_target_nuwas').modal();
+      });
+    }
+
+
   </script>
+
+  <div class="modal fade" id="modal_target_nuwas">
+    <div class="modal-dialog modal=lg">
+      <div class="modal-content">
+        <div class="modal-body">
+          
+        </div>
+      </div>
+    </div>
+  </div>
 @stop

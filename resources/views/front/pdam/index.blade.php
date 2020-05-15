@@ -2,11 +2,97 @@
 
 
 @section('content_header')
-    <h1 class="text-center">KONDISI PDAM {{HP::fokus_tahun()}}</h1>
+    <div class="row bg-navy">
+        <div class="col-md-12">
+            <h5 class="text-center ">KONDISI PDAM {{HP::fokus_tahun()}}</h5>
+        </div>
+    </div>
 @stop
 
 @section('content')
-    <div class="box text-dark">
+<div class="row" style="margin-top: -15px;"> 
+      
+  <div class="col-md-2 col-sm-6 col-xs-12 text-dark" style="margin:0px; padding:0px;">
+    <div class="info-box" style="margin-bottom: 0px; border-radius: 0px;">
+      <span class="info-box-icon bg-teal" style=" border-radius: 0px;"><i class="fa fa-door-open"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">TIDAK MEMILIKI KATEGORI</span>
+        <span class="info-box-number">{{isset($pdam_rekap[0])?$pdam_rekap[0]->jumlah_pdam:0}} <small>PDAM</small></span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+    
+      
+  <div class="col-md-2 col-sm-6 col-xs-12 text-dark" style="margin:0px; padding:0px;">
+    <div class="info-box" style="margin-bottom: 0px; border-radius: 0px;">
+      <span class="info-box-icon bg-green" style=" border-radius: 0px;"><i class="fa fa-door-open"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">SEHAT BERKELANJUTAN</span>
+        <span class="info-box-number">{{isset($pdam_rekap[1])?$pdam_rekap[1]->jumlah_pdam:0}} <small>PDAM</small></span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+    
+      
+  <div class="col-md-2 col-sm-6 col-xs-12 text-dark" style="margin:0px; padding:0px;">
+    <div class="info-box" style="margin-bottom: 0px; border-radius: 0px;">
+      <span class="info-box-icon bg-aqua" style=" border-radius: 0px;"><i class="fa fa-door-open"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">SEHAT</span>
+        <span class="info-box-number">{{isset($pdam_rekap[2])?$pdam_rekap[2]->jumlah_pdam:0}} <small>PDAM</small></span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+    
+      
+  <div class="col-md-2 col-sm-6 col-xs-12 text-dark" style="margin:0px; padding:0px;">
+    <div class="info-box" style="margin-bottom: 0px; border-radius: 0px;">
+      <span class="info-box-icon bg-blue" style=" border-radius: 0px;"><i class="fa fa-door-open"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">POTENSI SEHAT</span>
+        <span class="info-box-number">{{isset($pdam_rekap[3])?$pdam_rekap[3]->jumlah_pdam:0}} <small>PDAM</small></span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+    
+      
+  <div class="col-md-2 col-sm-6 col-xs-12 text-dark" style="margin:0px; padding:0px;">
+    <div class="info-box" style="margin-bottom: 0px; border-radius: 0px;">
+      <span class="info-box-icon bg-yellow" style=" border-radius: 0px;"><i class="fa fa-door-open"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">KURANG SEHAT</span>
+        <span class="info-box-number">{{isset($pdam_rekap[4])?$pdam_rekap[4]->jumlah_pdam:0}} <small>PDAM</small></span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+    
+  <div class="col-md-2 col-sm-6 col-xs-12 text-dark" style="margin:0px; padding:0px;">
+    <div class="info-box" style="margin-bottom: 0px;">
+      <span class="info-box-icon bg-maroon"><i class="fa fa-door-open"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">SAKIT</span>
+        <span class="info-box-number">{{isset($pdam_rekap[5])?$pdam_rekap[5]->jumlah_pdam:0}} <small>PDAM</small></span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+</div>
+<div class=""  id="map_index"></div>
+
+<div class="row no-gutter">
+    <div class="col-md-12">
+         <div class="box text-dark">
         <div class="box-body">
             <table class="table table-bordered" id="table_pdam">
                 <thead>
@@ -53,13 +139,23 @@
         </div>
         
     </div>
+    </div>
+</div>
 @stop
 
 @section('js')
+
+<script type="text/javascript" src="{{asset('L_MAP/ind/ind.js')}}"></script>
+<script type="text/javascript" src="{{asset('L_MAP/ind/kota.js')}}"></script>
 
     <script type="text/javascript">
         $('#table_pdam').DataTable({
             sort:false
         })
+          $.get("{{route('p.pdam.map')}}",function(res){
+         $('#map_index').html(res);
+    });
+
     </script>
+
 @stop

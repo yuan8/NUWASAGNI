@@ -32,7 +32,7 @@
             <div class="box-body text-center no-padding pt-15 bg bg-green">
                 <i class="fa fa-file"></i>
                 <h5><b>PROFILE PDAM {{HP::fokus_tahun()}} </b></h5>
-                <small>{{number_format(0,0,'.',',')}} PDAM </small>
+                <small>{{number_format($data_pdam,0,'.',',')}} PDAM </small>
                 <a href="{{route('p.pdam')}}" class="full-w btn btn-success btn-xs">Detail</a>
             </div>
         </div>
@@ -65,26 +65,11 @@
         <div class="box box-primary">
             <div class="box-body">
                 <div class="col-md-6">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>NAMA PDAM</th>
-                                <th>DAERAH</th>
-                                <th>PENILAIAN NUWAS</th>
-                            </tr>
-                        </thead>
-                    </table>
+                    @include('front.pdam.table_trafik',['status'=>1])
                 </div>
                 <div class="col-md-6">
-                      <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>NAMA PDAM</th>
-                                <th>DAERAH</th>
-                                <th>PENILAIAN NUWAS</th>
-                            </tr>
-                        </thead>
-                    </table>
+                    @include('front.pdam.table_trafik',['status'=>-1])
+                      
                 </div>
             </div>
         </div>
@@ -97,7 +82,8 @@
 @stop
 
 @section('js')
-        <script type="text/javascript" src="{{asset('L_MAP/ind/ind.js')}}"></script>x
+
+<script type="text/javascript" src="{{asset('L_MAP/ind/ind.js')}}"></script>
 <script type="text/javascript" src="{{asset('L_MAP/ind/kota.js')}}"></script>
 
 

@@ -37,6 +37,7 @@
     	<div class="col-md-12 text-center" style="color: #fff; padding: 10px;">
     		<a href="{{$build_ofline_path}}" download="" class="btn btn-primary btn btn-xs">DOWNLOAD VERSI OFLINE</a>
     	</div>
+    	@elseif(isset($own_content))
     	@else
 		<div class="col-md-12 text-center" style="color: #fff; padding: 10px;">
     		OFFLINE MODE UPDATED AT {{Carbon\Carbon::now()->format('d F Y h:i A')}}
@@ -44,8 +45,13 @@
     	@endif
     	<div class="col-md-9 col-xs-9 col-sm-9" style="padding-right: 0px; padding-left: 0px;">
 	    	<div class="" id="map-{{$id_map}}" style="background: #1d2c33;color:#fff">
-		    	<div class="load">
-		    		<h5 class="text-center">LOADING MAP ..</h5>
+		    	<div class="load text-center" style="padding-top: 20%;">
+		    			@if(!isset($own_content))
+    					<img src="asset/logo.png" style="max-width: 25px; margin-right: 10px;">
+    					@else
+    					<img src="{{asset('/L_MAP/asset/logo.png')}}" style="max-width: 25px; margin-right: 10px;">
+    					@endif
+		    		<h5 class="text-center"><i><b>LOADING MAP ..</b></i></h5>
 		    	</div>
 	    	</div>
     	</div>
@@ -74,7 +80,7 @@
     				<hr>
     				<h5 style="color: #fff"><b><i class="fa fa-pages"></i> LAYER</b></h5>
     			</div>
-    			<div class="panel-body" style="padding-left: 0px; padding-right: 0px;">
+    			<div class="panel-body" style="padding-left: 0px; padding-right: 10px;">
     				<ul class="list-group">
     					
     				</ul>
@@ -152,6 +158,19 @@
 			    			click:function(){
 			    				console.log(this);
 			    			}
+			    		}
+			    	}
+			    },
+			    point:{
+			    	events:{
+			    		click:function(){
+			    			console.log(this);
+			    			if(this.options.link!=undefined){
+			    				if(this.options.link!=null){
+			    					window.open(this.options.link,'_blank');
+			    				}
+			    			}
+
 			    		}
 			    	}
 			    },
@@ -365,12 +384,12 @@
 
 <div class="modal fade" id="modal_data_{{$id_map}}">
 	<div class="modal-dialog modal-lg">
-		<div class="modal-content ">
+		<div class="modal-content text-dark">
 		<div class="modal-header">
 			<h5><b></b></h5>
 
 		</div>
-		<div class="modal-body">
+		<div class="modal-body text-dark">
 			<table class="table-bordered table">
 				<thead>
 					<tr>
@@ -399,13 +418,13 @@
 
 <div class="modal fade " id="modal_data_kat_{{$id_map}}">
 	<div class="modal-dialog modal-lg">
-		<div class="modal-content ">
+		<div class="modal-content text-dark">
 		<div class="modal-header">
 			<b></b>
 			<button class="btn btn-xs btn btn-primary" style="font-size: 10px">DOWNLOAD EXCEL</button>
 		</div>
 		<div class="modal-body">
-			<table class="table-bordered table">
+			<table class="table-bordered table text-dark">
 				<thead>
 					<tr>
 						<th>ID DAERAH</th>

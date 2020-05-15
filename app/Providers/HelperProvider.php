@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
+use Auth;
 class HelperProvider extends ServiceProvider
 {
     /**
@@ -24,6 +24,25 @@ class HelperProvider extends ServiceProvider
     public function boot()
     {
         //
+    }
+
+    static function get_tahun_rpjmn(){
+        $tahun=static::fokus_tahun();
+        $tahun_start=2020;
+        $jumlah_tahun_range=(int)explode('.', (''.($tahun-$tahun_start)/5))[0];
+        $index=($tahun-(($tahun_start)+(4*$jumlah_tahun_range)))+1;
+
+        return $index;
+        
+    }
+
+    static function get_rpjmn_table($tambahan=null){
+        $tahun=static::fokus_tahun();
+        $tahun_start=2020;
+        $jumlah_tahun_range=(int)explode('.', (''.($tahun-$tahun_start)/5))[0];
+        $dekade=0;
+        $tahun_ahir=$tahun_start+(($jumlah_tahun_range+1)*4 );
+        return ('master_'.(($tahun_start)+(4*$jumlah_tahun_range)).'_'.$tahun_ahir.'_rpjmn'.(!empty($tambahan)?'_'.$tambahan:'') );
     }
 
     static function banil($old=0,$new=0){
@@ -47,8 +66,20 @@ class HelperProvider extends ServiceProvider
     }
 
     static public function fokus_tahun(){
-        return 2020;
+        if(Auth::User()){
+            $tahun=(int)session('fokus_tahun');
+            if(!empty($tahun) and($tahun>=2018)){
+                return $tahun;
+            }else{
+                Auth::logout();
+                header("Location: ".route('pilih_tahun'));
+            }
+        }else{
+            header("Location: ".route('pilih_tahun'));
+        }
+    
     }
+
 
     static function pdam_kat_color($status){
         $color='#f7f4d7';

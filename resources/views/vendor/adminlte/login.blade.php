@@ -14,7 +14,6 @@
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
-            <p class="login-box-msg">{{ trans('adminlte::adminlte.login_message') }}</p>
             <form action="{{ url(config('adminlte.login_url', 'login')) }}" method="post">
                 {{ csrf_field() }}
 
@@ -38,6 +37,15 @@
                         </span>
                     @endif
                 </div>
+                 <select class="form-control" name="tahun_akses" style="margin-bottom: 10px;">
+                    <?php $tahun_start=date('Y')-1; ?>
+                    <?php for ($i=$tahun_start; $i < ($tahun_start+3) ; $i++) { 
+                    ?>
+                        <option value="{{$i}}" {{$i==date('Y')?'selected':''}}>{{$i}}</option>
+                    <?php   # code...
+                    }
+                    ?>
+                </select>
                 <div class="row">
                     <div class="col-xs-8">
                         <div class="icheck-primary">
@@ -53,20 +61,12 @@
                     </div>
                     <!-- /.col -->
                 </div>
+
+               
             </form>
             <br>
-            <p>
-                <a href="{{ url(config('adminlte.password_reset_url', 'password/reset')) }}" class="text-center">
-                    {{ trans('adminlte::adminlte.i_forgot_my_password') }}
-                </a>
-            </p>
-            @if (config('adminlte.register_url', 'register'))
-                <p>
-                    <a href="{{ url(config('adminlte.register_url', 'register')) }}" class="text-center">
-                        {{ trans('adminlte::adminlte.register_a_new_membership') }}
-                    </a>
-                </p>
-            @endif
+            
+          
         </div>
         <!-- /.login-box-body -->
     </div><!-- /.login-box -->

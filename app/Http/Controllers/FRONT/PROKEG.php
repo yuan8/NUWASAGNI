@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use DB;
 use Auth;
 use Carbon\Carbon;
+use HP;
 class PROKEG extends Controller
 {
     //
@@ -49,7 +50,7 @@ class PROKEG extends Controller
     }
 
     public function per_urusan(){
-    	$tahun=2020;
+    	$tahun=HP::fokus_tahun();
         $id_dom='per_u';
 
         DB::connection('sinkron_prokeg')->enableQueryLog();
@@ -115,7 +116,7 @@ class PROKEG extends Controller
 
     public function per_sub_urusan($id){
 
-        $tahun=2020;
+        $tahun=HP::fokus_tahun();
         $id_dom='per_suu';
 
         $urusan =DB::table('master_urusan')->find($id);
@@ -184,7 +185,7 @@ class PROKEG extends Controller
 
 public function per_program($id){
 
-        $tahun=2020;
+        $tahun=HP::fokus_tahun();
         $id_dom='per_suu';
 
         $urusan =DB::table('master_sub_urusan')->find($id);
@@ -254,7 +255,7 @@ public function daerah(){
 }
 
 public function per_provinsi(){
-    $tahun=2020;
+    $tahun=HP::fokus_tahun();
         $id_dom='per_provinsi';
 
         $data=DB::connection('sinkron_prokeg')
@@ -262,7 +263,7 @@ public function per_provinsi(){
         ->Leftjoin(DB::raw('prokeg.tb_'.$tahun.'_'.'kegiatan as k'),DB::raw("left(k.kode_daerah,2)"),'=',DB::raw("CONCAT(u.id)"))
         ->whereNotNull('k.id_program')
         ->where('k.status',5)
-        ->where('k.id_sub_urusan',11)
+        ->where('k.id_sub_urusan',12)
 
         ->whereNull('u.kode_daerah_parent')
         ->select(
@@ -323,7 +324,7 @@ public function per_provinsi(){
 }
 
 public function per_kota($id){
-    $tahun=2020;
+    $tahun=HP::fokus_tahun();
         $id_dom='per_kota';
 
         $daerah=DB::table('master_daerah')->find($id);
@@ -333,7 +334,7 @@ public function per_kota($id){
         ->whereNotNull('k.id_urusan')
         ->whereNotNull('k.id_program')
          ->where('k.status',5)
-        ->where('k.id_sub_urusan',11)
+        ->where('k.id_sub_urusan',12)
         ->whereRaw("left(u.id,2) ='".$id."'")
 
         ->select(
@@ -397,7 +398,7 @@ public function per_kota($id){
 
 
         public function data($id,Request $request){
-            $tahun=2020;
+            $tahun=HP::fokus_tahun();
             $daerah=DB::table('master_daerah')->find($id);
 
             $urusan=DB::table('master_urusan')->whereIn('id',[3])->get();
@@ -427,7 +428,7 @@ public function per_kota($id){
                 "k.anggaran as anggaran"
             )
             ->where('k.status',5)
-             ->where('k.id_sub_urusan',11)
+             ->where('k.id_sub_urusan',12)
             ->whereNotNull('k.id_urusan')
 
             ->whereNotNull('k.id_program')
@@ -445,7 +446,7 @@ public function per_kota($id){
             ->orderBy('ik.id','ASC')
             ->get();
 
-            $tahun=2020;
+            $tahun=HP::fokus_tahun();
             $catatan=DB::connection('sinkron_analis')->table('tb_'.$tahun.'_rkpd_catatan_daerah as d')
             ->where('kode_daerah',$id)
             ->select('d.*','u.name')
@@ -466,7 +467,7 @@ public function per_kota($id){
 
 
         public function detail_program($id){
-            $tahun=2020;
+            $tahun=HP::fokus_tahun();
             $program=DB::connection('sinkron_prokeg')
             ->table(DB::raw('prokeg.tb_'.$tahun.'_'.'program as p'))->find($id);
 
@@ -487,7 +488,7 @@ public function per_kota($id){
 
 
         public function dearah_per_urusan($id){
-        $tahun=2020;
+        $tahun=HP::fokus_tahun();
         $id_dom='per_d_u';
         $daerah=DB::table('master_daerah')->find($id);
         DB::connection('sinkron_prokeg')->enableQueryLog();
@@ -495,7 +496,7 @@ public function per_kota($id){
         ->table('public.master_urusan as u')
         ->Leftjoin(DB::raw('prokeg.tb_'.$tahun.'_'.'kegiatan as k'),'u.id','=','k.id_urusan')
          ->where('k.status',5)
-        ->where('k.id_sub_urusan',11)
+        ->where('k.id_sub_urusan',12)
         ->whereNotNull('k.id_urusan')
         ->whereNotNull('k.id_program')
         ->where('k.kode_daerah',$id)
@@ -557,7 +558,7 @@ public function per_kota($id){
 
     public function dearah_per_sub_urusan($kode_daerah,$id_urusan){
 
-        $tahun=2020;
+        $tahun=HP::fokus_tahun();
         $id_dom='per_suu';
         $daerah =DB::table('master_daerah')->find($kode_daerah);
 
@@ -567,7 +568,7 @@ public function per_kota($id){
         ->table('public.master_sub_urusan as u')
         ->Leftjoin(DB::raw('prokeg.tb_'.$tahun.'_'.'kegiatan as k'),'u.id','=','k.id_sub_urusan')
            ->where('k.status',5)
-        ->where('k.id_sub_urusan',11)
+        ->where('k.id_sub_urusan',12)
         ->whereNotNull('k.id_urusan')
         ->whereNotNull('k.id_program')
         ->where('k.kode_daerah',$kode_daerah)
@@ -625,7 +626,7 @@ public function per_kota($id){
     }
 
     public function dearah_per_program($kode_daerah,$id_sub_urusan){
-        $tahun=2020;
+        $tahun=HP::fokus_tahun();
         $id_dom='per_suu';
         $daerah=DB::table('master_daerah')->find($kode_daerah);
         $urusan =DB::table('master_sub_urusan')->find($id_sub_urusan);
@@ -633,7 +634,7 @@ public function per_kota($id){
         $data=DB::connection('sinkron_prokeg')
         ->table('prokeg.tb_'.$tahun.'_'.'kegiatan as k')
          ->where('k.status',5)
-        ->where('k.id_sub_urusan',11)
+        ->where('k.id_sub_urusan',12)
         ->whereNotNull('k.id_urusan')
         ->whereNotNull('k.id_program')
         ->where('k.kode_daerah',$kode_daerah)
@@ -775,7 +776,7 @@ public function per_kota($id){
     }
 
     public function dash_urusan(Request $request){
-        $tahun=2020;
+        $tahun=HP::fokus_tahun();
         $data=DB::connection('sinkron_prokeg')->table('tb_'.$tahun.'_kegiatan as k')
         ->select(
             DB::raw("(select nama from public.master_daerah as d where d.id=k.kode_daerah) as nama_daerah"),DB::raw("string_agg(distinct(CONCAT('@',id_urusan))::text,',') as list_id_urusan")
@@ -799,7 +800,7 @@ public function per_kota($id){
     public function storeCatatan($id,Request $request){
 
         $uid=Auth::User()->id;
-        $tahun=2020;
+        $tahun=HP::fokus_tahun();
 
       $catatan=DB::connection('analis')->table('tb_'.$tahun.'_rkpd_catatan_daerah')
         ->where('kode_daerah',$id)

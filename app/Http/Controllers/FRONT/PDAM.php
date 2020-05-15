@@ -23,10 +23,27 @@ class PDAM extends Controller
             DB::raw("(select nama from master_daerah as p where p.id=(case when d.kode_daerah_parent is not null then d.kode_daerah_parent else d.id end)) as nama_provinsi"),
     		DB::raw("(case when nws.id is not null then true else false end) as target_nuwas"),
             'sat.keterangan'
+
     	)
         ->orderBy('kode_daerah','ASC')->get();
 
-    	return view('front.pdam.index')->with('data',$data);
+         $pdam_rekap=(array)DB::table('pdam')
+        ->leftJoin('audit_sat as pen','pen.id','=','pdam.id_laporan_terahir' )
+        ->select(DB::raw("(CASE WHEN max(pen.kategori_pdam) is not null THEN max(pen.kategori_pdam) else'TIDAK MEMILIKI KATEGORI' end ) as kategori_pdam"),'pen.kategori_pdam_kode',
+            DB::raw("count(distinct(pdam.id)) as jumlah_pdam")
+        )
+        ->groupBy('pen.kategori_pdam_kode')
+        ->orderBy('pen.kategori_pdam_kode','DESC')
+        ->get()->toArray();
+
+         $pd_a=[];
+        foreach ($pdam_rekap as $key => $pd) {
+            $pd_a[$pd->kategori_pdam_kode?$pd->kategori_pdam_kode:0]=$pd;
+        }
+        $pdam_rekap=$pd_a;
+
+
+    	return view('front.pdam.index')->with('data',$data)->with('pdam_rekap',$pdam_rekap);
 
 
 
@@ -39,6 +56,7 @@ class PDAM extends Controller
         $db=DB::table('pdam')
         ->where('kode_daerah',$id)
         ->first();
+
 
         if($db){
             $id=$db->id_laporan_terahir;
@@ -63,6 +81,8 @@ class PDAM extends Controller
             ->where('d.kode_daerah',$data->kode_daerah)
             ->select(
                 'd.*',
+                DB::raw("(select concat(c.nama,
+                (case when length(c.id)>3 then (select concat(' / ',d5.nama) from master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from master_daerah as c where c.id=d.kode_daerah) as nama_daerah"),
                 DB::raw("(case when n.id is not null then true else false end) as daerah_nuwas"),
                 DB::raw("REPLACE(n.jenis_bantuan,'@','') as  jenis_bantuan")
             )
@@ -70,27 +90,58 @@ class PDAM extends Controller
             ->first();
 
             $prof_pdam=[];
-           
+            
+
             if(($pdam)and(isset($pdam->id_laporan_terahir_2))){
                 $old_pdam=DB::table('audit_sat')
                 ->where('id',$pdam->id_laporan_terahir_2)
                 ->first();
-
                  $last_pdam=DB::table('audit_sat')
                 ->where('id',$pdam->id_laporan_terahir)
                 ->first();
 
-                $prof_pdam['kinerja_trf']=$old_pdam->id;
+                $prof_pdam['kategori_pdam_past']=$old_pdam->kategori_pdam;
+                $prof_pdam['kategori_pdam_present']=$last_pdam->kategori_pdam;
+                $prof_pdam['kategori_pdam_trf']=HP::banil($old_pdam->kategori_pdam_kode,$last_pdam->kategori_pdam_kode);
+
                 $prof_pdam['periode_laporan']=$old_pdam->periode_laporan;
                 $prof_pdam['updated_input_at']=$old_pdam->updated_input_at;
-
                 $prof_pdam['kinerja_trf']=HP::banil($old_pdam->sat_nilai_kinerja_ttl_dr_bppspam_nilai,$last_pdam->sat_nilai_kinerja_ttl_dr_bppspam_nilai);
                 $prof_pdam['keuangan_trf']=HP::banil($old_pdam->sat_nilai_aspek_keuangan_dr_bppspam_nilai,$last_pdam->sat_nilai_aspek_keuangan_dr_bppspam_nilai);
                 $prof_pdam['pelayanan_trf']=HP::banil($old_pdam->sat_nilai_aspek_pel_dr_bppspam_nilai,$last_pdam->sat_nilai_aspek_pel_dr_bppspam_nilai);
                 $prof_pdam['oprasional_trf']=HP::banil($old_pdam->sat_nilai_aspek_operasional_dr_bppspam_nilai,$last_pdam->sat_nilai_aspek_operasional_dr_bppspam_nilai);
                 $prof_pdam['sdm_trf']=HP::banil($old_pdam->sat_nilai_aspek_sdm_dr_bppspam_nilai,$last_pdam->sat_nilai_aspek_sdm_dr_bppspam_nilai);
+                $prof_pdam['pelangan_past']=$old_pdam->sat_jumlah_pelanggan_ttl_nilai;
+                $prof_pdam['pelangan_present']=$last_pdam->sat_jumlah_pelanggan_ttl_nilai;
+                $prof_pdam['sr_past']=$old_pdam->sat_jumlah_sam_rumah_tangga_nilai;
+                $prof_pdam['sr_present']=$last_pdam->sat_jumlah_sam_rumah_tangga_nilai;
+
                 $prof_pdam['pertumbuhan_pelangan']=((($last_pdam->sat_jumlah_pelanggan_ttl_nilai-$old_pdam->sat_jumlah_pelanggan_ttl_nilai)/$last_pdam->sat_jumlah_pelanggan_ttl_nilai)*100);
                 $prof_pdam['pertumbuhan_sambungan_rumah']=((($last_pdam->sat_jumlah_sam_rumah_tangga_nilai-$old_pdam->sat_jumlah_sam_rumah_tangga_nilai)/$last_pdam->sat_jumlah_sam_rumah_tangga_nilai)*100);
+
+            }else if($pdam){
+                 $last_pdam=DB::table('audit_sat')
+                ->where('id',$pdam->id_laporan_terahir)
+                ->first();
+
+                $prof_pdam['kategori_pdam_past']=$last_pdam->kategori_pdam;
+                $prof_pdam['kategori_pdam_present']=$last_pdam->kategori_pdam;
+                $prof_pdam['kategori_pdam_trf']=0;
+
+                $prof_pdam['kinerja_trf']=0;
+                $prof_pdam['keuangan_trf']=0;
+                $prof_pdam['pelayanan_trf']=0;
+                $prof_pdam['oprasional_trf']=0;
+                $prof_pdam['sdm_trf']=0;
+                $prof_pdam['pelangan_past']=$last_pdam->sat_jumlah_pelanggan_ttl_nilai;
+                $prof_pdam['pelangan_present']=$last_pdam->sat_jumlah_pelanggan_ttl_nilai;
+                $prof_pdam['sr_past']=$last_pdam->sat_jumlah_sam_rumah_tangga_nilai;
+                $prof_pdam['sr_present']=$last_pdam->sat_jumlah_sam_rumah_tangga_nilai;
+                $prof_pdam['pertumbuhan_pelangan']=0;
+                $prof_pdam['pertumbuhan_sambungan_rumah']=0;
+                $prof_pdam['periode_laporan']=null;
+                $prof_pdam['updated_input_at']=null;
+
 
             }
 
@@ -213,7 +264,6 @@ class PDAM extends Controller
                 $tooltip=$d['nama_daerah'].'<br>'.'TIDAK TERDAPAT DATA';
             }
 
-            // ['id', 'nama', 'value','cat','link','color', 'tooltip']
 
             if((strlen($d['id_daerah'])<3) ){
                 $map_data['series'][1]['data'][]=[
@@ -256,6 +306,80 @@ class PDAM extends Controller
 
         return $map_data;
 
+
+    }
+
+    public function pencapaian_kualitas(Request $request){
+
+        return explode(',', $request->kode_list);
+        $data=DB::table('pdam')
+        ->leftJoin('audit_sat as sat','sat.id','=','pdam.id_laporan_terahir')
+        ->whereIn('sat.kategori_pdam_kode',explode(',', $request->kode_list))
+        ->select('pdam.*');
+        if($request->target_nuwas){
+            $tahun=Hp::fokus_tahun();
+            $target_nuwas=DB::table('daerah_nuwas as n')
+            ->where('n.tahun',$tahun)->get()
+            ->pluck('kode_daerah');
+            $data=$data->whereIn('pdam.kode_daerah',$target_nuwas);
+        }
+
+        $data=$data->get();
+
+
+        return $data;
+
+
+    }
+
+
+    public function trafik_kategori($status=null,Request $request){
+        $tahun=Hp::fokus_tahun();
+        $data=DB::table('pdam')
+        ->leftJoin(
+            DB::raw("(select pdam_p.id,
+            (select kategori_pdam_kode from audit_sat as sat where sat.id = pdam_p.id_laporan_terahir)::numeric as kategori_pdam_kode_sat,
+            (case when pdam_p.id_laporan_terahir_2 is not null then 
+            (select 
+            (case when kategori_pdam_kode is null then 
+                (select kategori_pdam_kode from audit_sat as sat3 where sat3.id = pdam_p.id_laporan_terahir)::numeric 
+            else kategori_pdam_kode end)
+            from audit_sat as sat where sat.id = pdam_p.id_laporan_terahir_2 )::numeric else (select kategori_pdam_kode from audit_sat as sat where sat.id = pdam_p.id_laporan_terahir)::numeric end) as kategori_pdam_kode_sat_2
+            from pdam as pdam_p
+            ) as sat"),'sat.id','=','pdam.id'
+        )
+        ->select(
+            'kategori_pdam_kode_sat',
+            'kategori_pdam_kode_sat_2',
+            'pdam.nama_pdam',
+            'pdam.kode_daerah',
+            DB::raw("(select kategori_pdam from audit_sat as sat where sat.id = pdam.id_laporan_terahir) as kategori_pdam"),
+            DB::raw("(select concat(d.nama,
+                (case when length(d.id)>3 then (select concat(' / ',d5.nama) from master_daerah as d5 where d5.id = left(d.id,2) ) end  )) from master_daerah as d where id=pdam.kode_daerah) as nama_daerah"),
+            DB::raw("(case when kategori_pdam_kode_sat < kategori_pdam_kode_sat_2 then -1 else 
+                (case when kategori_pdam_kode_sat_2 < kategori_pdam_kode_sat then 1 else 
+                (case when kategori_pdam_kode_sat=kategori_pdam_kode_sat_2 then 0 end) end) end) as trafik")
+        );
+
+        if($status!=null){
+            $data=$data->whereRaw("(case when kategori_pdam_kode_sat < kategori_pdam_kode_sat_2 then -1 else 
+                (case when kategori_pdam_kode_sat_2 < kategori_pdam_kode_sat then 1 else 
+                (case when kategori_pdam_kode_sat=kategori_pdam_kode_sat_2 then 0 end) end) end) = ".$status);
+        }else{
+
+        }   
+        if($request->target_nuwas){
+            $data_target_nuwas=DB::table('daerah_nuwas as n')
+            ->where('n.tahun',$tahun)->get()
+            ->pluck('kode_daerah');
+
+            $data=$data->whereIn('pdam.kode_daerah',$data_target_nuwas);
+
+        }
+
+        $data=$data->get();
+
+        return $data;
 
     }
 }

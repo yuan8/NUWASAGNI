@@ -15,14 +15,7 @@ class MAP extends Controller
     //
 
     public function index(){
-        $data=DB::connection('sinkron_prokeg')->table('tb_2020_status_file_daerah')->where('status',5)
-        ->get();
-
-        foreach ($data as $key => $d) {
-            # code...
-
-            dd($d);
-        }
+      
 
     	$tahun=HP::fokus_tahun();
     	$data=DB::table('output_publish as p')

@@ -15,7 +15,7 @@
               <p>ROOM</p>
             </div>
             <div class="icon">
-              <i class="ion ion-bag"></i>
+              <i class="ion ion-profile"></i>
             </div>
             <a href="{{route('d.meet.v').'/TACT_LG'}}" class="small-box-footer">GO TO ROOM  <i class="fa fa-arrow-circle-right"></i></a>
           </div>
@@ -28,7 +28,7 @@
               <p>ROOM</p>
             </div>
             <div class="icon">
-              <i class="ion ion-bag"></i>
+              <i class="ion ion-profile"></i>
             </div>
             <a href="{{route('d.meet.v').'/DSS_TEAM'}}" class="small-box-footer">GO TO ROOM  <i class="fa fa-arrow-circle-right"></i></a>
           </div>
@@ -42,7 +42,7 @@
               <p>ROOM</p>
             </div>
             <div class="icon">
-              <i class="ion ion-bag"></i>
+              <i class="ion ion-profile"></i>
             </div>
             <a href="{{route('d.meet.v').'/CAMPURAN'}}" class="small-box-footer">GO TO ROOM <i class="fa fa-arrow-circle-right"></i></a>
           </div>
