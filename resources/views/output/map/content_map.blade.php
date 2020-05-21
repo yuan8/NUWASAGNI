@@ -304,7 +304,7 @@
 			$('#legend_05_20_11_04_45id tbody tr#c').html('');
 
 			for(var i in LAYER_{{$id_map}}[index].legend.cat){
-				$('#legend_05_20_11_04_45id thead tr#n').append("<th style='color:#fff'>"+LAYER_{{$id_map}}[index].legend.cat[i]+"</th>");
+				$('#legend_05_20_11_04_45id thead tr#n').append("<th style='color:#fff!important;'>"+LAYER_{{$id_map}}[index].legend.cat[i]+"</th>");
 				$('#legend_05_20_11_04_45id tbody tr#c').append("<td style='background-color:"+LAYER_{{$id_map}}[index].legend.color[i]+";'>"+''+"</td>");
 			}
 			$('#named_map_{{$id_map}}').trigger('change');
