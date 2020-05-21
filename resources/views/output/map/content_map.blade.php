@@ -74,7 +74,8 @@
 						<a href="asset/{{$id_map}}.xlsm" class="btn btn-primary btn-xs" download="" style="font-size: 10px">DOWNLOAD EXCEL</a>
 
 						@else
-						<a href="{{$file_path}}" class="btn btn-primary btn-xs" download="" style="font-size: 10px">DOWNLOAD EXCEL</a>
+
+						{{-- <a href="{{$file_path}}" class="btn btn-primary btn-xs" download="" style="font-size: 10px">DOWNLOAD EXCEL</a> --}}
 						@endif
     				</div>
     				<hr>
@@ -303,7 +304,7 @@
 			$('#legend_05_20_11_04_45id tbody tr#c').html('');
 
 			for(var i in LAYER_{{$id_map}}[index].legend.cat){
-				$('#legend_05_20_11_04_45id thead tr#n').append("<th>"+LAYER_{{$id_map}}[index].legend.cat[i]+"</th>");
+				$('#legend_05_20_11_04_45id thead tr#n').append("<th style='color:#fff'>"+LAYER_{{$id_map}}[index].legend.cat[i]+"</th>");
 				$('#legend_05_20_11_04_45id tbody tr#c').append("<td style='background-color:"+LAYER_{{$id_map}}[index].legend.color[i]+";'>"+''+"</td>");
 			}
 			$('#named_map_{{$id_map}}').trigger('change');
