@@ -18,7 +18,7 @@
 					<th>JUMLAH DAERAH</th>
 					<th>JUMLAH DAERAH MELAPOR</th>
 					<th>TOTAL JUMLAH KEGIATAN </th>
-					<th>PERSENTASE</th>
+					<th>PERSENTASE PELAPORAN</th>
 					<th>ACTION</th>
 
 
@@ -97,7 +97,7 @@ $(function(){
 
 				type:'html',
 				orderable:false,
-				
+
 				render:function(data,type,dataRow){
 					return "<a class='btn btn-primary btn-xs' href='{{route('pr.table')}}/?provinsi="+dataRow.kode+"'>DETAIL</a>";
 				}
