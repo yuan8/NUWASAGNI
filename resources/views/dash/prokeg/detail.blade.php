@@ -60,7 +60,7 @@
 							<tr>
 								<td colspan="4" class="text-right"><b>IP.{{$d->id_ind_p}}</b></td>
 								<td><b>(IP)</b> {{$d->ind_p_nama}}</td>
-								<td>{{$d->ind_p_target_1}} {{$d->ind_p_satuan}} {{!empty($d->ind_p_target_2)?' - '.$d->$d->ind_p_target_2.' '.$d->ind_p_satuan:''}}</td>
+								<td>{{$d->ind_p_target_1}} {{$d->ind_p_satuan}} {{!empty($d->ind_p_target_2)?' - '.$d->ind_p_target_2.' '.$d->ind_p_satuan:''}}</td>
 								<td colspan="4"></td>
 							</tr>
 							<?php $id_ind_p=$d->id_ind_p; ?>
@@ -80,7 +80,7 @@
 							<tr>
 								<td colspan="4" class="text-right"><b>IK.{{$d->id_ind_k}}</b></td>
 								<td><b>(IK)</b> {{$d->ind_k_nama}}</td>
-								<td>{{$d->ind_k_target_1}} {{$d->ind_k_satuan}} {{!empty($d->ind_k_target_2)?' - '.$d->$d->ind_k_target_2.' '.$d->ind_k_satuan:''}}</td>
+								<td>{{$d->ind_k_target_1}} {{$d->ind_k_satuan}} {{!empty($d->ind_k_target_2)?' - '.$d->ind_k_target_2.' '.$d->ind_k_satuan:''}}</td>
 								<td><a href="{{route('d.prokeg.pemetaan',['id'=>$d->id_ind_k])}}" target="_blank" class="btn btn-warning btn-xs">DETAIL PEMETAAN</a></td>
 								<td colspan="3"></td>
 							</tr>
@@ -91,7 +91,7 @@
 							<tr>
 								<td colspan="7" class="text-right"><b>IPS.{{$d->id_indp_ps}}</b></td>
 								<td><b>(I{{$d->ind_ps_jenis}})</b> {{$d->ind_ps_nama}}</td>
-								<td>{{$d->ind_ps_target_1}} {{$d->ind_ps_satuan}} {{!empty($d->ind_ps_target_2)?' - '.$d->$d->ind_ps_target_2.' '.$d->ind_ps_satuan:''}}</td>
+								<td>{{$d->ind_ps_target_1}} {{$d->ind_ps_satuan}} {{!empty($d->ind_ps_target_2)?' - '.$d->ind_ps_target_2.' '.$d->ind_ps_satuan:''}}</td>
 								<td colspan="">
 									<p>{{$d->nama_pn}}</p>
 									<p>{{$d->nama_pp}}</p>

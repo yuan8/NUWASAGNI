@@ -65,10 +65,10 @@
         <div class="box box-primary">
             <div class="box-body">
                 <div class="col-md-6">
-                    @include('front.pdam.table_trafik',['status'=>1])
+                    @include('front.prokeg.widget.w1')
                 </div>
                 <div class="col-md-6">
-                    @include('front.pdam.table_trafik',['status'=>-1])
+                    @include('front.prokeg.widget.w2')
                       
                 </div>
             </div>
@@ -91,9 +91,11 @@
 <script type="text/javascript">
     
 
-    $.get("{{route('p.pdam.map')}}",function(res){
-        $('#map_index').html(res);
+   $(function(){
+     API_CON.get("{{route('web_api.prokeg.status.air_minum')}}").then(function(res){
+        $('#map_index').html(res.data);
     });
+ });
 
 </script>
 

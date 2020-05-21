@@ -96,12 +96,12 @@ class AppServiceProvider extends ServiceProvider
                     'icon'=>'fa fa-file',
                     'submenu'=>[
                         [
-                            'text'=>'PER DAERAH (AIR MINUM)',
+                            'text'=>'PER DAERAH (AIR MINUM) - CHART',
                             'url'=>route('p.prokeg')
                         ],
                          [
-                            'text'=>'PER URUSAN (AIR MINUM)',
-                            'url'=>route('p.prokeg.urusan')
+                            'text'=>'PER DAERAH (AIR MINUM) - TABLE',
+                            'url'=>route('pr.table')
                         ]
                     ]
                 ]);

@@ -14,7 +14,7 @@
   				<thead>
   					<tr>
   						<th>Category</th>
-  						@if(in_array($id_dom,['per_kota','per_provinsi']) )
+  						@if(in_array($id_dom,['per_kota']) )
   						<th>Detail</th>
   						@endif
   						<th>Jumlah Program</th>
@@ -26,7 +26,7 @@
   					@foreach($data['data'] as $d)
   					<tr>
   						<td>{{$d->nama}}</td>
-  						@if(in_array($id_dom,['per_kota','per_provinsi']) )
+  						@if(in_array($id_dom,['per_kota']) )
   						<td><a href="{{route('pr.data',['id'=>$d->id])}}" target="_blank" class="btn btn-primary btn-xs">Detail</a></td>
   						@endif
   						<td>{{$d->jumlah_program}}</td>
@@ -47,18 +47,30 @@
 
   <script type="text/javascript">
 
-  	$('#{{$id_dom}}_table').DataTable();
+  $('#{{$id_dom}}_table').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+          {
+              extend: 'excelHtml5',
+              text: 'DOWNLOAD EXCEL',
+              className:'btn btn-success btn-xs',
+              messageTop: 'RKPD AIR MINUM  TAHUN {{HP::fokus_tahun()}}',
+              exportOptions: {
+              }
+          },
+      ],
+  });
 
 	var {{$id_dom}}data_r=<?php echo json_encode($data['data']) ?>;
 	Highcharts.chart('{{$id_dom}}chart_container', {
     chart: {
         type: 'column',
-        //  scrollablePlotArea: {
-        //     scrollPositionX: 1
-        // },
-        //   mapNavigation: {
-        //     enableMouseWheelZoom: true
-        // },
+         scrollablePlotArea: {
+            scrollPositionX: 1
+        },
+          mapNavigation: {
+            enableMouseWheelZoom: true
+        },
         events:{
               click:function(e){
 
@@ -84,8 +96,7 @@
     //     }
     // },
     xAxis: {
-      min:0,
-      max:5,
+     
       categories: <?php  echo json_encode($data['category']); ?>,
       scrollbar:{
         enabled:true

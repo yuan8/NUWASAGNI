@@ -11,6 +11,16 @@ Route::prefix('web-api')->group(function(){
 
 	});
 
+	Route::prefix('prokeg')->group(function(){
+		Route::get('map-status-air-minum','FRONT\PROKEG@daerah_upload_air_minum_map')->name('web_api.prokeg.status.air_minum');
+
+		Route::get('widget-prokeg', 'FRONT\PROKEG@widget_prokeg')->name('web_api.prokeg.w1');
+		Route::get('widget-prokeg-2', 'FRONT\PROKEG@widget_prokeg_pelaporan')->name('web_api.prokeg.w2');
+
+
+
+	});
+
 	Route::prefix('dash')->group(function(){
 		Route::prefix('rpjmn')->group(function(){
 			Route::post('turunan','DASH\KEBIJAKAN\PUSAT\RPJMN@api_turunan')->name('web_api.d.rpjmn.turunan');

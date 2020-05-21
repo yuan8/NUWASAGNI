@@ -20,18 +20,14 @@ class Dashboard extends Controller
     		DB::raw("sum(anggaran) as jumlah_anggaran"),
     		DB::raw("count(*) jumlah_kegiatan")
     	)
-    	->where('id_sub_urusan',11)
+    	->where('id_sub_urusan',12)
     	->where('status',5)
     	->first();
 
 
         $data_pdam=DB::table('pdam')->count();
 
-      
-
-
-     
-
+    
 
     	return view('index')->with([
     		'data_kegiatan'=>$data_kegiatan,

@@ -54,6 +54,11 @@ Route::middleware('auth:web')->group(function(){
 
 
 		Route::get('/program-kegiatan-data/{id}', 'FRONT\PROKEG@data')->name('pr.data');
+
+		Route::get('/program-kegiatan-table', 'FRONT\PROKEG@list_program_kegiatan_daerah')->name('pr.table');
+
+
+
 		
 
 
