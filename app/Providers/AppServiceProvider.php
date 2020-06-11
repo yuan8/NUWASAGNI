@@ -187,20 +187,20 @@ class AppServiceProvider extends ServiceProvider
                     
                 ]);
 
-                // $event->menu->add([
-                //     'text' => 'PROGRAM KEGIATAN',
-                //     'icon'=>'fa fa-file',
-                //     'submenu'=>[
-                //         [
-                //             'text'=>'PER DAERAH (AIR MINUM) - CHART',
-                //             'url'=>route('p.prokeg')
-                //         ],
-                //          [
-                //             'text'=>'PER DAERAH (AIR MINUM) - TABLE',
-                //             'url'=>route('pr.table')
-                //         ]
-                //     ]
-                // ]);
+                $event->menu->add([
+                    'text' => 'PROGRAM KEGIATAN',
+                    'icon'=>'fa fa-file',
+                    'submenu'=>[
+                        [
+                            'text'=>'PER DAERAH (AIR MINUM) - CHART',
+                            'url'=>route('p.prokeg')
+                        ],
+                         [
+                            'text'=>'PER DAERAH (AIR MINUM) - TABLE',
+                            'url'=>route('pr.table')
+                        ]
+                    ]
+                ]);
                 
                 $event->menu->add([
                     'text' => 'PROFILE PDAM',
