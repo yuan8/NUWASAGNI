@@ -111,10 +111,10 @@ class AppServiceProvider extends ServiceProvider
                             'url'=>route('d.kb.f.index',['jenis'=>'JAKSTRA'])
                         ],
                         
-                        // [
-                        //     "text"=>'RENSTRA',
-                        //     'url'=>route('d.kb.f.index',['jenis'=>'RENSTRA'])
-                        // ],
+                        [
+                            "text"=>'RENSTRA',
+                            'url'=>route('d.kb.f.index',['jenis'=>'RENSTRA'])
+                        ],
                         [
                             "text"=>'RISPAM',
                             'url'=>route('d.kb.f.index',['jenis'=>'RISPAM'])
@@ -123,14 +123,14 @@ class AppServiceProvider extends ServiceProvider
                             "text"=>'RPAM',
                             'url'=>route('d.kb.f.index',['jenis'=>'RPAM'])
                         ],
-                        // [
-                        //     "text"=>'RKA',
-                        //     'url'=>route('d.kb.f.index',['jenis'=>'RKA'])
-                        // ],
-                        // [
-                        //     "text"=>'RKPD FINAL',
-                        //     'url'=>route('d.kb.f.index',['jenis'=>'RKPD'])
-                        // ]
+                        [
+                            "text"=>'RKA',
+                            'url'=>route('d.kb.f.index',['jenis'=>'RKA'])
+                        ],
+                        [
+                            "text"=>'RKPD FINAL',
+                            'url'=>route('d.kb.f.index',['jenis'=>'RKPD'])
+                        ]
 
                     ]
                 ]);
