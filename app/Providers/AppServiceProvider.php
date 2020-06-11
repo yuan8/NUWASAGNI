@@ -95,23 +95,26 @@ class AppServiceProvider extends ServiceProvider
                     ]
                 ]);
 
+                 $event->menu->add([
+                    "text"=>'UPLOAD FILE LAIN LAIN',
+                    'url'=>route('d.kb.f.index',['jenis'=>'LAIN_LAIN'])
+                 ]);
+
                 $event->menu->add([
                     'text' => 'FILE KEBIJAKAN',
                     'icon'=>'fa fa-file',
                     'can'=>'role.daerah',
                     'submenu'=>[
+                       
                         [
                             "text"=>'JAKSTRA',
                             'url'=>route('d.kb.f.index',['jenis'=>'JAKSTRA'])
                         ],
-                        [
-                            "text"=>'RENJA',
-                            'url'=>route('d.kb.f.index',['jenis'=>'RENJA'])
-                        ],
-                        [
-                            "text"=>'RENSTRA',
-                            'url'=>route('d.kb.f.index',['jenis'=>'RENSTRA'])
-                        ],
+                        
+                        // [
+                        //     "text"=>'RENSTRA',
+                        //     'url'=>route('d.kb.f.index',['jenis'=>'RENSTRA'])
+                        // ],
                         [
                             "text"=>'RISPAM',
                             'url'=>route('d.kb.f.index',['jenis'=>'RISPAM'])
@@ -120,14 +123,14 @@ class AppServiceProvider extends ServiceProvider
                             "text"=>'RPAM',
                             'url'=>route('d.kb.f.index',['jenis'=>'RPAM'])
                         ],
-                        [
-                            "text"=>'RKA',
-                            'url'=>route('d.kb.f.index',['jenis'=>'RKA'])
-                        ],
-                        [
-                            "text"=>'RKPD FINAL',
-                            'url'=>route('d.kb.f.index',['jenis'=>'RKPD'])
-                        ]
+                        // [
+                        //     "text"=>'RKA',
+                        //     'url'=>route('d.kb.f.index',['jenis'=>'RKA'])
+                        // ],
+                        // [
+                        //     "text"=>'RKPD FINAL',
+                        //     'url'=>route('d.kb.f.index',['jenis'=>'RKPD'])
+                        // ]
 
                     ]
                 ]);

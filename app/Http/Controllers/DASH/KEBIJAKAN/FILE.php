@@ -20,7 +20,7 @@ class FILE extends Controller
      	$tahun=HP::fokus_tahun();
     	if($jenis){
     		$jenis=strtoupper(trim($jenis));
-    		if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA'])){
+    		if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA','LAIN_LAIN'])){
                 $daerah=DB::table('master_daerah as c')->select(
                     'id',
 
@@ -30,7 +30,7 @@ class FILE extends Controller
 
     			$data=DB::table('public.dokumen_kebijakan_daerah as f')->select('f.*',
                 DB::raw("CONCAT('".url('')."/',f.path) as path_file"),
-                    
+
 		     	DB::raw("(select concat(c.nama,
 		                (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=f.kode_daerah) as nama_daerah")
 		     	)->where('tahun','<=',$tahun)->where('tahun_selesai','>=',$tahun)->where('jenis',$jenis)->get();
@@ -54,7 +54,7 @@ class FILE extends Controller
         $tahun_mulai=$request->tahun_mulai;
         if($jenis){
             $jenis=strtoupper(trim($jenis));
-            if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA'])){
+            if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA','LAIN_LAIN'])){
 
                 $data=DB::table('public.dokumen_kebijakan_daerah as f')->select('f.*')
                ->where('tahun','=',$tahun_mulai)->where('jenis',$jenis)
@@ -65,7 +65,7 @@ class FILE extends Controller
 
                }else{
                     if($request->file){
-                        $ext= pathinfo($request->file, PATHINFO_EXTENSION);
+                        $ext= $request->file->getClientOriginalExtension();
                         $name='file_kebijakan_daerah/'.$request->kode_daerah.'/'.$jenis.'-'.$request->kode_daerah.'@'.date('Y/m/d/h').'@'.'-'.$tahun_mulai.'-'.$request->tahun_selesai.'.'.$ext;
 
                         $file=Storage::put(('public/'.$name),$request->file);
@@ -108,7 +108,7 @@ class FILE extends Controller
         $tahun=HP::fokus_tahun();
         if($jenis){
             $jenis=strtoupper(trim($jenis));
-            if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA'])){
+            if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA','LAIN_LAIN'])){
                 $daerah=DB::table('master_daerah as c')->select(
                     'id',
                     DB::raw("concat(c.nama,
@@ -144,9 +144,9 @@ class FILE extends Controller
             $tahun_mulai=$request->tahun_mulai;
 
             $jenis=strtoupper(trim($jenis));
-            if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA'])){
+            if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA','LAIN_LAIN'])){
                 if($request->file('file')){
-                    $ext= pathinfo($request->file, PATHINFO_EXTENSION);
+                    $ext= $request->file->getClientOriginalExtension();
                     $name='file_kebijakan_daerah/'.$request->kode_daerah.'/'.$jenis.'-'.$request->kode_daerah.'@'.date('Y/m/d/h').'@'.'-'.$tahun_mulai.'-'.$request->tahun_selesai.'.'.$ext;
 
                     $file=Storage::put(('public/'.$name),$request->file);
@@ -221,7 +221,7 @@ class FILE extends Controller
         $tahun=HP::fokus_tahun();
         if($jenis){
             $jenis=strtoupper(trim($jenis));
-            if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA'])){
+            if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA','LAIN_LAIN'])){
 
                 $data=DB::table('public.dokumen_kebijakan_daerah as f')->select('f.*',
                 DB::raw("(select concat(c.nama,
