@@ -114,6 +114,11 @@
 
 @section('js')
 <script type="text/javascript">
+
+	function delete_data(id){
+		$('#modal_delete_id').val(id);
+		$('#modal_delete').modal();
+	}
 	var table_data=$('#table_data').DataTable({
 		sort:false,
 		columns:[
@@ -144,7 +149,7 @@
 						link='';
 					}
 
-					return '<button class="btn btn-danger btn-xs">DELETE</button><a class="btn btn-success btn-xs" href="{{route('d.kb.f.view',['jenis'=>$jenis])}}/'+dataRaw.id+'" >UPDATE</a><a class="btn btn-info btn-xs" href="'+link+dataRaw.path_file+'" >VIEW</a>';
+					return '<button class="btn btn-danger btn-xs" onclick="delete_data('+dataRaw.id+')">DELETE</button><a class="btn btn-success btn-xs" href="{{route('d.kb.f.view',['jenis'=>$jenis])}}/'+dataRaw.id+'" >UPDATE</a><a class="btn btn-info btn-xs" href="'+link+dataRaw.path_file+'" target="_blank" >VIEW</a>';
 
 				}
 			}
@@ -160,6 +165,34 @@
 
 	});
 
+
+	
+
 </script>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_delete">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">HAPUS DATA</h4>
+      </div>
+      <div class="modal-body">
+        <p>Hapus Data secara permanen?</p>
+      </div>
+      <div class="modal-footer">
+      	<form action="{{route('d.kb.f.delete',['jenis'=>$jenis])}}" method="post">
+      			@method('DELETE')
+      			@csrf
+      			<div class="btn-group">
+      		  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      		  <input type="hidden" name="id" value="" id="modal_delete_id">
+        		<button type="submit" class="btn btn-primary">YA</button>
+      	</div>
+      	</form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 @stop

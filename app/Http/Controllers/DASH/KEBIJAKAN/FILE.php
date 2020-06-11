@@ -117,7 +117,7 @@ class FILE extends Controller
                 )->orderBy('c.id','ASC')->get();
                 $data=DB::table('public.dokumen_kebijakan_daerah as f')->select('f.*',
                         DB::Raw("(select name from public.users as u where u.id = f.user_id) as nama_user "),
-                    
+
                 DB::raw("(select concat(c.nama,
                         (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=f.kode_daerah) as nama_daerah")
                 )->where('id',$id)->first();
@@ -216,6 +216,17 @@ class FILE extends Controller
 
     }
 
+    public function delete(Request $request){
+          $data=DB::table('public.dokumen_kebijakan_daerah as f')->where('id',$request->id)->first();
+          if($data){
+             $data=DB::table('public.dokumen_kebijakan_daerah as f')->where('id',$request->id)->delete();
+                Alert::success('Success', 'Data Berhasil Dihapus');
+          }else{
+                Alert::error('Error', 'Gagal Mengapus Data');
+          }
+
+          return back();
+    }
 
 
 

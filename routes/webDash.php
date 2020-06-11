@@ -34,6 +34,8 @@ Route::prefix('dash-admin')->middleware('auth:web')->group(function(){
 			Route::post('/{jenis}/upload','DASH\KEBIJAKAN\FILE@upload')->name('d.kb.f.upload');
 			Route::get('/{jenis}/update/{id?}','DASH\KEBIJAKAN\FILE@view')->name('d.kb.f.view');
 			Route::post('/{jenis}/update/{id?}','DASH\KEBIJAKAN\FILE@update')->name('d.kb.f.update');
+			Route::delete('/{jenis}/delete','DASH\KEBIJAKAN\FILE@delete')->name('d.kb.f.delete');
+
 
 
 

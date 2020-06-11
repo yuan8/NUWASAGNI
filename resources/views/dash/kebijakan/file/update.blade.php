@@ -18,7 +18,7 @@
 		}
 
  ?>
-<p><b class="text-uppercase">diupload oleh {{$data->nama_user}}</b> <a href="{{$link.url($data->path)}}" class="btn btn-success btn-xs">View</a></p>
+<p><b class="text-uppercase">diupload oleh {{$data->nama_user}}</b> <a href="{{$link.url($data->path)}}" class="btn btn-success btn-xs"  target="_blank">View</a></p>
 <br>
 <form action="{{route('d.kb.f.update',['jenis'=>$jenis,'id'=>$data->id])}}" method="post" enctype='multipart/form-data'>
 	@csrf
