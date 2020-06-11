@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'title' => 'NUWAS',
+    'title' => 'NUWSP',
 
     'title_prefix' => '',
 
@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'logo' => '<b>NUWASP</b>',
+    'logo' => '<b>NUWSP</b>',
 
     'logo_mini' => '<b>NUWSP</b>',
 
