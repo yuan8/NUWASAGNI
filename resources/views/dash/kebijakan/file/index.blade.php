@@ -135,7 +135,16 @@
 			{
 				render:function(data,type,dataRaw){
 					var baseUrl='{{url('').'/'}}';
-					return '<button class="btn btn-danger btn-xs">DELETE</button><a class="btn btn-success btn-xs" href="{{route('d.kb.f.view',['jenis'=>$jenis])}}/'+dataRaw.id+'" >UPDATE</a><a class="btn btn-info btn-xs" href="'+dataRaw.path_file+'" >VIEW</a>';
+					console.log(dataRaw);
+
+					var dx=['xlsx','doc','docx','csv','xls'];
+					if(dx.includes(dataRaw.extension)){
+						link='http://view.officeapps.live.com/op/view.aspx?src=';
+					}else{
+						link='';
+					}
+
+					return '<button class="btn btn-danger btn-xs">DELETE</button><a class="btn btn-success btn-xs" href="{{route('d.kb.f.view',['jenis'=>$jenis])}}/'+dataRaw.id+'" >UPDATE</a><a class="btn btn-info btn-xs" href="'+link+dataRaw.path_file+'" >VIEW</a>';
 
 				}
 			}

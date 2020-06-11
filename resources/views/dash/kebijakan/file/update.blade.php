@@ -7,7 +7,18 @@
 
 @section('content')
 <hr>
-<p><b class="text-uppercase">diupload oleh {{$data->nama_user}}</b> <a href="{{url($data->path)}}" class="btn btn-success btn-xs">View</a></p>
+<?php
+					
+
+		$dx=['xlsx','doc','docx','csv','xls'];
+		if(in_array($data->extension, $dx)){
+			$link='http://view.officeapps.live.com/op/view.aspx?src=';
+		}else{
+			$link='';
+		}
+
+ ?>
+<p><b class="text-uppercase">diupload oleh {{$data->nama_user}}</b> <a href="{{$link.url($data->path)}}" class="btn btn-success btn-xs">View</a></p>
 <br>
 <form action="{{route('d.kb.f.update',['jenis'=>$jenis,'id'=>$data->id])}}" method="post" enctype='multipart/form-data'>
 	@csrf
