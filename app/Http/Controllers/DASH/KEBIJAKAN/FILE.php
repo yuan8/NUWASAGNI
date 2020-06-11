@@ -68,7 +68,7 @@ class FILE extends Controller
                     if($request->file){
                         $ext= $request->file->getClientOriginalExtension();
                        $name='file_kebijakan_daerah/'.$request->kode_daerah.'/'.$jenis;
-                        $file=Storage::put(('public/'.$name),$request->file);
+                        $file=Storage::put(('public/'.$name),$request->file('file'));
 
                         $file=(Storage::url($file));
                         
@@ -151,7 +151,7 @@ class FILE extends Controller
                 if($request->file('file')){
                     $ext= $request->file->getClientOriginalExtension();
                     $name='file_kebijakan_daerah/'.$request->kode_daerah.'/'.$jenis;
-                    $file=Storage::put(('public/'.$name),$request->file);
+                    $file=Storage::put(('public/'.$name),$request->file('file'));
 
                     $file=(Storage::url($file));
 
