@@ -9,6 +9,7 @@ use HP;
 use Validator;
 use DB;
 use Auth;
+use Alert;
 class LoginController extends Controller
 {
     /*

@@ -137,7 +137,7 @@ class AppServiceProvider extends ServiceProvider
 
                 $event->menu->add([
                     'text' => 'USER',
-                     // 'can'=>'role.superadmin',
+                     'can'=>'role.superadmin',
 
                     'url'=>route('d.user.index')
                  ]);
