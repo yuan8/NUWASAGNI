@@ -30,7 +30,7 @@ class FILE extends Controller
 
     			$data=DB::table('public.dokumen_kebijakan_daerah as f')->select('f.*',
                 DB::raw("CONCAT('".url('')."/',f.path) as path_file"),
-
+                DB::Raw("(select name from public.users as u where u.id = f.user_id) as nama_user "),
 		     	DB::raw("(select concat(c.nama,
 		                (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=f.kode_daerah) as nama_daerah")
 		     	)->where('tahun','<=',$tahun)->where('tahun_selesai','>=',$tahun)->where('jenis',$jenis)->get();

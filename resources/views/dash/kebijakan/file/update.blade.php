@@ -2,7 +2,7 @@
 
 
 @section('content_header')
-    <h1>UPDATE {{$jenis}} BERLAKU TAHUN {{HP::fokus_tahun()}} </h1>
+    <h1>UPDATE {{$jenis!='LAIN_LAIN'?$jenis:'DOKUMEN LAINYA'}}  BERLAKU TAHUN {{HP::fokus_tahun()}} </h1>
 @stop
 
 @section('content')

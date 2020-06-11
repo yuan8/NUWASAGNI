@@ -2,7 +2,7 @@
 
 
 @section('content_header')
-    <h1>{{$jenis}} BERLAKU TAHUN {{HP::fokus_tahun()}} </h1>
+    <h1>{{$jenis!='LAIN_LAIN'?$jenis:'DOKUMEN LAINYA'}} BERLAKU TAHUN {{HP::fokus_tahun()}} </h1>
 @stop
 
 @section('content')
@@ -49,10 +49,9 @@
 				<div class="form-group">
 					<label>TAHUN SELESAI BERLAKU</label>
 						<select class="form-control" required="" name="tahun_selesai">
-						<?php for ($i=(int)HP::fokus_tahun(); $i<(HP::fokus_tahun()+20); $i++) { ?> 
-
-							<option value="{{$i}}">{{$i}}</option>
-						<?php
+							<?php for ($i=(int)HP::fokus_tahun(); $i<(HP::fokus_tahun()+20); $i++) { ?> 
+								<option value="{{$i}}">{{$i}}</option>
+							<?php
 						}
 						?>
 					</select>
@@ -76,7 +75,7 @@
 				
 				
 			</div>
-			<div class="box-body">
+			<div class="box-body table-responsive">
 				<table class="table table-bordered table-striped" id="table_data">
 					<thead>
 						<tr>
@@ -85,6 +84,9 @@
 							</th>
 							<th rowspan="2">
 								NAMA File
+							</th>
+							<th rowspan="2">
+								USER
 							</th>
 							<th colspan="2">
 								BERLAKU
@@ -120,6 +122,9 @@
 			},
 			{
 				data:'nama',
+			},
+			{
+				data:'nama_user',
 			},
 			{
 				data:'tahun'
