@@ -19,11 +19,12 @@
 			<div class="col-md-4">
 				<div class="form-group">
 					<label>Daerah</label>
-					<select class="form-control" required="" name="kode_daerah">
+					<h5><b>{{$data->nama_daerah}}</b></h5>
+					{{-- <select class="form-control" required="" name="kode_daerah">
 						@foreach($daerah as $d)
 							<option value="{{$d->id}}" {{$data->kode_daerah==$d->id?'selected':''}}>{{$d->nama_daerah}}</option>
 						@endforeach
-					</select>
+					</select> --}}
 				</div>
 			</div>
 			<div class="col-md-4">

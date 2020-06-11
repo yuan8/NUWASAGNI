@@ -56,21 +56,24 @@ class FILE extends Controller
             $jenis=strtoupper(trim($jenis));
             if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA','LAIN_LAIN'])){
 
-                $data=DB::table('public.dokumen_kebijakan_daerah as f')->select('f.*')
+                $data=DB::table('public.dokumen_kebijakan_daerah as f')->select('f.*',
+                      DB::raw("concat(c.nama,
+                        (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) as nama_daerah")
+                )
                ->where('tahun','=',$tahun_mulai)->where('jenis',$jenis)
                ->where('kode_daerah',$request->kode_daerah)
                ->first();
                if($data){
                 Alert::error('Error', 'Mohon Hapus data sebelumnya');
+                return back();
 
                }else{
                     if($request->file){
                         $ext= $request->file->getClientOriginalExtension();
-                        $name='file_kebijakan_daerah/'.$request->kode_daerah.'/'.$jenis.'-'.$request->kode_daerah.'@'.date('Y-m-d/-h').'@'.'-'.$tahun_mulai.'-'.$request->tahun_selesai.'.'.$ext;
-
+                       $name='file_kebijakan_daerah/'.$request->kode_daerah.'/'.$jenis;
                         $file=Storage::put(('public/'.$name),$request->file);
 
-                        $file='storage/'.$name;
+                        $file=(Storage::url($file));
                         
                         DB::table('public.dokumen_kebijakan_daerah as f')->insert([
                             'jenis'=>$jenis,
@@ -147,11 +150,10 @@ class FILE extends Controller
             if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA','LAIN_LAIN'])){
                 if($request->file('file')){
                     $ext= $request->file->getClientOriginalExtension();
-                    $name='file_kebijakan_daerah/'.$request->kode_daerah.'/'.$jenis.'-'.$request->kode_daerah.'@'.date('Y-m-d/-h').'@'.'-'.$tahun_mulai.'-'.$request->tahun_selesai.'.'.$ext;
-
+                    $name='file_kebijakan_daerah/'.$request->kode_daerah.'/'.$jenis;
                     $file=Storage::put(('public/'.$name),$request->file);
 
-                    $file='storage/'.$name;
+                    $file=(Storage::url($file));
 
                     $data=DB::table('public.dokumen_kebijakan_daerah as f')->where('id',$id)->first();
 
