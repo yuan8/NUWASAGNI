@@ -13,7 +13,10 @@
 
 
 Auth::routes();
-
+Route::middleware('auth:web')->get('logout',function(){
+	Auth::logout();
+	return redirect('/');
+});
 Route::middleware('auth:web')->group(function(){
 	Route::get('/home',function(){
 		return redirect('/');
