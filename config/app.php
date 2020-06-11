@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         'Chumper\Zipper\ZipperServiceProvider',
+        RealRashid\SweetAlert\SweetAlertServiceProvider::class,
 
     ],
 
@@ -230,6 +231,7 @@ return [
 
         'HP' => App\Providers\HelperProvider::class,
         'Zipper' => 'Chumper\Zipper\Zipper',
+        'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
 
 
     ],

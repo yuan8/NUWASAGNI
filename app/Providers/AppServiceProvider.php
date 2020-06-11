@@ -38,6 +38,8 @@ class AppServiceProvider extends ServiceProvider
                 $event->menu->add('MAIN NAVIGATION');
                   $event->menu->add([
                     'text' => 'OUTPUT',
+                     'can'=>'role.admin',
+
                     'submenu'=>[
                         [
                             'text'=>'MAP',
@@ -50,61 +52,152 @@ class AppServiceProvider extends ServiceProvider
                     ]
                 ]);
 
-                  $event->menu->add([
+                $event->menu->add([
                     'text' => 'ONLINE MEET',
+                     'can'=>'role.admin',
+
                     'url'=>route('d.meet.index')
                 ]);
 
               
+               
                 $event->menu->add([
-                    'text' => 'KEBIJAKAN',
+                    'text' => 'PROGRAM KEG '.HP::fokus_tahun(),
+                     'can'=>'role.admin',
+                     'submenu'=>[
+                        [
+                            'text'=>'RPJMN ',
+                            'url'=>route('d.kb.rpjmn.index')
+                        ],
+                        [
+                            'text'=>'RKPD ',
+                            'url'=>route('d.prokeg.index')
+                        ],
+
+                     ]
+
+                    
+                ]);
+
+                 $event->menu->add([
+                    'text' => 'BOT',
+                     'can'=>'role.superadmin',
                     'submenu'=>[
                         [
-                            'text'=>'RPJMN',
-                            'submenu'=>[
-                                [
-                                    'text'=>'RPJMN '.Hp::fokus_tahun(),
-                                    'url'=>route('d.kb.rpjmn.index')
-                                ],
-                                // [
-                                //     'text'=>'PROKEG PENDUKUNG RPJMN '.Hp::fokus_tahun(),
-                                //     'url'=>route('d.kb.rpjmn.pemetaan')
-                                // ],
+                            'text'=>'SAT',
+                            'url'=>url('')
 
-                            ]
+                        ],
+                        [
+                            'text'=>'RISPAM',
+                            'url'=>url('')
+                        ]
+                    ]
+                ]);
+
+                $event->menu->add([
+                    'text' => 'FILE KEBIJAKAN',
+                    'icon'=>'fa fa-file',
+                    'can'=>'role.daerah',
+                    'submenu'=>[
+                        [
+                            "text"=>'JAKSTRA',
+                            'url'=>route('d.kb.f.index',['jenis'=>'JAKSTRA'])
+                        ],
+                        [
+                            "text"=>'RENJA',
+                            'url'=>route('d.kb.f.index',['jenis'=>'RENJA'])
+                        ],
+                        [
+                            "text"=>'RENSTRA',
+                            'url'=>route('d.kb.f.index',['jenis'=>'RENSTRA'])
+                        ],
+                        [
+                            "text"=>'RISPAM',
+                            'url'=>route('d.kb.f.index',['jenis'=>'RISPAM'])
+                        ],
+                        [
+                            "text"=>'RPAM',
+                            'url'=>route('d.kb.f.index',['jenis'=>'RPAM'])
+                        ],
+                        [
+                            "text"=>'RKA',
+                            'url'=>route('d.kb.f.index',['jenis'=>'RKA'])
+                        ],
+                        [
+                            "text"=>'RKPD FINAL',
+                            'url'=>route('d.kb.f.index',['jenis'=>'RKPD'])
                         ]
 
                     ]
                 ]);
 
-                  $event->menu->add([
-                    'text' => 'PROKEG',
-                    'url'=>route('d.prokeg.index')
-                ]);
+                $event->menu->add([
+                    'text' => 'USER',
+                     // 'can'=>'role.superadmin',
 
-
+                    'url'=>route('d.user.index')
+                 ]);
 
              });
 
+
+            
 
         }else{
              $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
                 $event->menu->add('MAIN NAVIGATION');
 
                 $event->menu->add([
-                    'text' => 'PROGRAM KEGIATAN',
-                    'icon'=>'fa fa-file',
-                    'submenu'=>[
-                        [
-                            'text'=>'PER DAERAH (AIR MINUM) - CHART',
-                            'url'=>route('p.prokeg')
-                        ],
-                         [
-                            'text'=>'PER DAERAH (AIR MINUM) - TABLE',
-                            'url'=>route('pr.table')
-                        ]
-                    ]
+                    'text' => 'BERANDA',
+                    'icon'=>'fa fa-home',
+                    'url'=>''
+                    
                 ]);
+
+                 $event->menu->add([
+                    'text' => 'PETA DUKUNGAN',
+                    'icon'=>'fa fa-map',
+                    'url'=>''
+                    
+                ]);
+
+
+                 $event->menu->add([
+                    'text' => 'KINERJA AIR MINUM',
+                    'icon'=>'fa fa-thumbs-up ',
+                    'url'=>''
+                    
+                ]);
+
+                 $event->menu->add([
+                    'text' => 'KELEMBAGAAN',
+                    'icon'=>'fa fa-users',
+                    'url'=>''
+                    
+                ]);
+
+                   $event->menu->add([
+                    'text' => 'CAPAIAN SPM',
+                    'icon'=>'fa fa-tint',
+                    'url'=>''
+                    
+                ]);
+
+                // $event->menu->add([
+                //     'text' => 'PROGRAM KEGIATAN',
+                //     'icon'=>'fa fa-file',
+                //     'submenu'=>[
+                //         [
+                //             'text'=>'PER DAERAH (AIR MINUM) - CHART',
+                //             'url'=>route('p.prokeg')
+                //         ],
+                //          [
+                //             'text'=>'PER DAERAH (AIR MINUM) - TABLE',
+                //             'url'=>route('pr.table')
+                //         ]
+                //     ]
+                // ]);
                 
                 $event->menu->add([
                     'text' => 'PROFILE PDAM',
@@ -114,28 +207,35 @@ class AppServiceProvider extends ServiceProvider
                 ]);
 
                 $event->menu->add([
-                    'text' => 'PROFILE KEBIJAKAN',
-                    'url'=>null,
-                    'icon'=>'fa fa-university'
+                    'text' => 'PARTISIPASI DALAM CB-TA ',
+                    'url'=>route('p.pdam'),
+                    'icon'=>'fa fa-check'
 
                 ]);
 
-                $event->menu->add([
-                    'text' => 'PROFILE DAERAH',
-                    'url'=>null,
-                    'icon'=>'fa fa-map'
-                ]);
-                 $event->menu->add([
-                    'text' => 'NUWAS PROJECT ',
-                    'url'=>route('p.nuwas.index'),
-                    'icon'=>'fa fa-tint'
+                // $event->menu->add([
+                //     'text' => 'PROFILE KEBIJAKAN',
+                //     'url'=>null,
+                //     'icon'=>'fa fa-university'
 
-                ]);
-                $event->menu->add([
-                    'text' => 'PINDAH TAHUN ',
-                    'url'=>route('pilih_tahun'),
-                    'icon'=>'fa fa-calendar'
-                ]);
+                // ]);
+
+                // $event->menu->add([
+                //     'text' => 'PROFILE DAERAH',
+                //     'url'=>null,
+                //     'icon'=>'fa fa-map'
+                // ]);
+                //  $event->menu->add([
+                //     'text' => 'NUWAS PROJECT ',
+                //     'url'=>route('p.nuwas.index'),
+                //     'icon'=>'fa fa-tint'
+
+                // ]);
+                // $event->menu->add([
+                //     'text' => 'PINDAH TAHUN ',
+                //     'url'=>route('pilih_tahun'),
+                //     'icon'=>'fa fa-calendar'
+                // ]);
             });
         }
 

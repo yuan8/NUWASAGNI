@@ -210,4 +210,53 @@ class NUWAS_PROJECT extends Controller
 
         return view('front.nuwas_project.table_daerah_target')->with('data',$data)->render();
     }
+
+
+    public function api_daerah_target_map(){
+        $tahun=HP::fokus_tahun();
+
+          $map_data=[
+            'title'=>'DAERAH NUWSP'.$tahun.' - '.(((int)$tahun)+1),
+            'series'=>[
+                [
+                    'name_layer'=>'NUWSP SEMUA'.,
+                    'mapData_name'=>'ind_kota',
+                    'name_data'=>'KOTA',
+
+                    'legend'=>[
+                        'cat'=>['BUKAN DAERAH NUWSP','BUKAN DAERAH NUWSP','TERDAPAT KEGIATAN AIR MINUM'],
+                        'color'=>['#fff','#32a852','#42f2f5'],
+                    ],
+
+                    'data'=>[]
+
+                ],
+                [
+                    'name_layer'=>'NUWSP '.$tahun,
+                    'mapData_name'=>'ind',
+                    'name_data'=>'PROVINSI',
+                    
+                    'legend'=>[
+                       'cat'=>['TIDAK TERDAPAT DATA','MELAPORKAN RKPD','TERDAPAT KEGIATAN AIR MINUM'],
+                        'color'=>['#fff','#32a852','#42f2f5'],
+                    ],
+                    'data'=>[],
+                ],
+                 [
+                    'name_layer'=>'NUWSP '.$tahun,
+                    'mapData_name'=>'ind',
+                    'name_data'=>'PROVINSI',
+                    'legend'=>[
+                       'cat'=>['TIDAK TEDAPAT DATA - 0%','SANGAT RENDAH - <30%','RENDAH - <40%','SEDANG - <60%','TINGGI - <80%','SANGAT TINGGI - >80%'],
+                        'color'=>['#fff','#ff0000','#cf6317','#2C4F9B','#ffff00','#00ff00'],
+                    ],
+                    'data'=>[],
+                    
+
+
+                ]
+            ]
+        ];
+
+    }
 }

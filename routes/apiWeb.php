@@ -9,6 +9,8 @@ Route::prefix('web-api')->group(function(){
 	Route::prefix('nuwas')->group(function(){
 		Route::get('daerah-target','FRONT\NUWAS_PROJECT@api_daerah_target')->name('web_api.nuwas.daerah.target');
 
+		Route::get('daerah-target','FRONT\NUWAS_PROJECT@api_daerah_target_map')->name('web_api.nuwas.daerah.target.map');
+
 	});
 
 	Route::prefix('prokeg')->group(function(){

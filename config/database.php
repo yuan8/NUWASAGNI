@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'pgsql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -77,8 +77,6 @@ return [
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
-
-
         'sinkron_prokeg' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),

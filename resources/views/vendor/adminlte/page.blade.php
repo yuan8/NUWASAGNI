@@ -115,7 +115,7 @@
                               <!-- Menu Footer-->
                               <li class="user-footer">
                                 <div class="pull-left">
-                                  <a href="{{url('dash-admin')}}" class="btn btn-default btn-flat">DASHBOARD</a>
+                                  <a href="{{url('dash-admin')}}" class="btn btn-default btn-flat">ADMIN</a>
                                 </div>
                                 <div class="pull-right">
                                     <a class="btn btn-default btn-flat" href="{{ url(config('adminlte.logout_url', 'auth/logout')) }}">
