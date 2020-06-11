@@ -7,6 +7,8 @@
 
 @section('content')
 <hr>
+<p><b class="text-uppercase">diupload oleh {{$data->nama_user}}</b> <a href="{{url($data->path)}}" class="btn btn-success btn-xs">View</a></p>
+<br>
 <form action="{{route('d.kb.f.update',['jenis'=>$jenis,'id'=>$data->id])}}" method="post" enctype='multipart/form-data'>
 	@csrf
 	<div class="box-primary box">
@@ -20,16 +22,13 @@
 				<div class="form-group">
 					<label>Daerah</label>
 					<h5><b>{{$data->nama_daerah}}</b></h5>
-					{{-- <select class="form-control" required="" name="kode_daerah">
-						@foreach($daerah as $d)
-							<option value="{{$d->id}}" {{$data->kode_daerah==$d->id?'selected':''}}>{{$d->nama_daerah}}</option>
-						@endforeach
-					</select> --}}
+					<input type="hidden" name="kode_daerah" value="{{$data->kode_daerah}}">
+				
 				</div>
 			</div>
 			<div class="col-md-4">
 				<div class="form-group">
-					<label>FILE</label>
+					<label>UPDATE FILE</label>
 					<input type="file" class="form-control" name="file" >
 				</div>
 			</div>

@@ -56,10 +56,7 @@ class FILE extends Controller
             $jenis=strtoupper(trim($jenis));
             if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA','LAIN_LAIN'])){
 
-                $data=DB::table('public.dokumen_kebijakan_daerah as f')->select('f.*',
-                      DB::raw("concat(c.nama,
-                        (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) as nama_daerah")
-                )
+                $data=DB::table('public.dokumen_kebijakan_daerah as f')->select('f.*')
                ->where('tahun','=',$tahun_mulai)->where('jenis',$jenis)
                ->where('kode_daerah',$request->kode_daerah)
                ->first();
@@ -114,10 +111,13 @@ class FILE extends Controller
             if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA','LAIN_LAIN'])){
                 $daerah=DB::table('master_daerah as c')->select(
                     'id',
+
                     DB::raw("concat(c.nama,
                         (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) as nama_daerah")
                 )->orderBy('c.id','ASC')->get();
                 $data=DB::table('public.dokumen_kebijakan_daerah as f')->select('f.*',
+                        DB::Raw("(select name from public.users as u where u.id = f.user_id) as nama_user "),
+                    
                 DB::raw("(select concat(c.nama,
                         (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=f.kode_daerah) as nama_daerah")
                 )->where('id',$id)->first();
