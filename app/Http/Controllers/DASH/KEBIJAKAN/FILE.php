@@ -66,7 +66,7 @@ class FILE extends Controller
                }else{
                     if($request->file){
                         $ext= $request->file->getClientOriginalExtension();
-                        $name='file_kebijakan_daerah/'.$request->kode_daerah.'/'.$jenis.'-'.$request->kode_daerah.'@'.date('Y/m/d/h').'@'.'-'.$tahun_mulai.'-'.$request->tahun_selesai.'.'.$ext;
+                        $name='file_kebijakan_daerah/'.$request->kode_daerah.'/'.$jenis.'-'.$request->kode_daerah.'@'.date('Y-m-d/-h').'@'.'-'.$tahun_mulai.'-'.$request->tahun_selesai.'.'.$ext;
 
                         $file=Storage::put(('public/'.$name),$request->file);
 
@@ -147,7 +147,7 @@ class FILE extends Controller
             if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA','LAIN_LAIN'])){
                 if($request->file('file')){
                     $ext= $request->file->getClientOriginalExtension();
-                    $name='file_kebijakan_daerah/'.$request->kode_daerah.'/'.$jenis.'-'.$request->kode_daerah.'@'.date('Y/m/d/h').'@'.'-'.$tahun_mulai.'-'.$request->tahun_selesai.'.'.$ext;
+                    $name='file_kebijakan_daerah/'.$request->kode_daerah.'/'.$jenis.'-'.$request->kode_daerah.'@'.date('Y-m-d/-h').'@'.'-'.$tahun_mulai.'-'.$request->tahun_selesai.'.'.$ext;
 
                     $file=Storage::put(('public/'.$name),$request->file);
 
