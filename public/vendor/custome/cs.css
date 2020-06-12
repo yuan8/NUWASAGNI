@@ -30,3 +30,8 @@
 .text-white{
 	color:#fff;
 }
+
+.bg-dark{
+	background: #222;
+	color: #fff!important;
+}

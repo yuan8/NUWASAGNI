@@ -190,7 +190,7 @@ if($pdam->open_hours!=null){
 		</div>
 	</div>
 
-	<div class="col-md-12">
+	{{-- <div class="col-md-12">
 		<nav class="navbar navbar-default bg-yellow nav-sub">
 			  <div class="container-fluid">
 			    <div class="navbar-header">
@@ -203,7 +203,7 @@ if($pdam->open_hours!=null){
 		
 			    </ul>
 			  </div>
-	</nav>
+	</nav> --}}
 	</div>
 </div>
 

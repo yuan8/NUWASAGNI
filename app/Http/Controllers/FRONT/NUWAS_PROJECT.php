@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use HP;
 use DB;
 use Carbon\Carbon;
+use Auth;
 class NUWAS_PROJECT extends Controller
 {
     //
@@ -48,7 +49,6 @@ class NUWAS_PROJECT extends Controller
         ->orderBy('id','DESC')
         ->limit(10)->get();
 
-       
 
 
         $rkpd_final=DB::connection('sinkron_prokeg')->table('tb_'.$tahun.'_kegiatan')
@@ -211,52 +211,105 @@ class NUWAS_PROJECT extends Controller
         return view('front.nuwas_project.table_daerah_target')->with('data',$data)->render();
     }
 
+    public function api_daerah_target_2_tahun(){
+        $tahun=(int)HP::fokus_tahun();
 
-    public function api_daerah_target_map(){
-        $tahun=HP::fokus_tahun();
+        $data=DB::table('daerah_nuwas as n')
+        ->select(
+            'n.*',
+             DB::raw("(select concat(c.nama,
+                (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=n.kode_daerah) as nama_daerah")
+        )->where('tahun',$tahun)
+        ->orWhere('tahun',($tahun+1))->get();
 
-          $map_data=[
-            'title'=>'DAERAH NUWSP'.$tahun.' - '.(((int)$tahun)+1),
-            'series'=>[
-                [
-                    'name_layer'=>'NUWSP SEMUA'.,
-                    'mapData_name'=>'ind_kota',
-                    'name_data'=>'KOTA',
+        $data_return=array(
+            'all'=>[
+                'name'=>'semua',
+                'stimultan'=>[],
+                'pendampingan'=>[]
+            ],
+            't'.$tahun=>[
+                'name'=>'Tahun '.$tahun,
+                'stimultan'=>[],
+                'pendampingan'=>[]
+            ],
+            't'.($tahun+1)=>[
+                'name'=>'Tahun '.($tahun+1),
+                'stimultan'=>[],
+                'pendampingan'=>[]
+            ],
+        );
 
-                    'legend'=>[
-                        'cat'=>['BUKAN DAERAH NUWSP','BUKAN DAERAH NUWSP','TERDAPAT KEGIATAN AIR MINUM'],
-                        'color'=>['#fff','#32a852','#42f2f5'],
-                    ],
+        foreach ($data as $key => $d) {
 
-                    'data'=>[]
-
-                ],
-                [
-                    'name_layer'=>'NUWSP '.$tahun,
-                    'mapData_name'=>'ind',
-                    'name_data'=>'PROVINSI',
-                    
-                    'legend'=>[
-                       'cat'=>['TIDAK TERDAPAT DATA','MELAPORKAN RKPD','TERDAPAT KEGIATAN AIR MINUM'],
-                        'color'=>['#fff','#32a852','#42f2f5'],
-                    ],
-                    'data'=>[],
-                ],
-                 [
-                    'name_layer'=>'NUWSP '.$tahun,
-                    'mapData_name'=>'ind',
-                    'name_data'=>'PROVINSI',
-                    'legend'=>[
-                       'cat'=>['TIDAK TEDAPAT DATA - 0%','SANGAT RENDAH - <30%','RENDAH - <40%','SEDANG - <60%','TINGGI - <80%','SANGAT TINGGI - >80%'],
-                        'color'=>['#fff','#ff0000','#cf6317','#2C4F9B','#ffff00','#00ff00'],
-                    ],
-                    'data'=>[],
-                    
+            $jenis_bantuan=explode(',',$d->jenis_bantuan);
+            if(in_array('@STIMULAN', $jenis_bantuan)){
+                $data_return['t'.$d->tahun]['stimultan'][]=$d;
+                $data_return['all']['stimultan'][]=$d;
 
 
-                ]
-            ]
-        ];
+            }
+            if(in_array('@PENDAMPING', $jenis_bantuan)){
+                $data_return['t'.$d->tahun]['stimultan'][]=$d;
+                $data_return['all']['stimultan'][]=$d;
+
+            }
+
+        }
+
+        return $data_return;
+
+
+
+        return $data;
 
     }
+
+    // public function api_daerah_target_map(){
+    //     $tahun=HP::fokus_tahun();
+
+    //       $map_data=[
+    //         'title'=>'DAERAH NUWSP'.$tahun.' - '.(((int)$tahun)+1),
+    //         'series'=>[
+    //             [
+    //                 'name_layer'=>'NUWSP SEMUA'.,
+    //                 'mapData_name'=>'ind_kota',
+    //                 'name_data'=>'KOTA',
+
+    //                 'legend'=>[
+    //                     'cat'=>['BUKAN DAERAH NUWSP','BUKAN DAERAH NUWSP','TERDAPAT KEGIATAN AIR MINUM'],
+    //                     'color'=>['#fff','#32a852','#42f2f5'],
+    //                 ],
+
+    //                 'data'=>[]
+
+    //             ],
+    //             [
+    //                 'name_layer'=>'NUWSP '.$tahun,
+    //                 'mapData_name'=>'ind',
+    //                 'name_data'=>'PROVINSI',
+                    
+    //                 'legend'=>[
+    //                    'cat'=>['TIDAK TERDAPAT DATA','MELAPORKAN RKPD','TERDAPAT KEGIATAN AIR MINUM'],
+    //                     'color'=>['#fff','#32a852','#42f2f5'],
+    //                 ],
+    //                 'data'=>[],
+    //             ],
+    //              [
+    //                 'name_layer'=>'NUWSP '.$tahun,
+    //                 'mapData_name'=>'ind',
+    //                 'name_data'=>'PROVINSI',
+    //                 'legend'=>[
+    //                    'cat'=>['TIDAK TEDAPAT DATA - 0%','SANGAT RENDAH - <30%','RENDAH - <40%','SEDANG - <60%','TINGGI - <80%','SANGAT TINGGI - >80%'],
+    //                     'color'=>['#fff','#ff0000','#cf6317','#2C4F9B','#ffff00','#00ff00'],
+    //                 ],
+    //                 'data'=>[],
+                    
+
+
+    //             ]
+    //         ]
+    //     ];
+
+    // }
 }

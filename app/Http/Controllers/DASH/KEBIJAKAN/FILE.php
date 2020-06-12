@@ -142,10 +142,10 @@ class FILE extends Controller
       public function update($jenis=null,$id=null,Request $request){
 
         $tahun=HP::fokus_tahun();
+            dd($request->file('file')->getClientOriginalName());
 
         if($jenis){
             $tahun_mulai=$request->tahun_mulai;
-
             $jenis=strtoupper(trim($jenis));
             if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA','LAIN_LAIN'])){
                 if($request->file('file')){

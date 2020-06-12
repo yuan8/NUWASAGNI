@@ -11,6 +11,10 @@ Route::prefix('web-api')->group(function(){
 
 		Route::get('daerah-target','FRONT\NUWAS_PROJECT@api_daerah_target_map')->name('web_api.nuwas.daerah.target.map');
 
+		Route::prefix('daerah')->group(function(){
+			
+			Route::post('target-2-tahun','FRONT\NUWAS_PROJECT@api_daerah_target_2_tahun')->name('web_api.nuwas.daerah.target.2');
+		});
 	});
 
 	Route::prefix('prokeg')->group(function(){
@@ -18,8 +22,6 @@ Route::prefix('web-api')->group(function(){
 
 		Route::get('widget-prokeg', 'FRONT\PROKEG@widget_prokeg')->name('web_api.prokeg.w1');
 		Route::get('widget-prokeg-2', 'FRONT\PROKEG@widget_prokeg_pelaporan')->name('web_api.prokeg.w2');
-
-
 
 	});
 

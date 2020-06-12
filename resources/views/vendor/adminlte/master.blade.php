@@ -59,7 +59,6 @@
 <link rel="stylesheet" type="text/css" href="{{asset('vendor/custome/cs.css?v='.date('i'))}}">
 
 <script type="text/javascript" src="{{asset('L_MAP/asset/hi.js')}}"></script>
-<!-- <script type="text/javascript" src="{{asset('vendor/fs/highcharts.js')}}"></script> -->
 <script type="text/javascript" src="{{asset('L_MAP/asset/proj4.js')}}"></script>
 
 

@@ -22,12 +22,43 @@ class Dashboard extends Controller
     	->where('status',5)
     	->first();
 
+         $album=DB::table('album')
+        ->where('created_at','>=',Carbon::parse($tahun.'-'.'01-01')->startOfDay())
+        ->where('created_at','<=',Carbon::parse($tahun.'-'.'12-15')->endOfMonth())
+        ->orderBy('id','DESC')
+        ->limit(10)->get();
+
+        $public_world_bank=scandir(storage_path('app/public/publikasi_world_bank_air_bersih'));
+        unset($public_world_bank[0]);
+        unset($public_world_bank[1]);
+        $public_world_bank=array_values($public_world_bank);
+
+
+        $output=DB::table('output_publish as p')
+        ->leftJoin('users as u','u.id','=','p.user_id')
+        ->select('p.*','u.name as nama_user')
+        ->where('p.tahun',$tahun)
+        ->orderBy('p.updated_at','DESC')->limit(11)->get();
+
+        foreach ($public_world_bank as $key => $value) {
+            # code...
+            $public_world_bank[$key]=array(
+                'nama'=>$value,
+                'url'=>'storage/publikasi_world_bank_air_bersih/'.$value
+            );
+        }
+
         $data_pdam=DB::table('pdam')->count();
 
     	return view('front.v2.index')->with([
     		'data_kegiatan'=>$data_kegiatan,
             'data_pdam'=>$data_pdam,
-            'tahun'=>$tahun
+            'tahun'=>$tahun,
+            'album'=>$album,
+            'output'=>$output,
+
+            'public_world_bank'=>$public_world_bank,
+
     	]);
         
     }
