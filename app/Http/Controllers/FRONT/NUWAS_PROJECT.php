@@ -13,7 +13,7 @@ class NUWAS_PROJECT extends Controller
     //
 
     public function index(){
-    	$tahun=HP::fokus_tahun();
+        $tahun=HP::fokus_tahun();
 
         $output=DB::table('output_publish as p')
         ->leftJoin('users as u','u.id','=','p.user_id')
@@ -64,30 +64,30 @@ class NUWAS_PROJECT extends Controller
 
 
 
-    	$public_world_bank=scandir(storage_path('app/public/publikasi_world_bank_air_bersih'));
-    	unset($public_world_bank[0]);
-    	unset($public_world_bank[1]);
-    	$public_world_bank=array_values($public_world_bank);
+        $public_world_bank=scandir(storage_path('app/public/publikasi_world_bank_air_bersih'));
+        unset($public_world_bank[0]);
+        unset($public_world_bank[1]);
+        $public_world_bank=array_values($public_world_bank);
 
-    	foreach ($public_world_bank as $key => $value) {
-    		# code...
-    		$public_world_bank[$key]=array(
-    			'nama'=>$value,
-    			'url'=>'storage/publikasi_world_bank_air_bersih/'.$value
-    		);
-    	}
+        foreach ($public_world_bank as $key => $value) {
+            # code...
+            $public_world_bank[$key]=array(
+                'nama'=>$value,
+                'url'=>'storage/publikasi_world_bank_air_bersih/'.$value
+            );
+        }
 
 
-    	return view('front.nuwas_project.index')->with(
-    		[
-    			'target_nuwas'=>$data_target_nuwas,
-    			'public_world_bank'=>$public_world_bank,
+        return view('front.nuwas_project.index')->with(
+            [
+                'target_nuwas'=>$data_target_nuwas,
+                'public_world_bank'=>$public_world_bank,
                 'output'=>$output,
                 'pdam_rekap'=>$pdam_rekap,
                 'album'=>$album,
                 'rkpd_final'=>$rkpd_final
-    		]
-    	);
+            ]
+        );
     }
 
 
@@ -105,7 +105,7 @@ class NUWAS_PROJECT extends Controller
         )
         ->whereIn('d.id',$target_nuwas)
         ->orderBy('id','ASC')->get();
-        
+
         $provinsi=[];
 
 
@@ -217,43 +217,49 @@ class NUWAS_PROJECT extends Controller
         $data=DB::table('daerah_nuwas as n')
         ->select(
             'n.*',
+            DB::raw("(select concat(nama_pdam,' -> ',kategori_pdam) from public.pdam  where pdam.kode_daerah = n.kode_daerah ) as pdam "),
              DB::raw("(select concat(c.nama,
                 (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=n.kode_daerah) as nama_daerah")
         )->where('tahun',$tahun)
+        ->orWhere('tahun',1)
         ->orWhere('tahun',($tahun+1))->get();
 
         $data_return=array(
             'all'=>[
                 'name'=>'semua',
-                'stimultan'=>[],
-                'pendampingan'=>[]
+                'stimulan'=>[],
+                'usulan'=>[],
+                'pendamping'=>[]
             ],
             't'.$tahun=>[
                 'name'=>'Tahun '.$tahun,
-                'stimultan'=>[],
-                'pendampingan'=>[]
+                'stimulan'=>[],
+                'pendamping'=>[]
             ],
             't'.($tahun+1)=>[
                 'name'=>'Tahun '.($tahun+1),
-                'stimultan'=>[],
-                'pendampingan'=>[]
+                'stimulan'=>[],
+                'pendamping'=>[]
             ],
         );
 
         foreach ($data as $key => $d) {
 
-            $jenis_bantuan=explode(',',$d->jenis_bantuan);
-            if(in_array('@STIMULAN', $jenis_bantuan)){
-                $data_return['t'.$d->tahun]['stimultan'][]=$d;
-                $data_return['all']['stimultan'][]=$d;
+            if($d->tahun==1){
+                $data_return['all']['usulan'][]=$d;
+            }else{
+              $jenis_bantuan=explode(',',$d->jenis_bantuan);
 
-
+              if(in_array('@STIMULAN', $jenis_bantuan)){
+                  $data_return['t'.$d->tahun]['stimulan'][]=$d;
+                  $data_return['all']['stimulan'][]=$d;
+              }
+              if(in_array('@PENDAMPING', $jenis_bantuan)){
+                  $data_return['t'.$d->tahun]['pendamping'][]=$d;
+                  $data_return['all']['pendamping'][]=$d;
+              }
             }
-            if(in_array('@PENDAMPING', $jenis_bantuan)){
-                $data_return['t'.$d->tahun]['stimultan'][]=$d;
-                $data_return['all']['stimultan'][]=$d;
 
-            }
 
         }
 
@@ -288,7 +294,7 @@ class NUWAS_PROJECT extends Controller
     //                 'name_layer'=>'NUWSP '.$tahun,
     //                 'mapData_name'=>'ind',
     //                 'name_data'=>'PROVINSI',
-                    
+
     //                 'legend'=>[
     //                    'cat'=>['TIDAK TERDAPAT DATA','MELAPORKAN RKPD','TERDAPAT KEGIATAN AIR MINUM'],
     //                     'color'=>['#fff','#32a852','#42f2f5'],
@@ -304,7 +310,7 @@ class NUWAS_PROJECT extends Controller
     //                     'color'=>['#fff','#ff0000','#cf6317','#2C4F9B','#ffff00','#00ff00'],
     //                 ],
     //                 'data'=>[],
-                    
+
 
 
     //             ]

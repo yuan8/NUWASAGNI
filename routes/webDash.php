@@ -21,6 +21,17 @@ Route::prefix('dash-admin')->middleware('auth:web')->group(function(){
 
 	});
 
+
+	Route::prefix('post')->group(function(){
+		Route::prefix('kegiatan')->group(function(){
+			Route::get('create','DASH\POST\KEGIATAN@create')->name('d.post.kegiatan.create');
+			Route::post('store','DASH\POST\KEGIATAN@store')->name('d.post.kegiatan.store');
+			
+
+		});	
+
+	});
+
 	Route::prefix('kebijakan')->group(function(){
 		Route::prefix('rpjmn')->group(function(){
 			Route::get('/','DASH\KEBIJAKAN\PUSAT\RPJMN@index')->name('d.kb.rpjmn.index');

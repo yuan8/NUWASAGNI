@@ -14,6 +14,7 @@ Route::prefix('web-api')->group(function(){
 		Route::prefix('daerah')->group(function(){
 			
 			Route::post('target-2-tahun','FRONT\NUWAS_PROJECT@api_daerah_target_2_tahun')->name('web_api.nuwas.daerah.target.2');
+			Route::post('snap/{kode_daerah?}','FRONT\DAERAH@api_snap')->name('web_api.daerah.profile');
 		});
 	});
 

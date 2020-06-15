@@ -26,6 +26,11 @@ Route::middleware('auth:web')->group(function(){
 	Route::post('pilih-tahun','AKSESTAHUN@storing')->name('pilih_tahun.store');
 
 
+	Route::prefix('daerah')->group(function(){
+		Route::get('doc/{kode_daerah}/{jenis}','FRONT\DOKUMEN@list')->name 	('d.doc.list');
+
+	});
+
 
 	Route::prefix('pdam')->group(function(){
 
@@ -95,6 +100,11 @@ Route::prefix('output')->group(function(){
 	});
 
 
+});
+
+
+Route::prefix('kegiatan')->group(function(){
+	Route::get('show/{id}','FRONT\KEGIATAN@show')->name('k.show');
 });
 
 

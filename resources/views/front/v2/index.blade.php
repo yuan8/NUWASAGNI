@@ -2,7 +2,7 @@
 @extends('adminlte::page')
 
 @section('content_header')
-    
+
 @stop
 
 @section('content')
@@ -38,7 +38,7 @@
 }
 .box-content-img img:after{
 
-} 
+}
 .box-content-img .back-op{
     height: 100%!important;
     width: auto!important;
@@ -73,7 +73,7 @@
 }
 .swiper-title-slide{
   position: absolute;
-  background: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.8);
   width: 100%;
   text-align: center;
   font-weight: bold;
@@ -82,12 +82,22 @@
 }
 .swiper-content-slide{
   position: absolute;
-  background: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.8);
   width: 100%;
   text-align: center;
   font-weight: bold;
   bottom: 0px;
   padding: 15px;
+ 
+}
+
+.swiper-content-slide h5{
+     line-height: 1.5em;
+    height: 3em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 
 .box-content-img .content-dom a,.box-content-img .content-dom small{
@@ -113,13 +123,12 @@
                 @foreach($album as $a)
 
                  <div class="swiper-slide">
-                 <a href="">
+                 <a href="{{route('k.show',['id'=>$a->id])}}" target="_blank">
                         <img src="{{url($a->path)}}" class="img-responsive">
                        <div class="swiper-title-slide">
                         <h5 class="text-dark">{{$a->title}}</h5>
                       </div>
                       <div class="swiper-content-slide">
-                        <h5 class="text-dark">{{$a->content}}</h5>
                       </div>
                  </a>
                 </div>
@@ -127,11 +136,11 @@
                @else
                  <div class="swiper-slide">
                   <img src="{{asset('storage/dokumentasi_foto/1.jpg')}}" class="img-responsive">
-                 
+
                 </div>
 
                @endif
-               
+
 
             </div>
             <!-- If we need pagination -->
@@ -144,7 +153,7 @@
             <!-- If we need scrollbar -->
             <div class="swiper-scrollbar"></div>
             </div>
-        
+
     </div>
 
 <div class="col-md-4 text-dark bg-default" >
@@ -157,7 +166,7 @@
                     <img src="{{asset('storage/dokumentasi_foto/1.jpg')}}" alt="Product Image">
                   </div>
                   <div class="product-info">
-                    <a href="javascript:void(0)" class="product-title">Lorem ipsum  
+                    <a href="javascript:void(0)" class="product-title">Lorem ipsum
                       <span class=" pull-right">11/12/2019</span></a>
                     <span class="product-description">
                          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -169,14 +178,14 @@
                         </span>
                   </div>
                 </li>
-              
+
               </ul>
 
         <div style="position: absolute; bottom:0; width:100%; " class="bg-navy text-center">
             <a href="" class="btn btn-warning btn-xs text-dark"><b>TAMPILKAN INFO LEBIH BANYAK</b></a>
         </div>
     </div>
-    
+
 </div>
 
 </div>
@@ -191,43 +200,43 @@
     <div class="tab-content">
     <div id="home" class="tab-pane fade active in">
         <div id="map_index" >
-        
-        </div>  
+
+        </div>
     </div>
     <div id="menu1" class="tab-pane fade">
        <div id="map_index_1" >
-        
-        </div>  
+
+        </div>
     </div>
     <div id="menu2" class="tab-pane fade">
         <div id="map_index_2" >
-        
-        </div>  
+
+        </div>
     </div>
-   
+
 </div>
-</div>
-     
 </div>
 
-   
+</div>
+
+
 <div class="row no-gutter" >
         <div class="col-md-4 panel text-dark" id="panel-main">
             <div class="panel-heading text-center">
                 <b class="text-uppercase ">Publikasi World Bank Terkait Air Bersih</b>
             </div>
             <div class="panel-body " style="max-height: 250px; overflow-y: scroll;">
-                
+
 
                 <?php foreach ($public_world_bank as $key => $f): ?>
 
-                    
+
                         <a href="{{url($f['url'])}}" target="_blank" class="text-left">{{$f['nama']}}</a>
                         <hr>
-                    
-                    
+
+
                 <?php endforeach ?>
-                
+
             </div>
             <div class="panel-footer">
                 <div class="pull-right">
@@ -255,13 +264,13 @@
                           </div>
 
                           </div>
-                          
+
                         </div>
                       </div>
                     @endforeach
-            
-              
-            
+
+
+
             </div>
             <!-- Add Pagination -->
             <div class="swiper-pagination"></div>
@@ -282,9 +291,10 @@
 <script type="text/javascript" src="{{asset('L_MAP/ind/kota.js')}}"></script>
 
 <script type="text/javascript">
+var c={};
     $(function(){
         var team_nuswp=$('#team_nuswp').height();
-        $('#info_bangda').css('height',(team_nuswp-81));
+        $('#info_bangda').css('height',(team_nuswp-70));
 
 
     });
@@ -294,32 +304,49 @@
         var data_map_source=res.data;
 
         var tahun_semua=[{
-                  
+
                         name: 'Poligon',
+                        showInLegend: false,
                         type:'map',
+                        
                         mapData:Highcharts.maps['ind_kota'],
                         data:[],
-                        
+
                 },
                 {
-                        name: 'Stimultan',
+                        name: 'Usulan',
                         type:'map',
-                        color:'green',
+                        color:'#ed553b',
+                        joinBy:['id','kode_daerah'],
+                        tooltip:{
+                            pointFormatter:function(){
+                               return point.name; 
+                            }
+                        },
+                        allAreas: false,
+                        mapData:Highcharts.maps['ind_kota'],
+                        data:data_map_source.all.usulan,
+
+                },
+                {
+                        name: 'Stimulan',
+                        type:'map',
+                        color:'#f6d55c',
                         joinBy:['id','kode_daerah'],
                          allAreas: false,
                         mapData:Highcharts.maps['ind_kota'],
-                        data:data_map_source.all.stimultan,
-                        
+                        data:data_map_source.all.stimulan,
+
                 },
                 {
                         name: 'Pendamping',
                         type:'map',
-                        color:'yellow',
+                        color:'#3caea3',
                         joinBy:['id','kode_daerah'],
                          allAreas: false,
                         mapData:Highcharts.maps['ind_kota'],
                         data:data_map_source.all.pendamping,
-                        
+
                 },
 
         ];
@@ -327,30 +354,31 @@
         var tahun_{{HP::fokus_tahun()}}=[
                   {
                         name: 'Poligon',
+                        showInLegend: false,
                         type:'map',
                         mapData:Highcharts.maps['ind_kota'],
                         data: [],
-                        
+
                 },
                  {
-                        name: 'Stimultan',
+                        name: 'Stimulan',
                         type:'map',
-                        color:'green',
-                        joinBy:['id','kode_daerah'],
+                        color:'#f6d55c',
+                          joinBy:['id','kode_daerah'],
                          allAreas: false,
                         mapData:Highcharts.maps['ind_kota'],
-                        data:data_map_source.t{{HP::fokus_tahun()}}.stimultan,
-                        
+                        data:data_map_source.t{{HP::fokus_tahun()}}.stimulan,
+
                 },
                 {
                         name: 'Pendamping',
                         type:'map',
-                        color:'yellow',
+                        color:'#3caea3',
                         joinBy:['id','kode_daerah'],
                          allAreas: false,
                         mapData:Highcharts.maps['ind_kota'],
                         data:data_map_source.t{{HP::fokus_tahun()}}.pendamping,
-                        
+
                 },
 
         ];
@@ -358,48 +386,38 @@
         var tahun_{{1+HP::fokus_tahun()}}=[
                   {
                         name: 'Poligon',
+                        showInLegend: false,
                         type:'map',
                         mapData:Highcharts.maps['ind_kota'],
                         data: [],
-                        
+
                 },
                  {
-                        name: 'Stimultan',
+                        name: 'Stimulan',
                         type:'map',
-                        color:'green',
+                        color:'#f6d55c',
                         joinBy:['id','kode_daerah'],
-                         allAreas: false,
+                        allAreas: false,
                         mapData:Highcharts.maps['ind_kota'],
-                        data:data_map_source.t{{1+HP::fokus_tahun()}}.stimultan,
-                        
+                        data:data_map_source.t{{1+HP::fokus_tahun()}}.stimulan,
+
                 },
                 {
                         name: 'Pendamping',
                         type:'map',
-                        color:'yellow',
+                        color:'#3caea3',
                         joinBy:['id','kode_daerah'],
                          allAreas: false,
                         mapData:Highcharts.maps['ind_kota'],
                         data:data_map_source.t{{1+HP::fokus_tahun()}}.pendamping,
-                        
+
                 },
 
         ];
 
-        // for(var i in data_map_source.t{{HP::fokus_tahun()}}){
-           
-        //     tahun_{{HP::fokus_tahun()}}.push({
-        //         name:data_map_source.t{{HP::fokus_tahun()}}.i ,
-        //         type:'map',
-        //         mapData:Highcharts.maps['ind_kota'],
-        //         data: [],
-        //     });
+       
 
-
-        // }
-
-
-        Highcharts.mapChart('map_index', {
+       c=  Highcharts.mapChart('map_index', {
                 chart: {
                     height:500,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
@@ -409,7 +427,7 @@
                 },
                 legend: {
                     title: {
-                        text: 'JENIS DUKUNGAN',
+                        text: 'JENIS HIBAH',
                         align: 'center',
                     },
                     borderWidth: 1,
@@ -422,6 +440,43 @@
                         horizontalAlign: 'right'
                     }
                 },
+                tooltip: {
+                    headerFormat: '',
+                    formatter: function() {
+                        var jenis_bantuan=this.point.jenis_bantuan!=null?this.point.jenis_bantuan.split(',@'):[];
+                        for(var i in jenis_bantuan){
+                            jenis_bantuan[i]=jenis_bantuan[i].replace('@','');
+                        }
+
+                        jenis_bantuan='<b>'+jenis_bantuan.join(', ')+'</b>';
+
+                        
+
+                        console.log(this.point);
+                       return "<h5><b>"+this.point.nama_daerah+"</b></h5><br>"+
+                       (this.point.tahun!=1?'<h5><b>'+'TAHUN PROYEK : '+this.point.tahun+' ('+jenis_bantuan+')</b> </h5>':'<h5>Masih Dalam Usulan</h5>')+'<br>'+
+                    (this.point.pdam!=null?'<b>'+this.point.pdam+'</b>':'')+'<br>'+
+                       '<h5 style="text-align:center;"><small >click untuk melihat detail</small></5>';  
+                    }
+                },
+                plotOptions:{
+                    series:{
+                        point:{
+                            cursor:"pointer",
+                            events:{
+                                click:function(){
+                                    API_CON.post("{{route('web_api.daerah.profile')}}/"+this.kode_daerah).then(function(res){
+                                            $('#modal_map_detail .modal-header').html(res.data.title);
+                                            $('#modal_map_detail .modal-body').html(res.data.data);
+                                            $('#modal_map_detail').modal();
+                                    });
+                                    // console.log(this);
+                                }
+                            }
+                        }
+                    }
+                },
+              
                 title: {
                     text: 'NATIONAL URBAN WATER SUPPLY PROGRAM',
                     style:{
@@ -436,8 +491,8 @@
                 },
                 series: tahun_semua
                 });
-        
-    
+
+
             Highcharts.mapChart('map_index_1', {
                 chart: {
                     height:500,
@@ -448,7 +503,7 @@
                 },
                 legend: {
                     title: {
-                        text: 'JENIS DUKUNGAN',
+                        text: 'JENIS HIBAH',
                         align: 'center',
                     },
                     borderWidth: 1,
@@ -475,7 +530,7 @@
                 },
                 series: tahun_{{HP::fokus_tahun()}}
                 });
-        
+
             Highcharts.mapChart('map_index_2', {
                 chart: {
                     height:500,
@@ -486,12 +541,13 @@
                 },
                 legend: {
                     title: {
-                        text: 'JENIS DUKUNGAN',
+                        text: 'JENIS HIBAH',
                         align: 'center',
                     },
                     borderWidth: 1,
                     backgroundColor: 'white'
                 },
+
                 mapNavigation: {
                     enabled: true,
                     buttonOptions: {
@@ -513,7 +569,7 @@
                 },
                 series: tahun_{{HP::fokus_tahun()+1}}
             });
-        
+
         });
     });
 
@@ -532,6 +588,7 @@
 <script src="{{asset('vendor/swiper/js.js')}}"></script>
  <script>
  $('.swiper-container-backpoint').height($('#panel-main').height()-30);
+
   var mySwiper = new Swiper ('.swiper-container', {
     // Optional parameters
     direction: 'horizontal',
@@ -598,5 +655,23 @@
     },500);
 </script>
 
-@stop
 
+ 
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_map_detail">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+@stop

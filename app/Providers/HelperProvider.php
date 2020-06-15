@@ -31,7 +31,6 @@ class HelperProvider extends ServiceProvider
         $tahun_start=2020;
         $jumlah_tahun_range=(int)explode('.', (''.($tahun-$tahun_start)/5))[0];
         $index=($tahun-(($tahun_start)+(4*$jumlah_tahun_range)))+1;
-
         return $index;
         
     }

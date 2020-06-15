@@ -161,7 +161,16 @@ class AppServiceProvider extends ServiceProvider
                  $event->menu->add([
                     'text' => 'PETA DUKUNGAN',
                     'icon'=>'fa fa-map',
-                    'url'=>''
+                    'submenu'=>[
+                        [
+                            'text'=>'PER DAERAH (AIR MINUM) - CHART',
+                            'url'=>route('p.prokeg')
+                        ],
+                         [
+                            'text'=>'PER DAERAH (AIR MINUM) - TABLE',
+                            'url'=>route('pr.table')
+                        ]
+                    ]
                     
                 ]);
 
