@@ -77,12 +77,14 @@
             $("#table_daerah thead").css('display','none');
             var api = this.api();
             var rows = api.rows( {page:'current'} ).nodes();
+            var rows_data = api.rows( {page:'current'} ).data();
+
             var last=null;
  
             api.column(0, {page:'current'} ).data().each( function ( group, i ) {
 
                 if ( last !== group ) {
-                    var dt=(rows.data()[i]);
+                    var dt=(rows[i]);
                     $(rows).eq( i ).before(
                         '<tr class="bg-navy"><td colspan="1"><b>KODE KEGIATAN</b> </td>'+
                         '<td><b>NAMA KEGIATAN</b></td>'+

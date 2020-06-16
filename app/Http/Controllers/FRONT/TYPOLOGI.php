@@ -27,9 +27,11 @@ class TYPOLOGI extends Controller
     		DB::raw("(select nama from public.master_daerah d  where d.id = td.kode_daerah) as nama_daerah"),
     		DB::raw("case when length(td.kode_daerah) <3 then '' else 
     		 (select nama from public.master_daerah d  where d.id = td.kode_daerah) end as nama_provinsi"), 
-    		'td.*'
+    		'td.*',
+    		DB::raw("replace('".route('ty.daerah',['kode_daerah'=>'xxxxxx'])."','xxxxxx',td.kode_daerah) as link_detail")
     	)
     	->whereIn('td.kode_daerah',array_keys($kode_daerah))
+    	->orderBy('td.kode_daerah','asc')
     	->get();
 
 
