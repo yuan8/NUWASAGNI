@@ -29,7 +29,7 @@ class TYPOLOGI extends Controller
     		 (select nama from public.master_daerah d  where d.id = td.kode_daerah) end as nama_provinsi"), 
     		'td.*'
     	)
-    	->whereIn('td.kode_daerah',$kode_daerah)
+    	->whereIn('td.kode_daerah',array_keys($kode_daerah))
     	->get();
 
 
