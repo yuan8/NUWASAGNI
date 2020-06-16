@@ -157,20 +157,20 @@ class AppServiceProvider extends ServiceProvider
                     'url'=>''
                     
                 ]);
-
                  $event->menu->add([
                     'text' => 'PETA DUKUNGAN',
                     'icon'=>'fa fa-map',
-                    'submenu'=>[
-                        [
-                            'text'=>'PER DAERAH (AIR MINUM) - CHART',
-                            'url'=>route('p.prokeg')
-                        ],
-                         [
-                            'text'=>'PER DAERAH (AIR MINUM) - TABLE',
-                            'url'=>route('pr.table')
-                        ]
-                    ]
+                    'url'=>route('d.index')
+                    // 'submenu'=>[
+                    //     [
+                    //         'text'=>'PER DAERAH (AIR MINUM) - CHART',
+                    //         'url'=>route('p.prokeg')
+                    //     ],
+                    //      [
+                    //         'text'=>'PER DAERAH (AIR MINUM) - TABLE',
+                    //         'url'=>route('pr.table')
+                    //     ]
+                    // ]
                     
                 ]);
 

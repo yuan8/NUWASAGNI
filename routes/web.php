@@ -46,6 +46,15 @@ Route::middleware('auth:web')->group(function(){
 		});
 	});
 
+	Route::prefix('dukungan')->group(function(){
+		Route::get('/','FRONT\DUKUNGAN@index')->name('d.index');
+		Route::get('/{kode_daerah}/program','FRONT\DUKUNGAN@program')->name('d.program');
+		Route::get('/{kode_daerah}/program/{id_program}/kegiatan','FRONT\DUKUNGAN@kegiatan')->name('d.program.kegiatan');
+		Route::get('/{kode_daerah}/program/{id_program}/kegiatan/{id_kegiatan}/sumber-dana','FRONT\DUKUNGAN@sumberdana')->name('d.program.kegiatan.sumberdana');
+
+
+	});
+
 	Route::prefix('prokeg')->group(function(){
 		Route::get('/', 'FRONT\PROKEG@index')->name('p.prokeg');
 		Route::get('/program-kegiatan-perdaerah', 'FRONT\PROKEG@per_provinsi')->name('p.prokeg.per.daerah');
