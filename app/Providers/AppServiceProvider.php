@@ -185,7 +185,7 @@ class AppServiceProvider extends ServiceProvider
                  $event->menu->add([
                     'text' => 'KELEMBAGAAN',
                     'icon'=>'fa fa-users',
-                    'url'=>''
+                    'url'=>route('ty.index')
                     
                 ]);
 

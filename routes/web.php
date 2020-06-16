@@ -55,6 +55,16 @@ Route::middleware('auth:web')->group(function(){
 
 	});
 
+	Route::prefix('typologi')->group(function(){
+		Route::get('/','FRONT\typologi@index')->name('ty.index');
+		Route::get('/{kode_daerah}/dinas','FRONT\typologi@detail_daerah')->name('ty.daerah');
+		
+
+	
+
+
+	});
+
 	Route::prefix('prokeg')->group(function(){
 		Route::get('/', 'FRONT\PROKEG@index')->name('p.prokeg');
 		Route::get('/program-kegiatan-perdaerah', 'FRONT\PROKEG@per_provinsi')->name('p.prokeg.per.daerah');
