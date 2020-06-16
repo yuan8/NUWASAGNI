@@ -161,23 +161,21 @@
     <hr>
     <div style="overflow-y:scroll;">
             <ul class="products-list product-list-in-box " style="margin-left: 10px; width:calc(100% - 20px)" id="info_bangda">
-                <li class="item">
+               @foreach($berita as $b)
+                 <li class="item">
                   <div class="product-img">
-                    <img src="{{asset('storage/dokumentasi_foto/1.jpg')}}" alt="Product Image">
+                    <img src="{{asset($b->thumbnail_path)}}" alt="Product Image">
                   </div>
                   <div class="product-info">
-                    <a href="javascript:void(0)" class="product-title">Lorem ipsum
-                      <span class=" pull-right">11/12/2019</span></a>
+                    <a href="{{$b->link}}" class="product-title">{{$b->title}}
+                      <span class=" pull-right"></span></a>
+                   
                     <span class="product-description">
-                         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                         quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                         consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                         cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                         proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        {{Carbon\Carbon::parse($b->created_at)->format('d F Y')}}
                         </span>
                   </div>
                 </li>
+               @endforeach
 
               </ul>
 

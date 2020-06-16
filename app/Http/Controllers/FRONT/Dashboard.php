@@ -50,13 +50,15 @@ class Dashboard extends Controller
 
         $data_pdam=DB::table('pdam')->count();
 
+        $berita=DB::table('berita_bangda')->orderBy('created_at','desc')->limit(5)->get();
+
     	return view('front.v2.index')->with([
     		'data_kegiatan'=>$data_kegiatan,
             'data_pdam'=>$data_pdam,
             'tahun'=>$tahun,
             'album'=>$album,
             'output'=>$output,
-
+            'berita'=>$berita,
             'public_world_bank'=>$public_world_bank,
 
     	]);

@@ -16,3 +16,9 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::prefix('bot')->group(function(){
+		Route::prefix('bangda')->group(function(){
+					Route::post('/news/store','BOT\BANGDA@storing')->name('bot.bangda.store');
+		});
+});

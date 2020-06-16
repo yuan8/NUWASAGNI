@@ -57,7 +57,7 @@ Route::middleware('auth:web')->group(function(){
 
 	Route::prefix('typologi')->group(function(){
 		Route::get('/','FRONT\TYPOLOGI@index')->name('ty.index');
-		Route::get('/{kode_daerah}/dinas','FRONT\TYPOLOGI@detail_daerah')->name('ty.daerah');
+		Route::get('/{kode_daerah}/dinas','FRONT\TYPOLOGI  @detail_daerah')->name('ty.daerah');
 
 
 	
