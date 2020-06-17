@@ -312,6 +312,8 @@ var c={};
                         data:[],
 
                 },
+
+               
                 
                 
 
@@ -319,7 +321,7 @@ var c={};
 
         for(var i in data_map_source.all){
             tahun_semua.push({
-              name:data_map_source.all[i].name,
+              name:data_map_source.all[i].name+' ('+data_map_source.all[i].jumlah_daerah+')',
               type:'map',
               allAreas: false,
               mapData:Highcharts.maps['ind_kota'],
@@ -329,6 +331,28 @@ var c={};
 
             });
         }
+
+        tahun_semua.push( {
+                        index:99999,
+                        name: 'Target NUWSP'+' ('+data_map_source.point_target.data.length+')',
+                        type:'mapbubble',
+                        minSize: 1,
+                        maxSize: '3%',
+                      
+                        opacity:1,
+                        color:data_map_source.point_target.color,
+                        borderColor: 'black',
+                        borderWidth: 0.2,
+                        states: {
+                            hover: {
+                                borderWidth: 1
+                            }
+                        },
+                        mapData:Highcharts.maps['ind_kota'],
+                        joinBy:['id','kode_daerah'],
+                        data:data_map_source.point_target.data,
+
+                });
 
         var tahun_{{HP::fokus_tahun()}}=[
                   {
@@ -340,23 +364,23 @@ var c={};
 
                 },
                  {
-                        name: 'Stimulan',
+                        name: 'Stimulan'+' ('+data_map_source.t{{HP::fokus_tahun()}}.stimulan.data.length+')',
                         type:'map',
                         color:'#f6d55c',
                           joinBy:['id','kode_daerah'],
                          allAreas: false,
                         mapData:Highcharts.maps['ind_kota'],
-                        data:data_map_source.t{{HP::fokus_tahun()}}.stimulan,
+                        data:data_map_source.t{{HP::fokus_tahun()}}.stimulan.data,
 
                 },
                 {
-                        name: 'Pendamping',
+                        name: 'Pendamping'+' ('+data_map_source.t{{HP::fokus_tahun()}}.pendamping.data.length+')',
                         type:'map',
                         color:'#3caea3',
                         joinBy:['id','kode_daerah'],
                          allAreas: false,
                         mapData:Highcharts.maps['ind_kota'],
-                        data:data_map_source.t{{HP::fokus_tahun()}}.pendamping,
+                        data:data_map_source.t{{HP::fokus_tahun()}}.pendamping.data,
 
                 },
 
@@ -372,23 +396,23 @@ var c={};
 
                 },
                  {
-                        name: 'Stimulan',
+                        name: 'Stimulan'+' ('+data_map_source.t{{HP::fokus_tahun()+1}}.stimulan.data.length+')',
                         type:'map',
                         color:'#f6d55c',
                         joinBy:['id','kode_daerah'],
                         allAreas: false,
                         mapData:Highcharts.maps['ind_kota'],
-                        data:data_map_source.t{{1+HP::fokus_tahun()}}.stimulan,
+                        data:data_map_source.t{{1+HP::fokus_tahun()}}.stimulan.data,
 
                 },
                 {
-                        name: 'Pendamping',
+                        name: 'Pendamping'+' ('+data_map_source.t{{HP::fokus_tahun()+1}}.stimulan.data.length+')',
                         type:'map',
                         color:'#3caea3',
                         joinBy:['id','kode_daerah'],
                          allAreas: false,
                         mapData:Highcharts.maps['ind_kota'],
-                        data:data_map_source.t{{1+HP::fokus_tahun()}}.pendamping,
+                        data:data_map_source.t{{1+HP::fokus_tahun()}}.pendamping.data,
 
                 },
 
@@ -420,7 +444,7 @@ var c={};
                     }
                 },
                 tooltip: {
-                    headerFormat: '',
+                  headerFormat: '',
                     formatter: function() {
                         var jenis_bantuan=this.point.jenis_bantuan!=null?this.point.jenis_bantuan.split(',@'):[];
                         for(var i in jenis_bantuan){
@@ -429,9 +453,7 @@ var c={};
 
                         jenis_bantuan='<b>'+jenis_bantuan.join(', ')+'</b>';
 
-                        
 
-                        console.log(this.point);
                        return "<h5><b>"+this.point.nama_daerah+"</b></h5><br>"+
                        (this.point.tahun!=1?'<h5><b>'+'TAHUN PROYEK : '+this.point.tahun+' ('+jenis_bantuan+')</b> </h5>':'<h5>Masih Dalam Usulan</h5>')+'<br>'+
                     (this.point.pdam!=null?'<b>'+this.point.pdam+'</b>':'')+'<br>'+
@@ -439,7 +461,7 @@ var c={};
                     }
                 },
                 plotOptions:{
-                    series:{
+                    mapbubble:{
                         point:{
                             cursor:"pointer",
                             events:{

@@ -214,6 +214,7 @@ class NUWAS_PROJECT extends Controller
     public function api_daerah_target_2_tahun(){
         $tahun=(int)HP::fokus_tahun();
 
+
         $data=DB::table('daerah_nuwas as n')
         ->leftJoin('public.master_regional as r','r.kode_daerah','=','n.kode_daerah')
         ->select(
@@ -225,30 +226,104 @@ class NUWAS_PROJECT extends Controller
                 (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=n.kode_daerah) as nama_daerah")
         )->where('tahun',$tahun)
         ->orWhere('tahun',1)
-        ->orWhere('tahun',($tahun+1))->get();
+        ->orWhere('tahun',($tahun+1))
+        ->get();
 
         $data_return=array(
             'all'=>[
-                
-                
+            ],
+            'point_target'=>[
+                'name'=>'Target NUWSP',
+                'jumlah_daerah'=>0,
+                'color'=>'#9c27b0',
+                'data'=>[]
             ],
             't'.$tahun=>[
                 'name'=>'Tahun '.$tahun,
-                'stimulan'=>[],
-                'pendamping'=>[]
+                'stimulan'=>[
+                    'jumlah_daerah'=>0,
+                    'data'=>[]
+                ],
+                'pendamping'=>[
+                    'jumlah_daerah'=>0,
+                    'data'=>[]
+                ],
             ],
             't'.($tahun+1)=>[
                 'name'=>'Tahun '.($tahun+1),
-                'stimulan'=>[],
-                'pendamping'=>[]
+                'stimulan'=>[
+                    'jumlah_daerah'=>0,
+                    'data'=>[]
+                ],
+                'pendamping'=>[
+                    'jumlah_daerah'=>0,
+                    'data'=>[]
+                ],
             ],
         );
 
-        foreach ($data as $key => $d) {
+
+        $reg=DB::table('public.master_regional as r')
+        ->leftJoin('public.daerah_nuwas as n','n.kode_daerah','=','r.kode_daerah')->select(
+            'n.tahun',
+            'n.jenis_bantuan',
+            'n.nilai_bantuan',
+            'r.kode_daerah',
+            'r.color',
+            'r.regional',
+            DB::raw("(select concat(nama_pdam,' -> ',kategori_pdam) from public.pdam  where pdam.kode_daerah = n.kode_daerah ) as pdam "),
+             DB::raw("(select concat(c.nama,
+                (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=r.kode_daerah) as nama_daerah")
+        )->get();
+
+        foreach ($reg as $key => $d) {
+
+             if(!isset( $data_return['all'][strtolower(str_replace(' ','' ,str_replace(',', '', $d->regional)))]['jumlah_daerah'])){
+                $data_return['all'][strtolower(str_replace(' ','' ,str_replace(',', '', $d->regional)))]['jumlah_daerah']=0;
+            }
+
+            $dr=(array)$d;
+            if($dr['tahun']){
+                $dr['z']=0.1;
+                $dr['id']=$key;
+                $dr['opacity']=1;
+                $dr['borderWidth']= 0.2;
+                $dr['color']= '#9c27b0';
+
+                $dr['borderColor']='black';
+                $dr['states']=[
+                    'hover'=>[
+                        'borderWidth'=>2
+                    ]
+
+                ];
+                $data_return['point_target']['data'][]=$dr;
+
+                if(!isset( $data_return['point_target']['name'])){
+                    $data_return['point_target']['name']='Target NUWSP';
+                    $data_return['point_target']['jumlah_daerah']=0;
+                    $data_return['point_target']['color']='';
+
+                }
+
+                $data_return['point_target']['jumlah_daerah']+=1;
+                $data_return['all'][strtolower(str_replace(' ','' ,str_replace(',', '', $d->regional)))]['jumlah_daerah']+=1;
+
+
+            }
+
+           
 
             $data_return['all'][strtolower(str_replace(' ','' ,str_replace(',', '', $d->regional)))]['data'][]=$d;
             $data_return['all'][strtolower(str_replace(' ','' ,str_replace(',', '', $d->regional)))]['color']=$d->color;
             $data_return['all'][strtolower(str_replace(' ','' ,str_replace(',', '', $d->regional)))]['name']=$d->regional;
+
+            # code...
+        }
+
+        foreach ($data as $key => $d) {
+
+          
 
             if($d->tahun!=1){
               $jenis_bantuan=explode(',',$d->jenis_bantuan);
@@ -256,14 +331,18 @@ class NUWAS_PROJECT extends Controller
               if(in_array('@STIMULAN', $jenis_bantuan)){
                     $df=(array)$d;
                     unset($df['color']);
-                  $data_return['t'.$d->tahun]['stimulan'][]=$df;
+                  $data_return['t'.$d->tahun]['stimulan']['data'][]=$df;
+                  $data_return['t'.$d->tahun]['stimulan']['jumlah_daerah']+=1;
+
               }
               if(in_array('@PENDAMPING', $jenis_bantuan)){
                 $df=(array)$d;
                     unset($df['color']);
 
 
-                  $data_return['t'.$d->tahun]['pendamping'][]=$df;
+                  $data_return['t'.$d->tahun]['pendamping']['data'][]=$df;
+                  $data_return['t'.$d->tahun]['pendamping']['jumlah_daerah']+=1;
+
               }
             }
 
