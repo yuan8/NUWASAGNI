@@ -215,8 +215,11 @@ class NUWAS_PROJECT extends Controller
         $tahun=(int)HP::fokus_tahun();
 
         $data=DB::table('daerah_nuwas as n')
+        ->leftJoin('public.master_regional as r','r.kode_daerah','=','n.kode_daerah')
         ->select(
             'n.*',
+            'r.color',
+            'r.regional',
             DB::raw("(select concat(nama_pdam,' -> ',kategori_pdam) from public.pdam  where pdam.kode_daerah = n.kode_daerah ) as pdam "),
              DB::raw("(select concat(c.nama,
                 (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=n.kode_daerah) as nama_daerah")
@@ -226,10 +229,8 @@ class NUWAS_PROJECT extends Controller
 
         $data_return=array(
             'all'=>[
-                'name'=>'semua',
-                'stimulan'=>[],
-                'usulan'=>[],
-                'pendamping'=>[]
+                
+                
             ],
             't'.$tahun=>[
                 'name'=>'Tahun '.$tahun,
@@ -245,18 +246,24 @@ class NUWAS_PROJECT extends Controller
 
         foreach ($data as $key => $d) {
 
-            if($d->tahun==1){
-                $data_return['all']['usulan'][]=$d;
-            }else{
+            $data_return['all'][strtolower(str_replace(' ','' ,str_replace(',', '', $d->regional)))]['data'][]=$d;
+            $data_return['all'][strtolower(str_replace(' ','' ,str_replace(',', '', $d->regional)))]['color']=$d->color;
+            $data_return['all'][strtolower(str_replace(' ','' ,str_replace(',', '', $d->regional)))]['name']=$d->regional;
+
+            if($d->tahun!=1){
               $jenis_bantuan=explode(',',$d->jenis_bantuan);
 
               if(in_array('@STIMULAN', $jenis_bantuan)){
-                  $data_return['t'.$d->tahun]['stimulan'][]=$d;
-                  $data_return['all']['stimulan'][]=$d;
+                    $df=(array)$d;
+                    unset($df['color']);
+                  $data_return['t'.$d->tahun]['stimulan'][]=$df;
               }
               if(in_array('@PENDAMPING', $jenis_bantuan)){
-                  $data_return['t'.$d->tahun]['pendamping'][]=$d;
-                  $data_return['all']['pendamping'][]=$d;
+                $df=(array)$d;
+                    unset($df['color']);
+
+
+                  $data_return['t'.$d->tahun]['pendamping'][]=$df;
               }
             }
 

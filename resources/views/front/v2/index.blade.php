@@ -300,6 +300,7 @@ var c={};
     $(function(){
         API_CON.post('{{route('web_api.nuwas.daerah.target.2')}}').then(function(res){
         var data_map_source=res.data;
+        console.log(data_map_source);
 
         var tahun_semua=[{
 
@@ -311,43 +312,23 @@ var c={};
                         data:[],
 
                 },
-                {
-                        name: 'Usulan',
-                        type:'map',
-                        color:'#ed553b',
-                        joinBy:['id','kode_daerah'],
-                        tooltip:{
-                            pointFormatter:function(){
-                               return point.name; 
-                            }
-                        },
-                        allAreas: false,
-                        mapData:Highcharts.maps['ind_kota'],
-                        data:data_map_source.all.usulan,
-
-                },
-                {
-                        name: 'Stimulan',
-                        type:'map',
-                        color:'#f6d55c',
-                        joinBy:['id','kode_daerah'],
-                         allAreas: false,
-                        mapData:Highcharts.maps['ind_kota'],
-                        data:data_map_source.all.stimulan,
-
-                },
-                {
-                        name: 'Pendamping',
-                        type:'map',
-                        color:'#3caea3',
-                        joinBy:['id','kode_daerah'],
-                         allAreas: false,
-                        mapData:Highcharts.maps['ind_kota'],
-                        data:data_map_source.all.pendamping,
-
-                },
+                
+                
 
         ];
+
+        for(var i in data_map_source.all){
+            tahun_semua.push({
+              name:data_map_source.all[i].name,
+              type:'map',
+              allAreas: false,
+              mapData:Highcharts.maps['ind_kota'],
+              data:data_map_source.all[i].data,
+              color:data_map_source.all[i].color,
+              joinBy:['id','kode_daerah'],
+
+            });
+        }
 
         var tahun_{{HP::fokus_tahun()}}=[
                   {
@@ -425,7 +406,7 @@ var c={};
                 },
                 legend: {
                     title: {
-                        text: 'JENIS HIBAH',
+                        text: 'REGIONAL',
                         align: 'center',
                     },
                     borderWidth: 1,
@@ -482,7 +463,7 @@ var c={};
                     }
                 },
                 subtitle: {
-                    text: 'PETA DAERAH NUWSP {{HP::fokus_tahun()}} - {{HP::fokus_tahun()+1}}',
+                    text: 'PETA DAERAH NUWSP ',
                      style:{
                         color:'#fff'
                     }
