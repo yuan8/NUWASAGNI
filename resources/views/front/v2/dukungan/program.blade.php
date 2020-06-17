@@ -32,12 +32,7 @@
   					</thead>
   					<tbody></tbody>
   					<tfoot>
-  						{{-- <tr>
-  							<th></th>
-  							<th></th>
-  							
-
-  						</tr> --}}
+  					
   					</tfoot>
   				</table>
   			</div>
@@ -77,12 +72,14 @@
             $("#table_daerah thead").css('display','none');
             var api = this.api();
             var rows = api.rows( {page:'current'} ).nodes();
+            var rows_data = api.rows( {page:'current'} ).data();
+
             var last=null;
  
             api.column(0, {page:'current'} ).data().each( function ( group, i ) {
 
                 if ( last !== group ) {
-                    var dt=(rows.data()[i]);
+                    var dt=(rows_data[i]);
                     $(rows).eq( i ).before(
                         '<tr class="bg-navy"><td colspan="1"><b>KODE PROGRAM</b> </td>'+
                         '<td><b>NAMA PROGRAM</b></td>'+
@@ -153,8 +150,13 @@
 
       },
       {
-        render:function(data,dataRow){
-          return '';
+        render:function(data,set,dataRow){
+          if(dataRow.target_ahir!=null){
+            return dataRow.target_awal+' Hingga '+dataRow.target_ahir;
+          }else{
+
+            return dataRow.target_awal;
+          }
         }
       },
       {

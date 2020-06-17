@@ -15,15 +15,22 @@ class DUKUNGAN extends Controller
 		$id_sub_urusan=12;
 		$tahun=HP::fokus_tahun();
 		$kode_daerah=DB::table('public.daerah_nuwas')
+		->select(
+			'kode_daerah',
+			DB::raw("concat(jenis_bantuan,'||',tahun::text,'||',nilai_bantuan) as jenis_bantuan")
+		)
 		->where('tahun',$tahun)
-		->select('kode_daerah','jenis_bantuan','nilai_bantuan')
-		->get()->pluck('jenis_bantuan','kode_daerah')->toArray();
-
+		->orWhere('tahun',$tahun+1)
+		->orWhere('tahun',1)
+		->orWhere('tahun',null)
+		->get()->pluck(['jenis_bantuan'],'kode_daerah')->toArray();
 
 
 		$data=DB::connection('sinkron_prokeg')->table('public.master_daerah as d')
+		->leftJoin('public.master_regional as r','r.kode_daerah','=','d.id')
 		->leftJoin(DB::raw("(select * from prokeg.tb_".$tahun."_kegiatan as ka   where ka.id_urusan=".$id_urusan." and ka.id_sub_urusan=".$id_sub_urusan."and  ka.status=5  ) as k"),'k.kode_daerah','=','d.id')
 		->select(
+			DB::raw('max(r.regional) as regional'),
 			'd.id as kode_daerah',
 			'd.kode_daerah_parent',
 			'd.nama as nama_daerah',
@@ -41,14 +48,28 @@ class DUKUNGAN extends Controller
 
 		$data_return=[];
 		$kode_provinsi=[];
+		$regional=[];
+
 		foreach ($data as $key => $d) {
 			$d=(array)$d;
-			$d['jenis_bantuan']=$kode_daerah[$d['kode_daerah']];
-			$data_return[]=$d;
+			$th=(int)explode('||',$kode_daerah[$d['kode_daerah']])[1];
+			$d['jenis_bantuan']=explode('||', $kode_daerah[$d['kode_daerah']])[0];
+			$d['tahun']=($th!=1?$th:null);
+			if(!$d['regional']){
+				
+			}else{
+				$regional[strtolower(str_replace(' ','' ,str_replace(',', '', $d['regional'])))]=$d['regional'];
+
+			}
+
+			
+			$data_return[$d['kode_daerah']]=$d;
+
 			if($d['kode_daerah_parent']){
 				$kode_provinsi[]=$d['kode_daerah_parent'];
 			}
 		}
+
 
 		$provinsi=DB::table('public.master_daerah')
 		->whereIn('id',$kode_provinsi)->get();
@@ -57,8 +78,9 @@ class DUKUNGAN extends Controller
 
 		return view('front.v2.dukungan.index')->with([
 			'tahun'=>$tahun,
-			'data'=>$data_return,
-			'provinsi'=>$provinsi
+			'data'=>array_values($data_return),
+			'provinsi'=>$provinsi,
+			'regional'=>$regional
 		]);
 
 	}

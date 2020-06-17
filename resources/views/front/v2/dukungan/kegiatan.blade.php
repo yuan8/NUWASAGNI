@@ -84,7 +84,7 @@
             api.column(0, {page:'current'} ).data().each( function ( group, i ) {
 
                 if ( last !== group ) {
-                    var dt=(rows[i]);
+                    var dt=(rows_data[i]);
                     $(rows).eq( i ).before(
                         '<tr class="bg-navy"><td colspan="1"><b>KODE KEGIATAN</b> </td>'+
                         '<td><b>NAMA KEGIATAN</b></td>'+
@@ -158,8 +158,14 @@
 
       },
       {
-        render:function(data,dataRow){
-          return '';
+        render:function(data,type,dataRow){
+          if(dataRow.target_ahir!=null){
+            return dataRow.target_awal+' Hingga '+dataRow.target_ahir;
+          }else{
+
+            return dataRow.target_awal;
+          }
+          
         }
       },
       {

@@ -4,31 +4,52 @@
 @section('content_header')
 <div class="row bg-navy">
 	<div class="col-md-12">
-		<h5 class="text-center">PROGRAM KEGIATAN DAERAH TAHUN {{HP::fokus_tahun()}}  - <small class="text-white">AIR MINUM</small> </h5>
+		<h4 class="text-center"> DAERAH NUWSP TAHUN {{HP::fokus_tahun()}} - {{HP::fokus_tahun()+1}}</h4>
+
+    <h5 class="text-center"> PROGRAM KEGIATAN TAHUN {{HP::fokus_tahun()}} -  <small class="text-white">AIR MINUM</small> </h5>
 	</div>
 </div>
 
 @stop
 
 @section('content')
+<div class="row no-gutter">
+  <div class="col-md-12">
+    <div class="box">
+      <div class="box-body" id="column_chart"></div>
+    </div>
+  </div>
+</div>
   
   <div class="row no-gutter">
   	<div class="col-md-12">
   		<div class="box box-primary">
-  			<div class="box-header">
+  			<div class="box-header with-border">
   				<div class="row">
-  					<div class="col-md-3">
+  					<div class="col-md-2">
   						<div class="form-group">
-  							<label>KAT</label>
-  							<select id="kat_daerah_filter" class="filter form-control">
+  							<label>REGIONAL</label>
+  							<select id="regional_filter" class="filter form-control">
   								<option value="">SEMUA</option>
-  								<option value="P">PROVINSI</option>
-  								<option value="K">KOTA</option>
+  								@foreach($regional as $r)
+                    <option value="{{$r}}">{{$r}}</option>
+                  @endforeach
 
   							</select>
   						</div>
   					</div>
-  					<div class="col-md-3">
+            <div class="col-md-2">
+              <div class="form-group">
+                <label>KAT</label>
+                <select id="kat_daerah_filter" class="filter form-control">
+                  <option value="">SEMUA</option>
+                  <option value="P">PROVINSI</option>
+                  <option value="K">KOTA</option>
+
+                </select>
+              </div>
+            </div>
+  					<div class="col-md-2">
   						<div class="form-group">
   							<label>MEMILIKI KEGIATAN</label>
   							<select id="value_filter" class="filter form-control">
@@ -39,7 +60,20 @@
   							</select>
   						</div>
   					</div>
-  					<div class="col-md-3">
+            <div class="col-md-2">
+              <div class="form-group">
+                <label>TAHUN BANTUAN</label>
+                <select id="tahun_bantuan_filter" class="filter form-control">
+                  <option value="xxx">SEMUA</option>
+                  <option value="">DAERAH NUWSP NON PRIORITAS</option>
+                  <option value="{{HP::fokus_tahun()}}">PRIORITAS {{HP::fokus_tahun()}}</option>
+                  <option value="{{HP::fokus_tahun()+1}}">PRIORITAS {{HP::fokus_tahun()+1}}</option>
+                  
+
+                </select>
+              </div>
+            </div>
+  					<div class="col-md-2">
   						<div class="form-group">
   							<label>JENIS HIBAH</label>
   							<select id="target_nuwas_filter" class="filter form-control">
@@ -50,7 +84,8 @@
   							</select>
   						</div>
   					</div>
-  					<div class="col-md-3">
+
+  					<div class="col-md-2">
   						<div class="form-group">
   							<label>PROVINSI</label>
   							<select id="provinsi_filter" class="filter form-control">
@@ -69,15 +104,17 @@
   				<table class="table-bordered table" id="table_daerah">
   					<thead>
   						<tr>
+                <th>REGIONAL</th>
+
   							<th>KODE</th>
   							<th>NAMA DAERAH</th>
   							<th>NAMA PROVINSI</th>
-
+                <th>TAHUN BANTUAN</th>
 			  				<th>JENIS HIBAH</th>
-			                <th>JUMLAH PROGRAM</th>
+			           <th>JUMLAH PROGRAM</th>
 			  				<th>JUMLAH KEGIATAN</th>
-			                <th>JUMLAH ANGGARAN</th>
-			                <th>PERSENTASE ANGGARAN</th>
+			           <th>JUMLAH ANGGARAN</th>
+			           <th>PERSENTASE ANGGARAN</th>
   							<th>ACTION</th>
 
   						</tr>
@@ -85,8 +122,12 @@
   					<tbody></tbody>
   					<tfoot>
   						<tr>
+                <th></th>
+
   							<th></th>
   							<th></th>
+                <th></th>
+
   							<th></th>
 
   							<th></th>
@@ -110,6 +151,40 @@
 @section('js')
 <script type="text/javascript">
 	var data_source=<?php  echo json_encode($data) ?>;
+    var chart='';
+
+  var glob_var={
+      category:[],
+      data:[
+      {
+        name:'JUMLAH PROGRAM',
+        type:'column',
+        yAxis:1,
+        data:[]
+
+
+      },{
+        name:'JUMLAH KEGIATAN',
+        type:'column',
+        yAxis:1,
+
+
+        data:[],
+
+
+      },
+      {
+        name:'TOTAL ANGGARAN',
+        type:'line',
+        yAxis:0,
+
+        data:[],
+
+
+      }
+    ]
+
+    }
 
 	var table_daerah=$('#table_daerah').DataTable({
     dom: 'Bfrtip',
@@ -124,23 +199,53 @@
               }
           },
       ],
-		 drawCallback: function () {
+     "order": [[ 0, 'asc' ]],
+    columnDefs:[
+            { "visible": false, "targets": 0 },
+
+    ],
+		 drawCallback: function (settings) {
+
+        var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var rows_data = api.rows( {page:'current'} ).data();
+            var last=null;
+            var data_show=[];
+ 
+            api.column(0, {page:'current'} ).data().each( function ( group, i ) {
+              data_show.push(rows_data[i]);
+
+                if ( last !== group ) {
+                    var dt=(rows_data[i]);
+                    $(rows).eq( i ).before(
+                      '<tr class="bg-navy"><td colspan="10";><b class="text-uppercase">'+group+'</b></td></tr>'
+                      );
+                  }
+                  last=group;
+            });
+
+           
+
+
+
+
+
 	      var api = this.api();
-		     $( api.table().column(0).footer() ).html('TOTAL');
+		     $( api.table().column(1).footer() ).html('TOTAL');
 		     
-         $(api.table().column(3).footer()).html(
-		     		api.column(3, {"filter": "applied"}).data().sum().toFixed(2)
+         $(api.table().column(6).footer()).html(
+		     		api.column(6, {"filter": "applied"}).data().sum().toFixed(2)
 		     );	
 
-          $(api.table().column(4).footer()).html(
-            api.column(4, {"filter": "applied"}).data().sum().toFixed(2)
+          $(api.table().column(7).footer()).html(
+            api.column(7, {"filter": "applied"}).data().sum().toFixed(2)
          ); 
 
-          $(api.table().column(5).footer()).html(
-            api.column(5, {"filter": "applied"}).data().sum().toFixed(2)
+          $(api.table().column(8).footer()).html(
+            api.column(8, {"filter": "applied"}).data().sum().toFixed(2)
          ); 
 
-          for(var i=3;i<6;i++){
+          for(var i=6;i<9;i++){
              $(api.table().column(i).footer()).html(
                 formatNumber($(api.table().column(i).footer()).html(),0)
               ); 
@@ -152,6 +257,11 @@
 			}
 		},
 		columns:[
+      {
+        data:'regional',
+        orderable:false,
+
+      },
 			{
 				data:'kode_daerah',
         orderable:false,
@@ -170,6 +280,10 @@
         orderable:false,
 
 			},
+      {
+        data:'tahun',
+
+      },
 			{
 		data:'jenis_bantuan',
         orderable:false,
@@ -290,6 +404,41 @@
 		        }
 		    }
 
+        if(approve){
+
+            if($('#regional_filter').val()!=''){
+
+                if($('#regional_filter').val()){
+                  if(data.regional==($('#regional_filter').val())){
+                    approve= true;
+                  }else{
+
+                    approve= false;
+                  }
+                }else{
+                  // approve=true;
+                }
+              
+            }
+        }
+
+        if(approve){
+
+            if(($('#tahun_bantuan_filter').val()!='xxx')){
+                
+                if(data.tahun==($('#tahun_bantuan_filter').val()!=''?($('#tahun_bantuan_filter').val()):null) ){
+                  approve= true;
+                }else{
+
+                  approve= false;
+                }
+              }else{
+                // approve=true;
+              }
+            
+            
+        }
+
 		    
 
 
@@ -316,9 +465,161 @@
 
     $('.filter').on('change',function(){
     	table_daerah.draw();
+
+
+    setTimeout(function(){
+           var data_show=table_daerah.rows({ filter : 'applied'}).data();
+
+            generate_data_chart(data_show);
+            
+
+
+            if(!chart==''){
+             chart.destroy();
+            }
+
+             chart=Highcharts.chart('column_chart', {
+                   chart: {
+                          zoomType: 'xy'
+                      },
+                  title: {
+                      text: ''
+                  },
+                  subtitle: {
+                      text: ''
+                  },
+                  xAxis: {
+                      categories: glob_var.category,
+                  },
+                  yAxis: [
+                    { // Primary yAxis
+                        labels: {
+                            format: '{value}',
+                            style: {
+                                color: Highcharts.getOptions().colors[2]
+                            }
+                        },
+                        title: {
+                            text: 'JUMLAH',
+                            style: {
+                                color: Highcharts.getOptions().colors[2]
+                            }
+                        },
+                        opposite: true
+
+                    }, { // Secondary yAxis
+                        gridLineWidth: 0,
+                        title: {
+                            text: 'JUMLAH',
+                            style: {
+                                color: Highcharts.getOptions().colors[0]
+                            }
+                        },
+                        labels: {
+                            format: 'Rp. {value} ',
+                            style: {
+                                color: Highcharts.getOptions().colors[0]
+                            }
+                        }
+
+                    }
+
+                  ],
+
+                  tooltip: {
+                      headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                          '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+                      footerFormat: '</table>',
+                      shared: true,
+                      useHTML: true
+                  },
+                 plotOptions: {
+                      line: {
+                          dataLabels: {
+                              enabled: true
+                          },
+                      },
+                       column: {
+                          dataLabels: {
+                              enabled: true
+                          },
+                      }
+                  },
+                  series:glob_var.data,
+                   responsive: {
+                      rules: [{
+                          condition: {
+                              maxWidth:'100%' 
+                          },
+                          chartOptions: {
+                              legend: {
+                                  floating: false,
+                                  layout: 'horizontal',
+                                  align: 'center',
+                                  verticalAlign: 'bottom',
+                                  x: 0,
+                                  y: 0
+                              },
+                              yAxis: [{
+                                  labels: {
+                                      align: 'right',
+                                      x: 0,
+                                      y: -6
+                                  },
+                                  showLastLabel: false
+                              }, {
+                                  labels: {
+                                      align: 'left',
+                                      x: 0,
+                                      y: -6
+                                  },
+                                  showLastLabel: false
+                              }
+                              ]
+                          }
+                      }]
+                  }
+              });
+
+          
+            
+
+    },500);
+
     });
 
     $($('.filter')[0]).trigger('change');
+
+    
+
+    function generate_data_chart(data){
+
+      glob_var.category=[];
+      glob_var.data[0].data=[];
+      glob_var.data[1].data=[];
+      glob_var.data[2].data=[];
+
+      data.each( function (row) {
+
+       
+        glob_var.data[0].data.push(parseFloat(row.jumlah_program));
+        glob_var.data[1].data.push(parseFloat(row.jumlah_kegiatan));
+        glob_var.data[2].data.push(parseFloat(row.jumlah_anggaran==null?0:row.jumlah_anggaran));
+        glob_var.category.push(row.nama_daerah);
+      });
+        
+        
+      
+
+
+    }
+
+
+    function build_chart(){
+
+
+    }
 
 </script>
 
