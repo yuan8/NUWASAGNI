@@ -55,6 +55,7 @@ class BANGDA extends Controller
     				}
   
     				DB::table('berita_bangda')->insert([
+    					'id'=>$d['id'],
     					'title'=>$d['title'],
     					'content'=>$d['content'],
     					'link'=>$d['link'],
