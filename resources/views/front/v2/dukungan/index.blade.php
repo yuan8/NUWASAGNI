@@ -494,7 +494,7 @@
                   yAxis: [
                     { // Primary yAxis
                         labels: {
-                            format: '{value}',
+                            format: 'Rp. {value}',
                             style: {
                                 color: Highcharts.getOptions().colors[2]
                             }
@@ -516,7 +516,7 @@
                             }
                         },
                         labels: {
-                            format: 'Rp. {value} ',
+                            format: '{value} ',
                             style: {
                                 color: Highcharts.getOptions().colors[0]
                             }
