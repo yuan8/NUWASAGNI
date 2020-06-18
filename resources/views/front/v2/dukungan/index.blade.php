@@ -316,7 +316,7 @@
                 if ( last !== group ) {
                     var dt=(rows_data[i]);
                     $(rows).eq( i ).before(
-                      '<tr class="bg-navy"><td colspan="10";><b class="text-uppercase">'+group+'</b></td></tr>'
+                      '<tr class="bg-navy"><td colspan="10";><b class="text-uppercase">REGIONAL '+group+'</b></td></tr>'
                       );
                   }
                   last=group;
@@ -562,7 +562,7 @@
     });
 
 
-table_daerah.on( 'order.dt search.dt', function () {
+table_daerah.on('order.dt search.dt', function () {
      drawChart();
 }).draw();
 

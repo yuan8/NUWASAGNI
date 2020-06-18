@@ -41,7 +41,6 @@ class DUKUNGAN extends Controller
 			DB::raw("replace('".route('d.program',['kode_daerah'=>'xxxxxx'])."','xxxxxx',d.id) as link_detail")
 		)
 		->whereIn('d.id',array_keys($kode_daerah))
-		
 		->groupBy('d.id')
 		->get();
 
@@ -86,7 +85,7 @@ class DUKUNGAN extends Controller
 
 	public function program($kode_daerah){
 		$id_sub_urusan=12;
-		
+
 		$daerah=DB::table('public.master_daerah as d')
 		->select(
 			'd.*',

@@ -51,6 +51,8 @@ class NUWAS_PROJECT extends Controller
 
 
 
+
+
         $rkpd_final=DB::connection('sinkron_prokeg')->table('tb_'.$tahun.'_kegiatan')
         ->whereIn('kode_daerah',$data_target_nuwas)
         ->where('status',5)
@@ -216,7 +218,7 @@ class NUWAS_PROJECT extends Controller
 
 
         $data=DB::table('daerah_nuwas as n')
-        ->leftJoin('public.master_regional as r','r.kode_daerah','=','n.kode_daerah')
+        ->leftJoin(DB::raw("(select * from public.master_regional as u where length(u.kode_daerah)>3) as r"),'r.kode_daerah','=','n.kode_daerah')
         ->select(
             'n.*',
             'r.color',
@@ -224,8 +226,8 @@ class NUWAS_PROJECT extends Controller
             DB::raw("(select concat(nama_pdam,' -> ',kategori_pdam) from public.pdam  where pdam.kode_daerah = n.kode_daerah ) as pdam "),
              DB::raw("(select concat(c.nama,
                 (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=n.kode_daerah) as nama_daerah")
-        )->where('tahun',$tahun)
-        ->orWhere('tahun',1)
+        )->where('tahun','<=',$tahun)
+        ->orWhere('tahun',null)
         ->orWhere('tahun',($tahun+1))
         ->get();
 
@@ -270,15 +272,18 @@ class NUWAS_PROJECT extends Controller
             'n.nilai_bantuan',
             'r.kode_daerah',
             'r.color',
+            DB::raw("(case when n.kode_daerah is not null then 'target' else null end) as target"),
             'r.regional',
             DB::raw("(select concat(nama_pdam,' -> ',kategori_pdam) from public.pdam  where pdam.kode_daerah = n.kode_daerah ) as pdam "),
              DB::raw("(select concat(c.nama,
                 (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=r.kode_daerah) as nama_daerah")
-        )->get();
+        )->orderBy('n.tahun','asc')->get();
+
+
 
         foreach ($reg as $key => $d) {
 
-             if(!isset( $data_return['all'][strtolower(str_replace(' ','' ,str_replace(',', '', $d->regional)))]['jumlah_daerah'])){
+            if(!isset( $data_return['all'][strtolower(str_replace(' ','' ,str_replace(',', '', $d->regional)))]['jumlah_daerah'])){
                 $data_return['all'][strtolower(str_replace(' ','' ,str_replace(',', '', $d->regional)))]['jumlah_daerah']=0;
             }
 
@@ -288,8 +293,7 @@ class NUWAS_PROJECT extends Controller
                 $dr['id']=$key;
                 $dr['opacity']=1;
                 $dr['borderWidth']= 0.2;
-                $dr['color']= '#9c27b0';
-
+                $dr['color']= '#fff';
                 $dr['borderColor']='black';
                 $dr['states']=[
                     'hover'=>[
@@ -297,6 +301,7 @@ class NUWAS_PROJECT extends Controller
                     ]
 
                 ];
+
                 $data_return['point_target']['data'][]=$dr;
 
                 if(!isset( $data_return['point_target']['name'])){
@@ -349,11 +354,9 @@ class NUWAS_PROJECT extends Controller
 
         }
 
+        $data_return['data']=$reg;
+        
         return $data_return;
-
-
-
-        return $data;
 
     }
 
