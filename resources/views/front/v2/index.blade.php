@@ -366,6 +366,7 @@ var c={};
                   name:'Target NUWSP '+rows[i].regional,
                   index:99999,
                   type:'mapbubble',
+                  
                     minSize: 1,
                     maxSize: '3%',
                   
