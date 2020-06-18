@@ -19,8 +19,7 @@ class DUKUNGAN extends Controller
 			'kode_daerah',
 			DB::raw("concat(jenis_bantuan,'||',tahun::text,'||',nilai_bantuan) as jenis_bantuan")
 		)
-		->where('tahun',$tahun)
-		->orWhere('tahun',$tahun+1)
+		->where('tahun','<=',$tahun)
 		->orWhere('tahun',1)
 		->orWhere('tahun',null)
 		->get()->pluck(['jenis_bantuan'],'kode_daerah')->toArray();
@@ -28,7 +27,7 @@ class DUKUNGAN extends Controller
 
 		$data=DB::connection('sinkron_prokeg')->table('public.master_daerah as d')
 		->leftJoin('public.master_regional as r','r.kode_daerah','=','d.id')
-		->leftJoin(DB::raw("(select * from prokeg.tb_".$tahun."_kegiatan as ka   where ka.id_urusan=".$id_urusan." and ka.id_sub_urusan=".$id_sub_urusan."and  ka.status=5  ) as k"),'k.kode_daerah','=','d.id')
+		->leftJoin(DB::raw("(select * from prokeg.tb_".$tahun."_kegiatan as ka   where kode_lintas_urusan=".$id_sub_urusan." and  ka.status=5  ) as k"),'k.kode_daerah','=','d.id')
 		->select(
 			DB::raw('max(r.regional) as regional'),
 			'd.id as kode_daerah',
@@ -86,7 +85,8 @@ class DUKUNGAN extends Controller
 	}
 
 	public function program($kode_daerah){
-
+		$id_sub_urusan=12;
+		
 		$daerah=DB::table('public.master_daerah as d')
 		->select(
 			'd.*',
@@ -94,9 +94,7 @@ class DUKUNGAN extends Controller
 		)
 		->where('d.id',$kode_daerah)->first();
 		$tahun=HP::fokus_tahun();
-			$id_urusan=3;
-		$id_sub_urusan=12;
-
+		
 
 		$data=DB::connection('sinkron_prokeg')->table("prokeg.tb_".$tahun."_kegiatan as k")
 		->leftJoin(
@@ -127,8 +125,7 @@ class DUKUNGAN extends Controller
 		->where('k.kode_daerah',$kode_daerah)
 		->groupBy('p.id','ip.id')
 		->where([
-			'k.id_urusan'=>$id_urusan,
-			'k.id_sub_urusan'=>$id_sub_urusan,
+			'k.kode_lintas_urusan'=>$id_sub_urusan,
 			'k.status'=>5
 		])
 		->get();
@@ -145,17 +142,15 @@ class DUKUNGAN extends Controller
 	}
 
 	public function kegiatan($kode_daerah,$id_program){
-
-			$daerah=DB::table('public.master_daerah as d')
+		$id_sub_urusan=12;
+		$daerah=DB::table('public.master_daerah as d')
 		->select(
 			'd.*',
 			DB::RAW("(case when d.kode_daerah_parent is not null then  (select nama from public.master_daerah as pr where pr.id=d.kode_daerah_parent) else d.nama end) as nama_provinsi")
 		)
 		->where('d.id',$kode_daerah)->first();
 		$tahun=HP::fokus_tahun();
-			$id_urusan=3;
-		$id_sub_urusan=12;
-
+		
 
 		$data=DB::connection('sinkron_prokeg')->table("prokeg.tb_".$tahun."_kegiatan as k")
 		->leftJoin(
@@ -185,8 +180,7 @@ class DUKUNGAN extends Controller
 		)
 		->where('k.kode_daerah',$kode_daerah)
 		->where([
-			'k.id_sub_urusan'=>$id_urusan,
-			'k.id_sub_urusan'=>$id_sub_urusan,
+			'k.kode_lintas_urusan'=>$id_sub_urusan,
 			'k.status'=>5,
 			'k.id_program'=>$id_program
 		])

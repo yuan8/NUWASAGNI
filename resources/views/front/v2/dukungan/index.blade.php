@@ -10,12 +10,109 @@
 	</div>
 </div>
 
+<style type="text/css">
+  .info-box-m0 .info-box{
+    margin-bottom: 0px;
+  }
+</style>
 @stop
 
 @section('content')
+<div class="row no-gutter info-box-m0" >
+  <div class="col-md-3">
+    <div class="info-box bg-aqua">
+          <span class="info-box-icon"><i class="ion ion-pricetags"></i></span>
+
+          <div class="info-box-content">
+            <span class="info-box-text">JUMLAH PROGRAM</span>
+            <span class="info-box-number" style="font-size:13px;"></span>
+
+            <div class="progress">
+              <div class="progress-bar" style="width: 20%"></div>
+            </div>
+            <span class="progress-description" style="font-size:10px;">
+                  TOTAL PROGRAM
+                  <br> sjksjksjkjkj
+                </span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+  </div>
+  <div class="col-md-3">
+    <div class="info-box bg-yellow">
+          <span class="info-box-icon"><i class="ion ion-pricetags"></i></span>
+
+          <div class="info-box-content">
+            <span class="info-box-text">JUMLAH KEGIATAN</span>
+            <span class="info-box-number" style="font-size:13px;"></span>
+
+            <div class="progress">
+              <div class="progress-bar" style="width: 20%"></div>
+            </div>
+            <span class="progress-description" style="font-size:10px;">
+                  TOTAL KEGIATAN
+                  <br> sjksjksjkjkj
+                </span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+  </div>
+  <div class="col-md-3">
+    <div class="info-box bg-green">
+          <span class="info-box-icon"><i class="ion ion-card"></i></span>
+
+          <div class="info-box-content">
+            <span class="info-box-text">JUMLAH KEGIATAN</span>
+            <span class="info-box-number" style="font-size:13px;"></span>
+
+            <div class="progress">
+              <div class="progress-bar" style="width: 20%"></div>
+            </div>
+            <span class="progress-description" style="font-size:10px;">
+                  TOTAL KEGIATAN
+                  <br> sjksjksjkjkj
+                </span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="info-box bg-red">
+          <span class="info-box-icon" style="font-size:10px;line-height: 10px;">
+            <br>
+
+            <p>
+            DAERAH
+            TARGET
+            <br>
+            <b><h5>2017</h5></b>
+            <hr style="margin-bottom: 5px; margin-top: 5px; border-color:#fff;" >
+            <i>Tahun {{HP::fokus_tahun()}}</i>
+            </p>
+
+          </span>
+
+          <div class="info-box-content">
+            <span class="info-box-text">KETERSEDIAN DATA RKPD {{HP::fokus_tahun()}}</span>
+            <span class="info-box-number" style="font-size:13px;">shshj</span>
+
+            <div class="progress">
+              <div class="progress-bar" style="width: 20%"></div>
+            </div>
+            <span class="progress-description" style="font-size:10px;" >
+                  MASUK KEDALAM SISTEM
+                  <br> sjksjksjkjkj
+                </span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+  </div>
+
+</div>
 <div class="row no-gutter">
   <div class="col-md-12">
-    <div class="box">
+    <div class="box box-primary">
       <div class="box-body" id="column_chart"></div>
     </div>
   </div>
@@ -205,6 +302,7 @@
 
     ],
 		 drawCallback: function (settings) {
+      console.log('draw run');
 
         var api = this.api();
             var rows = api.rows( {page:'current'} ).nodes();
@@ -463,17 +561,18 @@
 
     });
 
-    $('.filter').on('change',function(){
-    	table_daerah.draw();
+
+table_daerah.on( 'order.dt search.dt', function () {
+     drawChart();
+}).draw();
 
 
-    setTimeout(function(){
-           var data_show=table_daerah.rows({ filter : 'applied'}).data();
+ function drawChart(){
+     setTimeout(function(){
+           var data_show=table_daerah.rows({ filter : 'applied', order:'applied'}).data();
 
             generate_data_chart(data_show);
             
-
-
             if(!chart==''){
              chart.destroy();
             }
@@ -582,12 +681,18 @@
                   }
               });
 
-          
+            
             
 
     },500);
+ }
 
-    });
+$('.filter').on('change',function(){
+    	table_daerah.draw();
+
+      drawChart();
+ 
+});
 
     $($('.filter')[0]).trigger('change');
 
