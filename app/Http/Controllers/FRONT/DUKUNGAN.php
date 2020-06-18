@@ -19,8 +19,7 @@ class DUKUNGAN extends Controller
 			'kode_daerah',
 			DB::raw("concat(jenis_bantuan,'||',tahun::text,'||',nilai_bantuan) as jenis_bantuan")
 		)
-		->where('tahun','<=',$tahun)
-		->orWhere('tahun',1)
+		->where('tahun','<=',$tahun+1)
 		->orWhere('tahun',null)
 		->get()->pluck(['jenis_bantuan'],'kode_daerah')->toArray();
 

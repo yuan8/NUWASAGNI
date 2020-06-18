@@ -366,7 +366,7 @@ var c={};
                   name:'Target NUWSP '+rows[i].regional,
                   index:99999,
                   type:'mapbubble',
-                  
+
                     minSize: 1,
                     maxSize: '3%',
                   
@@ -566,6 +566,13 @@ var c={};
         var data_all=JSON.stringify(res.data.data);
         data_all=JSON.parse(data_all);
         build_data(data_map_source.data);
+        var data_chace=[];
+
+        for(var i in data_all){
+          if(data_all[i].target){
+            data_chace.push(data_all[i]);
+          }
+        }
 
 
         map_table_index=$('#map_table_index').DataTable({
@@ -670,6 +677,9 @@ var c={};
           ]
         });
 
+        map_table_index.rows.add(data_chace).draw();
+
+
         map_table_index.on('order.dt search.dt', function () {
 
 
@@ -697,7 +707,6 @@ var c={};
 
 
 
-        map_table_index.rows.add(data_all).draw();
 
 
         $.fn.dataTable.ext.search.push(
