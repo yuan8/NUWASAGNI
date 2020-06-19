@@ -584,6 +584,8 @@ table_daerah.on('order.dt search.dt', function () {
 
             calculate_total(data_show,data_global);
             generate_data_chart(data_show);
+
+
             
             if(!chart==''){
              chart.destroy();
@@ -591,8 +593,16 @@ table_daerah.on('order.dt search.dt', function () {
 
              chart=Highcharts.chart('column_chart', {
                    chart: {
-                          zoomType: 'xy'
+                          zoomType: 'xy',
+                          scrollablePlotArea: {
+                              minWidth:(data_show.length * 150),
+                              scrollPositionX: 1
+                          },
+                          plotBorderWidth: 2,
                       },
+                  navigator: {
+                      enabled: true
+                    },
                   title: {
                       text: ''
                   },
@@ -601,35 +611,45 @@ table_daerah.on('order.dt search.dt', function () {
                   },
                   xAxis: {
                       categories: glob_var.category,
+                      gridLineWidth: 1,
+                      gridZIndex: 4,
+                      crosshair: true
                   },
                   yAxis: [
                     { // Primary yAxis
                         labels: {
                             format: 'Rp. {value}',
                             style: {
-                                color: Highcharts.getOptions().colors[2]
+                                color: '#222'
                             }
                         },
                         title: {
-                            text: 'JUMLAH',
+                            text: 'JUMLAH ANGGARAN',
                             style: {
-                                color: Highcharts.getOptions().colors[2]
+                                color: '#222'
                             }
                         },
-                        opposite: true
+                        lineWidth: 1,
+                        opposite: true,
+                        minRange:100000000,
+                        crosshair: true
+
 
                     }, { // Secondary yAxis
-                        gridLineWidth: 0,
+                        // gridLineWidth: 0,
+                        crosshair: true,
+                         // angle: 150,
+                      
                         title: {
-                            text: 'JUMLAH',
+                            text: 'JUMLAH PROGRAM / KEGIATAN',
                             style: {
-                                color: Highcharts.getOptions().colors[0]
+                                color: '#222' 
                             }
                         },
                         labels: {
                             format: '{value} ',
                             style: {
-                                color: Highcharts.getOptions().colors[0]
+                                color: '#222' 
                             }
                         }
 
@@ -647,6 +667,7 @@ table_daerah.on('order.dt search.dt', function () {
                   },
                  plotOptions: {
                       line: {
+                          lineWidth: 1,
                           dataLabels: {
                               enabled: true
                           },
