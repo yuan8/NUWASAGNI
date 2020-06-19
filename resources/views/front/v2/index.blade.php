@@ -569,7 +569,7 @@ var c={};
         var data_chace=[];
 
         for(var i in data_all){
-          if(data_all[i].target){
+          if(data_all[i].target!=null){
             data_chace.push(data_all[i]);
           }
         }

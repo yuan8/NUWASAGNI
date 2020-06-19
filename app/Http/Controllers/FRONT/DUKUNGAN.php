@@ -19,7 +19,7 @@ class DUKUNGAN extends Controller
 			'kode_daerah',
 			DB::raw("concat(jenis_bantuan,'||',tahun::text,'||',nilai_bantuan) as jenis_bantuan")
 		)
-		->where('tahun','<=',$tahun+1)
+		->where('tahun','<=',($tahun+1))
 		->orWhere('tahun',null)
 		->get()->pluck(['jenis_bantuan'],'kode_daerah')->toArray();
 
@@ -37,6 +37,9 @@ class DUKUNGAN extends Controller
 			DB::raw("count(k.id) as jumlah_kegiatan"),
 			DB::raw("sum(k.anggaran) as jumlah_anggaran"),
 			DB::raw("(select sum(anggaran) from prokeg.tb_".$tahun."_kegiatan as ka where ka.kode_daerah=d.id) as jumlah_anggaran_total "),
+			DB::raw("(select count(*) from prokeg.tb_".$tahun."_kegiatan as ka where ka.kode_daerah=d.id limit 1) as terdapat_data_rkpd_di_sistem "),
+			DB::raw("(select max(st.status) from prokeg.tb_".$tahun."_status_file_daerah as st where st.kode_daerah=d.id) as status_data_sipd "),
+			
 			DB::raw("replace('".route('d.program',['kode_daerah'=>'xxxxxx'])."','xxxxxx',d.id) as link_detail")
 		)
 		->whereIn('d.id',array_keys($kode_daerah))

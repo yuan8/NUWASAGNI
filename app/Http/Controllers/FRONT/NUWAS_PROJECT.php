@@ -226,10 +226,10 @@ class NUWAS_PROJECT extends Controller
             DB::raw("(select concat(nama_pdam,' -> ',kategori_pdam) from public.pdam  where pdam.kode_daerah = n.kode_daerah ) as pdam "),
              DB::raw("(select concat(c.nama,
                 (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=n.kode_daerah) as nama_daerah")
-        )->where('tahun','<=',$tahun)
+        )->where('tahun','<=',$tahun+1)
         ->orWhere('tahun',null)
-        ->orWhere('tahun',($tahun+1))
         ->get();
+
 
         $data_return=array(
             'all'=>[

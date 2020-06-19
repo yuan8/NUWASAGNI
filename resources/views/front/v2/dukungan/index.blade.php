@@ -14,25 +14,61 @@
   .info-box-m0 .info-box{
     margin-bottom: 0px;
   }
+  .pm0 p{
+    margin-bottom: 0px!important;
+  }
 </style>
 @stop
 
 @section('content')
-<div class="row no-gutter info-box-m0" >
+<div class="row no-gutter info-box-m0 pm0" >
+    <div class="col-md-3">
+    <div class="info-box bg-red">
+          <span class="info-box-icon" style="font-size:10px;line-height: 10px;">
+            <br>
+
+            <p>
+            DAERAH
+            TARGET
+            <br>
+            <b><h5 id="tt_daerah_target"></h5></b>
+            <hr style="margin-bottom: 5px; margin-top: 5px; border-color:#fff;" >
+            <i>Tahun {{HP::fokus_tahun()}}</i>
+            </p>
+
+          </span>
+
+          <div class="info-box-content">
+            <span class="info-box-text">KETERSEDIAN DATA RKPD {{HP::fokus_tahun()}}</span>
+            <span class="info-box-number" style="font-size:13px;" id="tt_rkpd" ></span>
+
+            <div class="progress">
+              <div class="progress-bar" style="width: 50%"></div>
+            </div>
+            <span class="progress-description" style="font-size:10px;" >
+                  MASUK KEDALAM SISTEM NUWSP
+                  <br> 
+                  <p id="tt_rkpd_sistem_air_minum"></p>
+                </span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+  </div>
   <div class="col-md-3">
     <div class="info-box bg-aqua">
           <span class="info-box-icon"><i class="ion ion-pricetags"></i></span>
 
           <div class="info-box-content">
-            <span class="info-box-text">JUMLAH PROGRAM</span>
-            <span class="info-box-number" style="font-size:13px;"></span>
+            <span class="info-box-text">TOTAL PROGRAM</span>
+            <span class="info-box-number" style="font-size:13px;" id="ttg_program"></span>
 
             <div class="progress">
-              <div class="progress-bar" style="width: 20%"></div>
+              <div class="progress-bar" style="width: 50%"></div>
             </div>
             <span class="progress-description" style="font-size:10px;">
-                  TOTAL PROGRAM
-                  <br> sjksjksjkjkj
+                  JUMLAH PROGRAM
+                  <br> 
+                  <p id="tt_program"></p>
                 </span>
           </div>
           <!-- /.info-box-content -->
@@ -43,15 +79,17 @@
           <span class="info-box-icon"><i class="ion ion-pricetags"></i></span>
 
           <div class="info-box-content">
-            <span class="info-box-text">JUMLAH KEGIATAN</span>
-            <span class="info-box-number" style="font-size:13px;"></span>
+            <span class="info-box-text">TOTAL KEGIATAN</span>
+            <span class="info-box-number" style="font-size:13px;" id="ttg_kegiatan"></span>
 
             <div class="progress">
-              <div class="progress-bar" style="width: 20%"></div>
+              <div class="progress-bar" style="width: 50%"></div>
             </div>
             <span class="progress-description" style="font-size:10px;">
-                  TOTAL KEGIATAN
-                  <br> sjksjksjkjkj
+                  JUMLAH KEGIATAN
+                  <br> 
+                  <p id="tt_kegiatan"></p>
+
                 </span>
           </div>
           <!-- /.info-box-content -->
@@ -62,52 +100,24 @@
           <span class="info-box-icon"><i class="ion ion-card"></i></span>
 
           <div class="info-box-content">
-            <span class="info-box-text">JUMLAH KEGIATAN</span>
-            <span class="info-box-number" style="font-size:13px;"></span>
+            <span class="info-box-text">TOTAL ANGGARAN</span>
+            <span class="info-box-number" style="font-size:13px;" id="ttg_anggaran"></span>
 
             <div class="progress">
-              <div class="progress-bar" style="width: 20%"></div>
+              <div class="progress-bar" style="width: 50%"></div>
             </div>
             <span class="progress-description" style="font-size:10px;">
-                  TOTAL KEGIATAN
-                  <br> sjksjksjkjkj
+                  JUMLAH ANGGARAN
+                  <br> 
+                  <p id="tt_anggaran"></p>
+
                 </span>
           </div>
           <!-- /.info-box-content -->
         </div>
   </div>
 
-  <div class="col-md-3">
-    <div class="info-box bg-red">
-          <span class="info-box-icon" style="font-size:10px;line-height: 10px;">
-            <br>
 
-            <p>
-            DAERAH
-            TARGET
-            <br>
-            <b><h5>2017</h5></b>
-            <hr style="margin-bottom: 5px; margin-top: 5px; border-color:#fff;" >
-            <i>Tahun {{HP::fokus_tahun()}}</i>
-            </p>
-
-          </span>
-
-          <div class="info-box-content">
-            <span class="info-box-text">KETERSEDIAN DATA RKPD {{HP::fokus_tahun()}}</span>
-            <span class="info-box-number" style="font-size:13px;">shshj</span>
-
-            <div class="progress">
-              <div class="progress-bar" style="width: 20%"></div>
-            </div>
-            <span class="progress-description" style="font-size:10px;" >
-                  MASUK KEDALAM SISTEM
-                  <br> sjksjksjkjkj
-                </span>
-          </div>
-          <!-- /.info-box-content -->
-        </div>
-  </div>
 
 </div>
 <div class="row no-gutter">
@@ -273,6 +283,7 @@
       {
         name:'TOTAL ANGGARAN',
         type:'line',
+        color:'red',
         yAxis:0,
 
         data:[],
@@ -346,7 +357,7 @@
           for(var i=6;i<9;i++){
              $(api.table().column(i).footer()).html(
                 formatNumber($(api.table().column(i).footer()).html(),0)
-              ); 
+            ); 
           }
 		  },
 		createdRow:function(row,data,dataIndex,cells){
@@ -429,7 +440,6 @@
 
         }
       },
-
 			{
         orderable:false,
         
@@ -570,7 +580,9 @@ table_daerah.on('order.dt search.dt', function () {
  function drawChart(){
      setTimeout(function(){
            var data_show=table_daerah.rows({ filter : 'applied', order:'applied'}).data();
+           var data_global=table_daerah.rows().data();
 
+            calculate_total(data_show,data_global);
             generate_data_chart(data_show);
             
             if(!chart==''){
@@ -690,9 +702,73 @@ table_daerah.on('order.dt search.dt', function () {
 $('.filter').on('change',function(){
     	table_daerah.draw();
 
+    
+
+
       drawChart();
  
 });
+
+
+function calculate_total(data,dataGlob=[]){
+  var tt_rkpd=0;
+  var tt_rkpd_sistem=0;
+  var tt_rkpd_sistem_air_minum=0;
+
+  var tt_program=0;
+  var ttg_program=0;
+
+  var tt_kegiatan=0;
+  var ttg_kegiatan=0;
+
+  var tt_anggaran=0;
+  var ttg_anggaran=0;
+
+  var tt_daerah_target=0;
+
+
+  data.each(function(d){
+    tt_program+=d.jumlah_program!=null?parseFloat(d.jumlah_program):0;
+    tt_anggaran+=d.jumlah_anggaran!=null?parseFloat(d.jumlah_anggaran):0;
+    tt_kegiatan+=d.jumlah_kegiatan!=null?parseFloat(d.jumlah_kegiatan):0;
+    tt_daerah_target+=1;
+
+    if(d.jumlah_kegiatan!=0){
+      tt_rkpd_sistem_air_minum+=1;
+    }
+
+    if(d.terdapat_data_rkpd_di_sistem){
+       tt_rkpd_sistem+=1;
+    }
+
+  });
+
+  $('#tt_daerah_target').html(formatNumber(tt_daerah_target,0));
+  $('#tt_anggaran').html('Rp. '+formatNumber(tt_anggaran,3));
+  $('#tt_program').html(formatNumber(tt_program,0));
+  $('#tt_kegiatan').html(formatNumber(tt_kegiatan,0));
+  $('#tt_rkpd_sistem_air_minum').html(formatNumber(tt_rkpd_sistem,0)+' RKPD / '+formatNumber(tt_rkpd_sistem_air_minum,0)+' Memuat Air Minum');
+
+  dataGlob.each(function(d){
+    if(d.status_data_sipd==5){
+        tt_rkpd+=1;
+    }
+
+    ttg_program+=d.jumlah_program!=null?parseFloat(d.jumlah_program):0;
+    ttg_anggaran+=d.jumlah_anggaran!=null?parseFloat(d.jumlah_anggaran):0;
+    ttg_kegiatan+=d.jumlah_kegiatan!=null?parseFloat(d.jumlah_kegiatan):0;
+
+  });
+
+  $('#tt_rkpd').html(formatNumber(tt_rkpd,0)+' DAERAH MELAPOR RKPD');
+  $('#ttg_program').html(formatNumber(ttg_program,0));
+  $('#ttg_kegiatan').html(formatNumber(ttg_kegiatan,0));
+  $('#ttg_anggaran').html(formatNumber(ttg_anggaran,0));
+
+
+
+
+}
 
     $($('.filter')[0]).trigger('change');
 
