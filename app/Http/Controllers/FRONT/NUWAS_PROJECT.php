@@ -274,6 +274,9 @@ class NUWAS_PROJECT extends Controller
             'r.color',
             DB::raw("(case when n.kode_daerah is not null then 'target' else null end) as target"),
             'r.regional',
+
+            DB::raw("(select string_agg(distinct(f.jenis),'||') from public.dokumen_kebijakan_daerah as f where f.jenis <> 'LAIN_LAIN' and f.tahun <=".$tahun." and f.tahun_selesai <=".$tahun." and f.kode_daerah=r.kode_daerah) as doc_kebijakan_daerah"),
+            DB::raw("(replace('".route('ty.daerah',['kode_daerah'=>'xxx'])."','xxx',r.kode_daerah)) as link_tipologi"),
             DB::raw("(select concat(nama_pdam,' -> ',kategori_pdam) from public.pdam  where pdam.kode_daerah = n.kode_daerah ) as pdam "),
              DB::raw("(select concat(c.nama,
                 (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=r.kode_daerah) as nama_daerah")
@@ -343,15 +346,13 @@ class NUWAS_PROJECT extends Controller
               if(in_array('@PENDAMPING', $jenis_bantuan)){
                 $df=(array)$d;
                     unset($df['color']);
-
-
                   $data_return['t'.$d->tahun]['pendamping']['data'][]=$df;
                   $data_return['t'.$d->tahun]['pendamping']['jumlah_daerah']+=1;
 
               }
             }
 
-
+// #2d2c36
         }
 
         $data_return['data']=$reg;

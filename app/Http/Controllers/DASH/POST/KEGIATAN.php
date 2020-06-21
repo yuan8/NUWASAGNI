@@ -15,6 +15,18 @@ class KEGIATAN extends Controller
     //
 
 
+    public function index(Request $request){
+        $tahun=HP::fokus_tahun();
+            $data=DB::table('album')
+            ->where('created_at','<=',Carbon::parse('01/12/'.$tahun)->endOfMonth())
+            ->where('created_at','>=',Carbon::parse('01/12/'.$tahun)->startOfMonth());
+            if($request->q){
+                $data=$data->where('title','ilike',('%'.$request->q.'%'));
+            }
+            $data=$data->paginate(10);
+            return view('dash.post.kegiatan.index',['data'=>$data]);
+    }
+
     public function create(){
     	return view('dash.post.kegiatan.create');
 
@@ -31,7 +43,7 @@ class KEGIATAN extends Controller
 
     	if($valid->fails()){
     		Alert::error('errro');
-    		dd($valid);
+    		
 
     	}else{
     		$path_file=null;

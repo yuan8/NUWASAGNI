@@ -68,9 +68,9 @@ class LoginController extends Controller
 
                $user=DB::table('users')->where('email',$request->email)->first();
                 if($user->password==md5($request->password)){
-                     Auth::loginUsingId($user->id, true);
+                    session(['fokus_tahun' => $request->tahun_akses]);
 
-                    
+                    Auth::loginUsingId($user->id, true);
 
                     session(['fokus_tahun' => $request->tahun_akses]);
                    

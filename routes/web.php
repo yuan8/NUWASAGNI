@@ -17,6 +17,8 @@ Route::middleware('auth:web')->get('logout',function(){
 	Auth::logout();
 	return redirect('/');
 });
+
+
 Route::middleware('auth:web')->group(function(){
 	Route::get('/home',function(){
 		return redirect('/');
@@ -57,7 +59,7 @@ Route::middleware('auth:web')->group(function(){
 
 	Route::prefix('typologi')->group(function(){
 		Route::get('/','FRONT\TYPOLOGI@index')->name('ty.index');
-		Route::get('/{kode_daerah}/dinas','FRONT\TYPOLOGI  @detail_daerah')->name('ty.daerah');
+		Route::get('/{kode_daerah}/dinas','FRONT\TYPOLOGI@detail_daerah')->name('ty.daerah');
 
 
 	
@@ -103,7 +105,7 @@ Route::middleware('auth:web')->group(function(){
 
 	});
 
-Route::get('/','FRONT\Dashboard@index');
+	Route::get('/','FRONT\Dashboard@index');
 
 });
 

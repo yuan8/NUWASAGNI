@@ -243,7 +243,6 @@
     </div>
     <div class="box-body table-responsive">
       <table class="table-condensed table table-bordered" id="map_table_index" style="width: 100%; font-size:11px;">
-
         <thead>
           <tr>
             <th>REGIONAL</th>
@@ -631,27 +630,36 @@ var c={};
                data:'nama_daerah'
             },
             {
+              render:function(data,type,dataRow){
+                return '<a href="'+dataRow.link_tipologi+'" target="_blank" class="bg-orange btn btn-xs text-dark ">TIPOLOGI</a>';
+              }
+            },
+              {
               render:function(){
+                // l wil
                 return '';
               }
             },
               {
               render:function(){
+                // jumlah pp
                 return '';
               }
             },
               {
               render:function(){
-                return '';
-              }
-            },
-              {
-              render:function(){
+                //ikfd
                 return '';
               }
             },
              {
-              render:function(){
+              render:function(data,type,dataRow){
+
+                if(dataRow.pdam){
+                  var pdam=dataRow.pdam.split('->');
+                  return '<b>NAMA PDAM : </b> '+pdam[0]+'<br>'+'<b>KATEGORI PDAM  : </b> '+pdam[1];
+                }
+
                 return '';
               }
             },
@@ -664,7 +672,11 @@ var c={};
               }
             },
             {
-              render:function(){
+              render:function(data,style,dataRow){
+                var doc=dataRow.doc_kebijakan_daerah;
+                if(doc){
+                  return doc.replace(/['||']/g,' , ');
+                }
                 return '';
               }
             },

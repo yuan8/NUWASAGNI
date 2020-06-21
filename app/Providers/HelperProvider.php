@@ -67,10 +67,10 @@ class HelperProvider extends ServiceProvider
     static public function fokus_tahun(){
         if(Auth::User()){
             $tahun=(int)session('fokus_tahun');
-            if((!empty($tahun) and($tahun>=2018)) and ($tahun!='') ){
+            if((!empty($tahun) and($tahun>=2018)) and ($tahun!='') and $tahun!=0 ){
                 return $tahun;
             }else{
-
+                header("Location: ".route('login'));
                 Auth::logout();
                 header("Location: ".route('login'));
             }

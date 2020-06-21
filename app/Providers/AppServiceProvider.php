@@ -52,11 +52,34 @@ class AppServiceProvider extends ServiceProvider
                     ]
                 ]);
 
-                $event->menu->add([
-                    'text' => 'ONLINE MEET',
-                     'can'=>'role.admin',
+                // $event->menu->add([
+                //     'text' => 'ONLINE MEET',
+                //      'can'=>'role.admin',
 
-                    'url'=>route('d.meet.index')
+                //     'url'=>route('d.meet.index')
+                // ]);
+
+
+                $event->menu->add([
+                    'text' => 'KEGIATAN',
+                     'can'=>'role.admin',
+                     'submenu'=>[
+                        [
+                            'text'=>'Post',
+                            'url'=>route('d.post.kegiatan.index')
+
+
+                        ],
+                         [
+                            'text'=>'Tambah Post',
+                            'url'=>route('d.post.kegiatan.create')
+
+                            
+
+                        ]
+
+                     ]
+                   
                 ]);
 
               
@@ -160,17 +183,17 @@ class AppServiceProvider extends ServiceProvider
                  $event->menu->add([
                     'text' => 'PETA DUKUNGAN',
                     'icon'=>'fa fa-map',
-                    'url'=>route('d.index')
-                    // 'submenu'=>[
-                    //     [
-                    //         'text'=>'PER DAERAH (AIR MINUM) - CHART',
-                    //         'url'=>route('p.prokeg')
-                    //     ],
-                    //      [
-                    //         'text'=>'PER DAERAH (AIR MINUM) - TABLE',
-                    //         'url'=>route('pr.table')
-                    //     ]
-                    // ]
+                   
+                    'submenu'=>[
+                        [
+                            'text'=>'PER DAERAH (AIR MINUM) - CHART',
+                            'url'=>route('p.prokeg')
+                        ],
+                         [
+                            'text'=>'PER DAERAH (AIR MINUM) - TABLE',
+                            'url'=> route('d.index')
+                        ]
+                    ]
                     
                 ]);
 

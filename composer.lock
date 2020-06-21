@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "75e710e9980be05f726498c5b44510e8",
+    "content-hash": "970600c7ec6adbbc4cd791b9a557a2d0",
     "packages": [
         {
             "name": "chumper/zipper",
@@ -584,6 +584,43 @@
                 "laravel"
             ],
             "time": "2019-09-05T18:22:01+00:00"
+        },
+        {
+            "name": "ksoft/laravel-contentbuilderjs",
+            "version": "1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kikoseijo/laravel-contentbuilderjs.git",
+                "reference": "c87cb6db61705f9692a012f8d5c2a0fd29073102"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kikoseijo/laravel-contentbuilderjs/zipball/c87cb6db61705f9692a012f8d5c2a0fd29073102",
+                "reference": "c87cb6db61705f9692a012f8d5c2a0fd29073102",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ksoft\\ContentBuilderJs\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kiko Seijo",
+                    "email": "kiko@sunnyface.com"
+                }
+            ],
+            "description": "Content builder package for laravel",
+            "keywords": [
+                "ContentBuilderJS",
+                "laravel"
+            ],
+            "time": "2017-07-21T11:59:04+00:00"
         },
         {
             "name": "laravel/framework",
