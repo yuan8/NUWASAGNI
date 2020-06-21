@@ -201,9 +201,8 @@ class NUWAS_PROJECT extends Controller
 
     }
 
-    public function api_daerah_target(){
+    static public function api_daerah_target(){
         $tahun=HP::fokus_tahun();
-
         $data=DB::table('daerah_nuwas as n')->select(
             'n.*',
              DB::raw("(select concat(c.nama,
@@ -213,7 +212,7 @@ class NUWAS_PROJECT extends Controller
         return view('front.nuwas_project.table_daerah_target')->with('data',$data)->render();
     }
 
-    public function api_daerah_target_2_tahun(){
+    public function api_daerah_target_2_tahun($get_data_only=false){
         $tahun=(int)HP::fokus_tahun();
 
 
@@ -280,10 +279,13 @@ class NUWAS_PROJECT extends Controller
             DB::raw("(select concat(nama_pdam,' -> ',kategori_pdam) from public.pdam  where pdam.kode_daerah = n.kode_daerah ) as pdam "),
              DB::raw("(select concat(c.nama,
                 (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=r.kode_daerah) as nama_daerah")
-        )->orderBy('n.tahun','asc')->get();
+        )
+        ->orderBy('r.kode_daerah','asc')
+        ->orderBy('n.tahun','asc')
+        ->get();
 
 
-
+        $data_reg_all=[];
         foreach ($reg as $key => $d) {
 
             if(!isset( $data_return['all'][strtolower(str_replace(' ','' ,str_replace(',', '', $d->regional)))]['jumlah_daerah'])){
@@ -291,6 +293,50 @@ class NUWAS_PROJECT extends Controller
             }
 
             $dr=(array)$d;
+            if($dr['target']){
+                 $append=(array)DB::connection('sinkron_prokeg')
+                    ->table('prokeg.tb_'.$tahun.'_kegiatan as k')
+
+                    ->select(
+                        DB::raw("count(distinct(k.id_program)) as jumlah_program"),
+                        DB::raw("count(*) as jumlah_kegiatan"),
+                        DB::raw("max(k.status) as status_rkpd_sistem")
+
+                    )
+                    ->where('k.kode_lintas_urusan',12)
+                    ->where('k.kode_daerah',$dr['kode_daerah'])
+                    ->where('k.status',5)
+
+                    ->first();
+
+                    $dr['jumlah_program']=(int) $append['jumlah_program'];
+                    $dr['jumlah_kegiatan']=(int) $append['jumlah_kegiatan'];
+                    $dr['status_rkpd_sistem']=(int) $append['status_rkpd_sistem'];
+
+
+
+                    $append=(array)DB::connection('sinkron_prokeg')
+                    ->table('prokeg.tb_'.($tahun+1).'_kegiatan as k')
+
+                    ->select(
+                        DB::raw("count(distinct(k.id_program)) as jumlah_program_1"),
+                        DB::raw("count(*) as jumlah_kegiatan_1"),
+                        DB::raw("max(k.status) as status_rkpd_sistem_1")
+
+                    )
+                    ->where('k.kode_lintas_urusan',12)
+                    ->where('k.kode_daerah',$dr['kode_daerah'])
+                    ->where('k.status',5)
+
+                    ->first();
+
+                    $dr['jumlah_program_1']=(int)$append['jumlah_program_1'];
+                    $dr['jumlah_kegiatan_1']=(int)$append['jumlah_kegiatan_1'];
+                    $dr['status_rkpd_sistem_1']=(int)$append['status_rkpd_sistem_1'];
+
+
+            }
+
             if($dr['tahun']){
                 $dr['z']=0.1;
                 $dr['id']=$key;
@@ -304,6 +350,9 @@ class NUWAS_PROJECT extends Controller
                     ]
 
                 ];
+
+
+
 
                 $data_return['point_target']['data'][]=$dr;
 
@@ -326,7 +375,15 @@ class NUWAS_PROJECT extends Controller
             $data_return['all'][strtolower(str_replace(' ','' ,str_replace(',', '', $d->regional)))]['color']=$d->color;
             $data_return['all'][strtolower(str_replace(' ','' ,str_replace(',', '', $d->regional)))]['name']=$d->regional;
 
+            $dr['color']=$d->color;
+            $data_reg_all[]=$dr;
+
             # code...
+        }
+
+
+        if($get_data_only){
+            return $data_return['point_target'];
         }
 
         foreach ($data as $key => $d) {
@@ -355,7 +412,7 @@ class NUWAS_PROJECT extends Controller
 // #2d2c36
         }
 
-        $data_return['data']=$reg;
+        $data_return['data']=$data_reg_all;
         
         return $data_return;
 

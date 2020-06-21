@@ -438,12 +438,10 @@ var c={};
         });
 
 
-        console.log(series_chace);
         for(var i in series_map){
           
           if(typeof (series_chace[i])==='undefined'){
               series_map[i].data_region_target.data=[];
-              console.log('data series '+i+' di delete');
           }else{
               series_map[i].data_region_target.data=series_chace[i].data;
 
@@ -675,14 +673,29 @@ var c={};
               render:function(data,style,dataRow){
                 var doc=dataRow.doc_kebijakan_daerah;
                 if(doc){
-                  return doc.replace(/['||']/g,' , ');
+                  return doc.replace(/['||']/g,' , ') +'<br><a class="btn btn-primary btn-xs">Detail Dokumen</a>';
                 }
                 return '';
               }
             },
             {
-              render:function(){
-                return '';
+              render:function(data,style,dataRow){
+                var dm='';
+                if(dataRow.nama_daerah=='KABUPATEN DELI SERDANG / PROVINSI SUMATERA UTARA'){
+                }
+
+
+                if(dataRow.jumlah_kegiatan){
+
+                  dm+='<a href="" class="btn btn-success btn-xs">RKPD {{HP::fokus_tahun()}}</a>';
+                }
+
+                if(dataRow.jumlah_kegiatan_1){
+                  dm+='<a href="" class="btn btn-success btn-xs">RKPD {{HP::fokus_tahun()+1}}</a>';
+                }
+
+
+                return dm;
               }
             },
            
@@ -694,9 +707,19 @@ var c={};
 
         map_table_index.on('order.dt search.dt', function () {
 
+          sRun();
 
 
         }).draw();
+
+        function sRun(){
+          setTimeout(function(){
+              var data=map_table_index.rows({ filter : 'applied', order:'applied'}).data(); 
+              
+              build_data_map(data);
+
+            },1000);
+        }
 
         $('.filter').on('change',function(){
               map_table_index.draw();        
