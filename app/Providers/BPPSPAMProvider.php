@@ -107,7 +107,7 @@ class BPPSPAMProvider extends ServiceProvider
         }
 
             if(!Schema::hasTable($schema_public.'master_daerah')){
-                Schema::connection($con)->create($schema_public.'master_daerah',function(Blueprint $table)use($tahun,$schema){
+                Schema::connection($con)->create($schema_public.'master_daerah',function(Blueprint $table)use($schema){
 
                     $table->string('id',4)->primary()->unique();
                     $table->string('nama')->unique();
@@ -124,7 +124,7 @@ class BPPSPAMProvider extends ServiceProvider
             }
 
             if(!Schema::hasTable($schema.'master_bppspam_pdam')){
-                Schema::connction($con)->create($schema.'master_bppspam_pdam',function(Blueprint $table)use($tahun,$schema){
+                Schema::connction($con)->create($schema.'master_bppspam_pdam',function(Blueprint $table)use($schema){
                     $table->bigIncrements('id');
                     $table->string('kodepemda',4)->default(0)->unique();
                     $table->string('nama_pdam',300)->default('');
