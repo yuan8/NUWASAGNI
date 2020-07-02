@@ -6,6 +6,15 @@ Route::prefix('bot')->group(function(){
 			Route::get('/cek/{id}','BOT\SAT@checking');
 	});
 	
+
+	Route::prefix('bppspam')->group(function(){
+			Route::get('/storing',function(){
+				
+				BPPSPAM::storing('mybppspam');
+			});
+			
+	});
+	
 	Route::prefix('bangda')->group(function(){
 			Route::get('/news','BOT\BANGDA@listing');
 

@@ -600,7 +600,20 @@ class SAT extends Controller
 
                 }
 
+                $data_string = json_encode('{text:"SAT updated at: "'.Carbon::now().'}');
+                $ch=curl_init(' https://hooks.slack.com/services/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');
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+                curl_setopt($ch, CURLOPT_HEADER, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER,
+                    array(
+                        'Content-Type:application/json',
+                        'Content-Length: ' . strlen($data_string)
+                    )
+                );
 
+                $result = curl_exec($ch);
+                curl_close($ch);
 
             }
             // end else

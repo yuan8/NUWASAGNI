@@ -133,6 +133,19 @@ return [
             'schema' => 'simspam',
             'sslmode' => 'prefer',
         ],
+
+        'myfbppspam' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', 'localhost'),
+            'port' =>3306,
+            'database' => 'bppspam',
+            'username' => 'root',
+            'password' =>null,
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),

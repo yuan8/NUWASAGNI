@@ -228,8 +228,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
         'HP' => App\Providers\HelperProvider::class,
+        'BPPSPAM' => App\Providers\BPPSPAMProvider::class,
         'Zipper' => 'Chumper\Zipper\Zipper',
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
 

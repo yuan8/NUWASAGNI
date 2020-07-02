@@ -2639,5 +2639,81 @@
         "verifikasi_satker": "pending",
         "url": "http://nuwsp.labsgue.com/penilaian/survey/view/U3VSdjN5IUAjNWU3NDJiMzIzZDcyODcuODkxMjA1Mjc",
         "data_detail": []
+    },
+    {
+        "id": "U3VSdjN5IUAjNWVjZjNiNjUzMDVjZTguNTg5NjUwNTc",
+        "nama_pdam": "Kab Tanah Laut",
+        "kode_daerah": "",
+        "kota": "KABUPATEN TANAH LAUT",
+        "provinsi": " KALIMANTAN SELATAN",
+        "date_input": "28-May-2020",
+        "range_bulan_berlaku": [
+            "Januari",
+            "Desember"
+        ],
+        "tahun_laporan": "2019",
+        "keterangan": "",
+        "verifikasi_provinsi": "pending",
+        "verifikasi_regional": "pending",
+        "verifikasi_satker": "pending",
+        "url": "http://nuwsp.labsgue.com/penilaian/survey/view/U3VSdjN5IUAjNWVjZjNiNjUzMDVjZTguNTg5NjUwNTc",
+        "data_detail": []
+    },
+    {
+        "id": "U3VSdjN5IUAjNWVjZjNmM2ViZjYwMTUuNjEwMDc3NzM",
+        "nama_pdam": "Kab Ponorogo",
+        "kode_daerah": "",
+        "kota": "KABUPATEN PONOROGO",
+        "provinsi": " JAWA TIMUR",
+        "date_input": "17-Oct-2019",
+        "range_bulan_berlaku": [
+            "Januari",
+            "Desember"
+        ],
+        "tahun_laporan": "2018",
+        "keterangan": "",
+        "verifikasi_provinsi": "pending",
+        "verifikasi_regional": "pending",
+        "verifikasi_satker": "pending",
+        "url": "http://nuwsp.labsgue.com/penilaian/survey/view/U3VSdjN5IUAjNWVjZjNmM2ViZjYwMTUuNjEwMDc3NzM",
+        "data_detail": []
+    },
+    {
+        "id": "U3VSdjN5IUAjNWVkMDlmZTEzMWUwODcuMjc2NTc1NjE",
+        "nama_pdam": "Kab Lamongan",
+        "kode_daerah": "",
+        "kota": "KABUPATEN LAMONGAN",
+        "provinsi": " JAWA TIMUR",
+        "date_input": "29-May-2020",
+        "range_bulan_berlaku": [
+            "Januari",
+            "Desember"
+        ],
+        "tahun_laporan": "2019",
+        "keterangan": "",
+        "verifikasi_provinsi": "pending",
+        "verifikasi_regional": "pending",
+        "verifikasi_satker": "pending",
+        "url": "http://nuwsp.labsgue.com/penilaian/survey/view/U3VSdjN5IUAjNWVkMDlmZTEzMWUwODcuMjc2NTc1NjE",
+        "data_detail": []
+    },
+    {
+        "id": "U3VSdjN5IUAjNWVkNWI5NWU1ODhmODYuOTY1MjMzNzg",
+        "nama_pdam": "Kota Bitung",
+        "kode_daerah": "",
+        "kota": "KOTA BITUNG",
+        "provinsi": " SULAWESI UTARA",
+        "date_input": "02-Jun-2020",
+        "range_bulan_berlaku": [
+            "Januari",
+            "Desember"
+        ],
+        "tahun_laporan": "2019",
+        "keterangan": "",
+        "verifikasi_provinsi": "pending",
+        "verifikasi_regional": "pending",
+        "verifikasi_satker": "pending",
+        "url": "http://nuwsp.labsgue.com/penilaian/survey/view/U3VSdjN5IUAjNWVkNWI5NWU1ODhmODYuOTY1MjMzNzg",
+        "data_detail": []
     }
 ]

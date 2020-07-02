@@ -12,7 +12,7 @@ const fs = require('fs');
 const page={};
 var id=-1;
 
-var nampak=true;
+var nampak=false;
 
 var link_data=[];
 
@@ -47,10 +47,16 @@ async function login() {
   }
 }
 
+function delay(time) {
+   return new Promise(function(resolve) { 
+       setTimeout(resolve, time)
+   });
+}
+
 async function scaningData(page){
 	 await page.goto('http://nuwsp.labsgue.com/penilaian/survey',{ waitUntil: 'networkidle0' });
-
-     const result = await page.evaluate(()=>{
+   await delay(4000);
+    const result = await page.evaluate(()=>{
               
           		var table=$('#DataTables_Table_0').DataTable();
           		 table.destroy();
@@ -85,10 +91,12 @@ async function scaningData(page){
 
           		 // return pdam;
 
+    });
 
-          });
      console.log('pengambilan semua path selesai -- mulai mengambil detail data --');
-     link_data=result;
+
+
+      link_data=result;
       fs.writeFileSync('./storage/file/link.json',JSON.stringify(result,undefined,4));
      if(link_data[id+1]!=undefined){
          setTimeout(function(){
@@ -291,7 +299,6 @@ var data=link_data[id];
 
    });
 
-  dsd
    var ss= await page.evaluate(()=>{
           setTimeout(function () {
              return Promise.resolve(1);
@@ -299,7 +306,6 @@ var data=link_data[id];
      });
  
 
-  console.log(result);
    result['id']=data.id;
    result['nama_pdam']='PDAM '+(result['sat_nama_pdam'].split('/')[0].trim()) ;
    result['kode_daerah']=null;
