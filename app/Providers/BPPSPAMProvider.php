@@ -126,7 +126,7 @@ class BPPSPAMProvider extends ServiceProvider
             if(!Schema::hasTable($schema.'master_bppspam_pdam')){
                 Schema::connection($con)->create($schema.'master_bppspam_pdam',function(Blueprint $table)use($schema,$schema_public){
                     $table->bigIncrements('id');
-                    $table->string('kodepemda',4)->default(0)->unique();
+                    $table->string('kodepemda',4)->unique()->unsigned();
                     $table->string('nama_pdam',300)->default('');
                     $table->string('kordinat',300)->nullable();
                     $table->text('alamat')->nullable();
