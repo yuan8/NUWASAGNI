@@ -107,7 +107,7 @@ class BPPSPAMProvider extends ServiceProvider
         }
 
             if(!Schema::hasTable($schema_public.'master_daerah')){
-                Schema::connection($con)->create($schema_public.'master_daerah',function(Blueprint $table)use($schema){
+                Schema::connection($con)->create($schema_public.'master_daerah',function(Blueprint $table)use($schema,$schema_public){
 
                     $table->string('id',4)->primary()->unique();
                     $table->string('nama')->unique();
@@ -124,7 +124,7 @@ class BPPSPAMProvider extends ServiceProvider
             }
 
             if(!Schema::hasTable($schema.'master_bppspam_pdam')){
-                Schema::connection($con)->create($schema.'master_bppspam_pdam',function(Blueprint $table)use($schema){
+                Schema::connection($con)->create($schema.'master_bppspam_pdam',function(Blueprint $table)use($schema,$schema_public){
                     $table->bigIncrements('id');
                     $table->string('kodepemda',4)->default(0)->unique();
                     $table->string('nama_pdam',300)->default('');
@@ -159,7 +159,7 @@ class BPPSPAMProvider extends ServiceProvider
 
             for($tahun=$tahun_fokus;$tahun>=($tahun_fokus-3);$tahun--){
                 if(!Schema::hasTable($schema.'bppsam_'.$tahun.'_nilai')){
-                    Schema::connection($con)->create($schema.'bppsam_'.$tahun.'_nilai',function(Blueprint $table)use($tahun,$schema){
+                    Schema::connection($con)->create($schema.'bppsam_'.$tahun.'_nilai',function(Blueprint $table)use($tahun,$schema,$schema_public){
                         $table->bigIncrements('id');
                         $table->bigInteger('id_pdam')->unsigned();
                         $table->tinyInteger('kode_buku')->default(0);
@@ -201,7 +201,7 @@ class BPPSPAMProvider extends ServiceProvider
                 }
 
                 if(!Schema::hasTable($schema.'bppsam_'.$tahun.'_penilaian')){
-                    Schema::connection($con)->create($schema.'bppsam_'.$tahun.'_penilaian',function(Blueprint $table)use($tahun,$schema){
+                    Schema::connection($con)->create($schema.'bppsam_'.$tahun.'_penilaian',function(Blueprint $table)use($tahun,$schema,$schema_public){
 
                         $table->bigIncrements('id');
                         $table->bigInteger('id_pdam')->unsigned();
