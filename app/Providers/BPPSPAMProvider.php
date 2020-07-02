@@ -101,7 +101,7 @@ class BPPSPAMProvider extends ServiceProvider
 
         }else{
             $schema='bppspam.';
-            $schema_public='bppspam.';
+            $schema_public='';
 
 
         }
