@@ -124,7 +124,7 @@ class BPPSPAMProvider extends ServiceProvider
             }
 
             if(!Schema::hasTable($schema.'master_bppspam_pdam')){
-                Schema::connction($con)->create($schema.'master_bppspam_pdam',function(Blueprint $table)use($schema){
+                Schema::connection($con)->create($schema.'master_bppspam_pdam',function(Blueprint $table)use($schema){
                     $table->bigIncrements('id');
                     $table->string('kodepemda',4)->default(0)->unique();
                     $table->string('nama_pdam',300)->default('');
@@ -159,7 +159,7 @@ class BPPSPAMProvider extends ServiceProvider
 
             for($tahun=$tahun_fokus;$tahun>=($tahun_fokus-3);$tahun--){
                 if(!Schema::hasTable($schema.'bppsam_'.$tahun.'_nilai')){
-                    Schema::connction($con)->create($schema.'bppsam_'.$tahun.'_nilai',function(Blueprint $table)use($tahun,$schema){
+                    Schema::connection($con)->create($schema.'bppsam_'.$tahun.'_nilai',function(Blueprint $table)use($tahun,$schema){
                         $table->bigIncrements('id');
                         $table->bigInteger('id_pdam')->unsigned();
                         $table->tinyInterger('kode_buku')->default(0);
@@ -201,7 +201,7 @@ class BPPSPAMProvider extends ServiceProvider
                 }
 
                 if(!Schema::hasTable($schema.'bppsam_'.$tahun.'_penilaian')){
-                    Schema::connction($con)->create($schema.'bppsam_'.$tahun.'_penilaian',function(Blueprint $table)use($tahun,$schema){
+                    Schema::connection($con)->create($schema.'bppsam_'.$tahun.'_penilaian',function(Blueprint $table)use($tahun,$schema){
 
                         $table->bigIncrements('id');
                         $table->bigInteger('id_pdam')->unsigned();
