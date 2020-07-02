@@ -10,7 +10,7 @@ Route::prefix('bot')->group(function(){
 	Route::prefix('bppspam')->group(function(){
 			Route::get('/storing',function(){
 				
-				BPPSPAM::storing('mybppspam');
+				BPPSPAM::storingdata('mybppspam');
 			});
 			
 	});
