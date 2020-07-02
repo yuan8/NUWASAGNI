@@ -148,7 +148,7 @@ class BPPSPAMProvider extends ServiceProvider
                     $table->string('kategori_pdam_bppspam')->nullable();
                     $table->timestamps();
 
-                    $table->references('kodepemda')->on($schema_public.'master_daerah')
+                    $table->foreign('kodepemda')->references('id')->on($schema_public.'master_daerah')
                     ->onDelete('cascade')->onUpdate('cascade');
                  });
 
