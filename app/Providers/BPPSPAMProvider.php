@@ -159,92 +159,98 @@ class BPPSPAMProvider extends ServiceProvider
 
             for($tahun=$tahun_fokus;$tahun>=($tahun_fokus-3);$tahun--){
                 if(!Schema::hasTable($schema.'bppsam_'.$tahun.'_nilai')){
-                Schema::connction($con)->create($schema.'bppsam_'.$tahun.'_nilai',function(Blueprint $table)use($tahun,$schema){
-                    $table->bigIncrements('id');
-                    $table->bigInteger('id_pdam')->unsigned();
-                    $table->tinyInterger('kode_buku')->default(0);
-                    $table->integer('kode_hal')->default(0);
-                    $table->tinyInterger('tahun')->default(0);
-                    $table->double('roe',25,3)->default(0);
-                    $table->double('ratio_operasi',25,3)->default(0);
-                    $table->double('ratio_kas',25,3)->default(0);
-                    $table->double('efektivitas_penagihan',25,3)->default(0);
-                    $table->double('solvabilitas',25,3)->default(0);
-                    $table->double('kinerja_keuangan',25,3)->default(0);
-                    $table->double('cakupan_pelayanan',25,3)->default(0);
-                    $table->double('pertumbuhan_pelanggan',25,3)->default(0);
-                    $table->double('tingkat_penyelesaian_pengaduan',25,3)->default(0);
-                    $table->double('kualitas_air_pelanggan',25,3)->default(0);
-                    $table->double('konsumsi_air_domestik',25,3)->default(0);
-                    $table->double('kinerja_pelayanan',25,3)->default(0);
-                    $table->double('efesiensi_produksi',25,3)->default(0);
-                    $table->double('tingkat_kehilangan_air',25,3)->default(0);
-                    $table->double('jam_operasi_layanan',25,3)->default(0);
-                    $table->double('tekanan_sambungan_pelanggan',25,3)->default(0);
-                    $table->double('penggantian_meter_air',25,3)->default(0);
-                    $table->double('kinerja_operasi',25,3)->default(0);
-                    $table->double('ratio_jumlah_pegawai',25,3)->default(0);
-                    $table->double('ratio_diklat_pegawai',25,3)->default(0);
-                    $table->double('biaya_diklat_thd_pegawai',25,3)->default(0);
-                    $table->double('kinerja_sdm',25,3)->default(0);
-                    $table->double('kinerja_total',25,3)->default(0);
-                    $table->string('kategori',60)->default(0);
+                    Schema::connction($con)->create($schema.'bppsam_'.$tahun.'_nilai',function(Blueprint $table)use($tahun,$schema){
+                        $table->bigIncrements('id');
+                        $table->bigInteger('id_pdam')->unsigned();
+                        $table->tinyInterger('kode_buku')->default(0);
+                        $table->integer('kode_hal')->default(0);
+                        $table->tinyInterger('tahun')->default(0);
+                        $table->double('roe',25,3)->default(0);
+                        $table->double('ratio_operasi',25,3)->default(0);
+                        $table->double('ratio_kas',25,3)->default(0);
+                        $table->double('efektivitas_penagihan',25,3)->default(0);
+                        $table->double('solvabilitas',25,3)->default(0);
+                        $table->double('kinerja_keuangan',25,3)->default(0);
+                        $table->double('cakupan_pelayanan',25,3)->default(0);
+                        $table->double('pertumbuhan_pelanggan',25,3)->default(0);
+                        $table->double('tingkat_penyelesaian_pengaduan',25,3)->default(0);
+                        $table->double('kualitas_air_pelanggan',25,3)->default(0);
+                        $table->double('konsumsi_air_domestik',25,3)->default(0);
+                        $table->double('kinerja_pelayanan',25,3)->default(0);
+                        $table->double('efesiensi_produksi',25,3)->default(0);
+                        $table->double('tingkat_kehilangan_air',25,3)->default(0);
+                        $table->double('jam_operasi_layanan',25,3)->default(0);
+                        $table->double('tekanan_sambungan_pelanggan',25,3)->default(0);
+                        $table->double('penggantian_meter_air',25,3)->default(0);
+                        $table->double('kinerja_operasi',25,3)->default(0);
+                        $table->double('ratio_jumlah_pegawai',25,3)->default(0);
+                        $table->double('ratio_diklat_pegawai',25,3)->default(0);
+                        $table->double('biaya_diklat_thd_pegawai',25,3)->default(0);
+                        $table->double('kinerja_sdm',25,3)->default(0);
+                        $table->double('kinerja_total',25,3)->default(0);
+                        $table->string('kategori',60)->default(0);
 
-                    $table->unique(['id_pdam','tahun']);
+                        $table->unique(['id_pdam','tahun']);
 
-                    $table->foreign('id_pdam')->references('id')
-                    ->on($schema_public.'master_bppspam_pdam')
-                    ->onDelete('cascade')->onUpdate('cascade');
+                        $table->foreign('id_pdam')->references('id')
+                        ->on($schema_public.'master_bppspam_pdam')
+                        ->onDelete('cascade')->onUpdate('cascade');
 
-                });
+                    });
 
-                 if(!Schema::hasTable($schema.'bppsam_'.$tahun.'_penilaian')){
-                Schema::connction($con)->create($schema.'bppsam_'.$tahun.'_penilaian',function(Blueprint $table)use($tahun,$schema){
-                    $table->bigIncrements('id');
-                    $table->bigInteger('id_pdam')->unsigned();
-                    $table->tinyInterger('kode_buku')->default(0);
-                    $table->integer('kode_hal')->default(0);
-                    $table->tinyInterger('tahun')->default(0);
-                    $table->double('roe',25,3)->default(0);
-                    $table->double('ratio_operasi',25,3)->default(0);
-                    $table->double('ratio_kas',25,3)->default(0);
-                    $table->double('efektivitas_penagihan',25,3)->default(0);
-                    $table->double('solvabilitas',25,3)->default(0);
-                    $table->double('kinerja_keuangan',25,3)->default(0);
-                    $table->double('cakupan_pelayanan',25,3)->default(0);
-                    $table->double('pertumbuhan_pelanggan',25,3)->default(0);
-                    $table->double('tingkat_penyelesaian_pengaduan',25,3)->default(0);
-                    $table->double('kualitas_air_pelanggan',25,3)->default(0);
-                    $table->double('konsumsi_air_domestik',25,3)->default(0);
-                    $table->double('kinerja_pelayanan',25,3)->default(0);
-                    $table->double('efesiensi_produksi',25,3)->default(0);
-                    $table->double('tingkat_kehilangan_air',25,3)->default(0);
-                    $table->double('jam_operasi_layanan',25,3)->default(0);
-                    $table->double('tekanan_sambungan_pelanggan',25,3)->default(0);
-                    $table->double('penggantian_meter_air',25,3)->default(0);
-                    $table->double('kinerja_operasi',25,3)->default(0);
-                    $table->double('ratio_jumlah_pegawai',25,3)->default(0);
-                    $table->double('ratio_diklat_pegawai',25,3)->default(0);
-                    $table->double('biaya_diklat_thd_pegawai',25,3)->default(0);
-                    $table->double('kinerja_sdm',25,3)->default(0);
-                    $table->double('kinerja_total',25,3)->default(0);
-                    $table->string('kategori',60)->default(0);
-                    $table->mediumText('keterangan')->nullable();
+                }
 
-                    $table->unique(['id_pdam','tahun']);
+                if(!Schema::hasTable($schema.'bppsam_'.$tahun.'_penilaian')){
+                    Schema::connction($con)->create($schema.'bppsam_'.$tahun.'_penilaian',function(Blueprint $table)use($tahun,$schema){
+
+                        $table->bigIncrements('id');
+                        $table->bigInteger('id_pdam')->unsigned();
+                        $table->tinyInterger('kode_buku')->default(0);
+                        $table->integer('kode_hal')->default(0);
+                        $table->tinyInterger('tahun')->default(0);
+                        $table->double('roe',25,3)->default(0);
+                        $table->double('ratio_operasi',25,3)->default(0);
+                        $table->double('ratio_kas',25,3)->default(0);
+                        $table->double('efektivitas_penagihan',25,3)->default(0);
+                        $table->double('solvabilitas',25,3)->default(0);
+                        $table->double('kinerja_keuangan',25,3)->default(0);
+                        $table->double('cakupan_pelayanan',25,3)->default(0);
+                        $table->double('pertumbuhan_pelanggan',25,3)->default(0);
+                        $table->double('tingkat_penyelesaian_pengaduan',25,3)->default(0);
+                        $table->double('kualitas_air_pelanggan',25,3)->default(0);
+                        $table->double('konsumsi_air_domestik',25,3)->default(0);
+                        $table->double('kinerja_pelayanan',25,3)->default(0);
+                        $table->double('efesiensi_produksi',25,3)->default(0);
+                        $table->double('tingkat_kehilangan_air',25,3)->default(0);
+                        $table->double('jam_operasi_layanan',25,3)->default(0);
+                        $table->double('tekanan_sambungan_pelanggan',25,3)->default(0);
+                        $table->double('penggantian_meter_air',25,3)->default(0);
+                        $table->double('kinerja_operasi',25,3)->default(0);
+                        $table->double('ratio_jumlah_pegawai',25,3)->default(0);
+                        $table->double('ratio_diklat_pegawai',25,3)->default(0);
+                        $table->double('biaya_diklat_thd_pegawai',25,3)->default(0);
+                        $table->double('kinerja_sdm',25,3)->default(0);
+                        $table->double('kinerja_total',25,3)->default(0);
+                        $table->string('kategori',60)->default(0);
+                        $table->mediumText('keterangan')->nullable();
+
+                        $table->unique(['id_pdam','tahun']);
 
 
 
-                    $table->foreign('id_pdam')->references('id')
-                    ->on($schema_public.'master_bppspam_pdam')
-                    ->onDelete('cascade')->onUpdate('cascade');
+                        $table->foreign('id_pdam')->references('id')
+                        ->on($schema_public.'master_bppspam_pdam')
+                        ->onDelete('cascade')->onUpdate('cascade');
 
-                });
+                    });
 
              
 
-             }
+                }
+
             }
+
+            
 
          
 
