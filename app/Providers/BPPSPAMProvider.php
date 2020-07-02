@@ -137,14 +137,14 @@ class BPPSPAMProvider extends ServiceProvider
                     $table->text('url_direct')->nullable();
                     $table->string('id_laporan_terahir')->nullable();
                     $table->string('id_laporan_terahir_2')->nullable();
-                    $table->tinyInterger('periode_tahun')->nullable();
+                    $table->tinyInteger('periode_tahun')->nullable();
                     $table->date('periode_laporan')->nullable();
-                    $table->tinyInterger('ketegori_pdam_kode')->nullable();
-                    $table->tinyInterger('ketegori_pdam_kode_self')->nullable();
+                    $table->tinyInteger('ketegori_pdam_kode')->nullable();
+                    $table->tinyInteger('ketegori_pdam_kode_self')->nullable();
                     $table->string('kategori_pdam')->nullable();
                     $table->string('kategori_pdam_self')->nullable();
                     $table->dateTime('updated_input_at')->nullable();
-                    $table->tinyInterger('periode_tahun_bppspam')->nullable();
+                    $table->tinyInteger('periode_tahun_bppspam')->nullable();
                     $table->string('kategori_pdam_bppspam')->nullable();
                     $table->timestamps();
 
@@ -162,9 +162,9 @@ class BPPSPAMProvider extends ServiceProvider
                     Schema::connection($con)->create($schema.'bppsam_'.$tahun.'_nilai',function(Blueprint $table)use($tahun,$schema){
                         $table->bigIncrements('id');
                         $table->bigInteger('id_pdam')->unsigned();
-                        $table->tinyInterger('kode_buku')->default(0);
+                        $table->tinyInteger('kode_buku')->default(0);
                         $table->integer('kode_hal')->default(0);
-                        $table->tinyInterger('tahun')->default(0);
+                        $table->tinyInteger('tahun')->default(0);
                         $table->double('roe',25,3)->default(0);
                         $table->double('ratio_operasi',25,3)->default(0);
                         $table->double('ratio_kas',25,3)->default(0);
@@ -205,9 +205,9 @@ class BPPSPAMProvider extends ServiceProvider
 
                         $table->bigIncrements('id');
                         $table->bigInteger('id_pdam')->unsigned();
-                        $table->tinyInterger('kode_buku')->default(0);
+                        $table->tinyInteger('kode_buku')->default(0);
                         $table->integer('kode_hal')->default(0);
-                        $table->tinyInterger('tahun')->default(0);
+                        $table->tinyInteger('tahun')->default(0);
                         $table->double('roe',25,3)->default(0);
                         $table->double('ratio_operasi',25,3)->default(0);
                         $table->double('ratio_kas',25,3)->default(0);
