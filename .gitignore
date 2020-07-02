@@ -1,6 +1,7 @@
 /node_modules
 /public/hot
 /app/NODEJS/SAT/node_modules/*
+/app/NODEJS/SAT/storage/*
 /storage/*.key
 /vendor
 .env
