@@ -2,71 +2,36 @@
 
 
 @section('content_header')
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-<link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.bubble.css">
 
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
 	<h1>KEGIATAN TAHUN {{HP::fokus_tahun()}}</h1>
 
 @stop
 
 @section('content')
 <div class="row">
-	<form action="{{route('d.post.kegiatan.store')}}" method="post" enctype='multipart/form-data'>
+	<form action="{{route('d.post.kegiatan.store')}}" method="post" enctype='multipart/form-data'id="content_posting">
 		@csrf
 		<div class="col-md-9">
 		<div class="form-group">
 	<label>Judul</label>
 	<input type="text" required="" name="title" class="form-control">
-	</div>
+	</div> 
+
 	<div class="box box-primary">
-		<div class="box-header">
-			<div id="toolbar">
-		  <!-- Add font size dropdown -->
-				  <select class="ql-size">
-				    <option value="small"></option>
-				    <!-- Note a missing, thus falsy value, is used to reset to default -->
-				    <option selected></option>
-				    <option value="large"></option>
-				    <option value="huge"></option>
-				  </select>
-				  <!-- Add a bold button -->
-				   <button class="ql-bold"></button>
-  					<button class="ql-italic"></button>				  <!-- Add subscript and superscript buttons -->
-				  <button class="ql-script" value="sub"></button>
-				  <button class="ql-image" ></button>
-
-				  <button class="ql-script" value="super"></button>
-				   <select class="ql-color">
-				   </select>
-				     <select class="ql-background">
-				   </select>
-				   </select>
-				     <select class="ql-align">
-				   </select>
-				    <select class="ql-font">
-				   </select>
-				   <button type="button" class="btn-primary btn-xs text-dark">
-				   	<i class="fa fa-file"></i>
-				   </button>
-
-				  
-
-			</div>
-		</div>
-		<div class="box-body">
-			<div id="editor" style="min-height: 500px;">
-	
-		</div>
+		<div class="box-body" id="editorjs">
+			
 		</div>
 	</div>
+
+
 	
 	</div>
 	<textarea name="content" id="content" style="display: none"></textarea>
+
+
 	<div class="col-md-3">
 		<div class="form-group">
-			<button class="btn btn-primary" type="submit">Simpan</button>
+			<button class="btn btn-primary" type="button" onclick="savingPost()">Simpan</button>
 		</div>
 		<div class="form-group">
 			<label>Thumbnail</label>
@@ -85,33 +50,10 @@
 @stop
 
 @section('js')
+	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
 	
 	<script type="text/javascript">
-
-		var toolbarOptions = [
-			  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-			  ['blockquote', 'code-block'],
-
-			  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-			  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-			  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-			  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-			  [{ 'direction': 'rtl' }],                         // text direction
-
-			  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-			  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-			  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-			  [{ 'font': [] }],
-			  [{ 'align': [] }],
-			  ['image','files'],
-
-
-			  ['clean']                                         // remove formatting button
-			];
-	
-
-
 
 	function readURL(input) {
 	  if (input.files && input.files[0]) {
@@ -134,46 +76,165 @@
 		if(this.files[0]){
 	  		readURL(this);
 		}else{
-			$('#thumbnail_box').html('<i class="fa fa-camera" style="font-size:20px;"></i>');
-			}
-		});
-
-
-
-		var IMGUR_CLIENT_ID = 'bcab3ce060640ba';
-		var IMGUR_API_URL = '{{route('d.post.file.up')}}';
-		function imageHandler(image, callback) {
-			API_CON.post(IMGUR_API_URL).then((res)=>{
-				console.log(res);
-			});
-			
+		$('#thumbnail_box').html('<i class="fa fa-camera" style="font-size:20px;"></i>');
 		}
+	});
+
+
+
+		
 
 		
 
 
-		 var quill = new Quill('#editor', {
-		    theme: 'snow',
-		    modules:{
-		  	toolbar:'#toolbar',
+	
+	
 
-	   		 },
-		  	// imageHandler: imageHandler,
+	 var token = "{{ csrf_token()}}";
+	  var editor = new EditorJS({
+      /**
+       * Wrapper of Editor
+       */
+      holder: 'editorjs',
 
-	  	placeholder: 'Compose an epic...',
-	  });
+      /**
+       * Tools list
 
-	 var toolbar = quill.getModule('toolbar');
-	toolbar.addHandler('image', imageHandler);
+       */
+      placeholder: 'Let`s write an awesome story!',
+      tools: {
+        /**
+         * Each Tool is a Plugin. Pass them via 'class' option with necessary settings {@link docs/tools.md}
+         */
+        header: {
+          class: Header,
+          inlineToolbar: ['link'],
+          config: {
+            placeholder: 'Header'
+          },
+          shortcut: 'CMD+SHIFT+H'
+        },
+
+        /**
+         * Or pass class directly without any configuration
+         */
+        // image: SimpleImage,
+
+        list: {
+          class: List,
+          inlineToolbar: true,
+          shortcut: 'CMD+SHIFT+L'
+        },
+
+        checklist: {
+          class: Checklist,
+          inlineToolbar: true,
+        },
+        embed: Embed,
+
+        quote: {
+          class: Quote,
+          inlineToolbar: true,
+          config: {
+            quotePlaceholder: 'Enter a quote',
+            captionPlaceholder: 'Quote\'s author',
+          },
+          shortcut: 'CMD+SHIFT+O'
+        },
+        image: {
+            class: ImageTool,
+            config: {
+          //   	uploader:{
+          //   		uploadByFile(file){
+			       //      return MyAjax.upload(file).then((res) => {
+
+			       //        // return {
+			       //        //   success: 1,
+			       //        //   file: {
+			       //        //     url: 'https://codex.so/upload/redactor_images/o_80beea670e49f04931ce9e3b2122ac70.jpg',
+			       //        //     // any other image data you want to store, such as width, height, color, extension, etc
+			       //        //   }
+			       //        // };
+			       //  });
+		        // }
+
+          //   	},
+                additionalRequestHeaders: {
+                    "Authorization": 'Bearer {{Auth::User()->api_token}}',
+                    "X-CSRF-TOKEN": token
+
+                },
+                endpoints: {
+                    byFile: '{{Route('d.post.kegiatan.file_store')}}',
+
+                }
+            }
+        },
+
+        // warning: Warning,
+
+        // marker: {
+        //   class:  Marker,
+        //   shortcut: 'CMD+SHIFT+M'
+        // },
+
+        // code: {
+        //   class:  CodeTool,
+        //   shortcut: 'CMD+SHIFT+C'
+        // },
+
+        // delimiter: Delimiter,
+
+        // inlineCode: {
+        //   class: InlineCode,
+        //   shortcut: 'CMD+SHIFT+C'
+        // },
+
+        linkTool: LinkTool,
+
+        embed: Embed,
+
+        table: {
+          class: Table,
+          inlineToolbar: true,
+          shortcut: 'CMD+ALT+T'
+        },
+
+      },
+      data: {
+        blocks: [
+         
+        ]
+      },
+      onReady: function(){
+      },
+      onChange: function(dd) {
+
+      }
+
+    });
 
 
-	 quill.on('text-change', function(delta, oldDelta, source) {
-	 	console.log('s');
-	 	$('#content').html(quill.container.firstElementChild.innerHTML);
-	});
+	  function savingPost(){
+	  	editor.save().then(function(data){
+	  		$('#content').html(JSON.stringify(data));
+	  		$('#content').val(JSON.stringify(data));
 
-	 $('#content').html(quill.container.firstElementChild.innerHTML);
+	  	}).then(function(){
+	  	$('#content_posting').submit();
+	  		
+	  	});
 
+
+
+	  }
+
+
+
+    /**
+     * Saving example
+     */
+   
 
 	</script>
 

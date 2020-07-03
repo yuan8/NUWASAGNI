@@ -15,15 +15,39 @@ class KEGIATAN extends Controller
     //
 
 
+    public function file_store(Request $request){
+        $valid=Validator::make($request->all(),[
+            'image'=>'required|file|mimes:png,jpg,jpeg'
+        ]);
+
+        if($valid->fails()){
+
+        }else{
+            $path=($request->image->store('public/kegiatan/file'));
+            $path=url(Storage::url($path));
+
+            return [
+                'success'=>true,
+                'file'=>[
+                    'url'=>$path
+                ]
+            ];
+        }
+
+    }
+
     public function index(Request $request){
         $tahun=HP::fokus_tahun();
             $data=DB::table('album')
-            ->where('created_at','<=',Carbon::parse('01/12/'.$tahun)->endOfMonth())
-            ->where('created_at','>=',Carbon::parse('01/12/'.$tahun)->startOfMonth());
+            ->where('created_at','<=',Carbon::parse($tahun.'/12/01')->endOfMonth())
+            ->where('created_at','>=',Carbon::parse($tahun.'/01/01')->startOfMonth());
+
             if($request->q){
                 $data=$data->where('title','ilike',('%'.$request->q.'%'));
             }
             $data=$data->paginate(10);
+
+
             return view('dash.post.kegiatan.index',['data'=>$data]);
     }
 
@@ -44,6 +68,7 @@ class KEGIATAN extends Controller
     	if($valid->fails()){
     		Alert::error('errro');
     		
+            return back()->withInput();
 
     	}else{
     		$path_file=null;
@@ -52,10 +77,32 @@ class KEGIATAN extends Controller
     			$path_file=Storage::url($path_file);
     		}
 
+            $content=$request->content;
+            $meta_content='';
+
+            if(substr($content,0,1)=='{'){
+                $content=json_decode($content,true);
+                foreach ($content['blocks'] as $key => $value) {
+                    if(in_array($value['type'], ['header','paragraph'])){
+                        if(is_string($value['data']['text'])){
+                            $meta_content.=($meta_content==''?'':' ').$value['data']['text'];
+                        }
+
+                    }
+
+                    # code...
+                }
+
+            }
+
+            $meta_content=substr($meta_content,0,200);
+
+
     		DB::table('album')->insert([
     			'title'=>$request->title,
     			'content'=>$request->content,
     			'path'=>$path_file,
+                'meta_content'=>$meta_content,
     			'created_at'=>$tahun.date('-m-d h:i'),
     			'updated_at'=>$tahun.date('-m-d h:i'),
     		]);

@@ -21,8 +21,8 @@
 						<div class="box-header with-border">
 							<img src="{{asset($data->path)}}" class="img-responsive">
 						</div>
-						<div class="box-body">
-							{!!$data->content!!}
+						<div class="box-body editor-render" id="post_content">
+							
 						</div>
 					</div>
 				</div>
@@ -58,5 +58,19 @@
 			</div>
 		</div>
 	</div>
+
+@stop
+
+@section('js')
+	<script type="text/javascript">
+	const edjsParser = edjsHTML();
+
+	  var htmlDom = edjsParser.parse({!!$data->content !!});
+	  for (var i =0;i<htmlDom.length;i++) {
+	  	$('#post_content').append(htmlDom[i]);
+	  }
+
+
+	</script>
 
 @stop

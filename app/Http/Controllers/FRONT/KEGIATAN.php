@@ -14,6 +14,8 @@ class KEGIATAN extends Controller
     public function show($id){
     	$data=DB::table('album')->find($id);
 
+        // dd(json_decode($data->content));
+
     	if($data){
     		$data_lain=DB::table('album')->where('id','!=',$data->id)->orderBy('id','DESC')->limit(10)->get();
     		return view('front.kegiatan.show')->with('data',$data)->with('data_lain',$data_lain);

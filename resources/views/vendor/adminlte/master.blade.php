@@ -36,6 +36,11 @@
     <!-- Theme style -->
 
     @yield('adminlte_css')
+    <style type="text/css">
+        .editor-render img{
+            max-width: 100%;
+        }
+    </style>
 
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -48,11 +53,14 @@
 <body class="hold-transition @yield('body_class')">
 
 @yield('body')
-    <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/AdminLTE.min.css') }}">
+<link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/AdminLTE.min.css') }}">
 
 
 <!-- <script src="{{ asset('vendor/adminlte/vendor/jquery/dist/jquery.min.js') }}"></script> -->
 <script type="text/javascript" src="{{asset('L_MAP/asset/jq.js')}}"></script>
+<script type="text/javascript" src="{{asset('vendor/editorHtml/browser.js?v='.date('i'))}}"></script>
+
+
 
 <script src="{{ asset('vendor/adminlte/vendor/jquery/dist/jquery.slimscroll.min.js') }}"></script>
 <script src="{{ asset('vendor/adminlte/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>

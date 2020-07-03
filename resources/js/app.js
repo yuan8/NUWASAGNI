@@ -1,29 +1,25 @@
 
-import Quill from 'quill';
-import 'quill/dist/quill.snow.css';
-import imageUpload from 'quill-plugin-image-upload';
+import EditorJS from '@editorjs/editorjs';
+import ImageTool from '@editorjs/image';
+// import  MyAjax from '@editorjs/image';
 
-// register quill-plugin-image-upload
-Quill.register('modules/imageUpload', imageUpload);
+import List from '@editorjs/list';
 
- const toolbarOptions = [
-        ['bold', 'italic', 'underline', 'strike'],
-        ['blockquote', 'code-block'],
+window.Header = require('@editorjs/header');
+window.LinkTool = require('@editorjs/link');
+window.RawTool = require('@editorjs/raw');
+window.Checklist = require('@editorjs/checklist');
+window.Embed = require('@editorjs/embed');
+window.Quote = require('@editorjs/quote');
+window.Table = require('@editorjs/table');
 
-        [{'header': 1}, {'header': 2}],
-        [{'list': 'ordered'}, {'list': 'bullet'}],
-        [{'script': 'sub'}, {'script': 'super'}],
-        [{'indent': '-1'}, {'indent': '+1'}],
-        [{'direction': 'rtl'}],
+// var YoneEditor=new EditorJS;
 
-        [{'size': ['small', false, 'large', 'huge']}],
-        [{'header': [1, 2, 3, 4, 5, 6, false]}],
+window.EditorJS=EditorJS;
+window.ImageTool=ImageTool;
+window.List=List;
 
-        [{'color': []}, {'background': []}],
-        [{'font': []}],
-        [{'align': []}],
-        ['link', 'image', 'video'],
-        ['clean'],
-    ];
+// window.MyAjax=MyAjax;
 
-    console.log('sss');
+
+
