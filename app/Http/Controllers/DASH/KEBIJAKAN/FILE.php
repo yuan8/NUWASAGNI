@@ -17,10 +17,10 @@ class FILE extends Controller
 
 
     public function index($jenis=null){
-     	$tahun=HP::fokus_tahun();
-    	if($jenis){
-    		$jenis=strtoupper(trim($jenis));
-    		if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA','LAIN_LAIN'])){
+        $tahun=HP::fokus_tahun();
+        if($jenis){
+            $jenis=strtoupper(trim($jenis));
+            if(in_array($jenis, ['RPJMD','RKPD','RKPD RANWAL','RENJA','RENSTRA','DPA DINAS','PERKADA APBD','PERDA TARIF','BUSSINESS PLAN','RISPAM','RAD MPL','LKPJ','DDUB','FORMAT 6 DAN 7','PROFIL PDAM','JAKSTRADA','PERDA PENYERTA MODAL','RTRW','PROPOSAL','DATA AKSES AIR MINUM','RPIJM','LAP. KEUANGAN','LAP EVKIN BPKP','PETA KELEMBAGAAN','LAIN_LAIN'])){
                 $daerah=DB::table('master_daerah as c')->select(
                     'id',
 
@@ -28,23 +28,23 @@ class FILE extends Controller
                         (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) as nama_daerah")
                 )->orderBy('c.id','ASC')->get();
 
-    			$data=DB::table('public.dokumen_kebijakan_daerah as f')->select('f.*',
+                $data=DB::table('public.dokumen_kebijakan_daerah as f')->select('f.*',
                 DB::raw("CONCAT('".url('')."/',f.path) as path_file"),
                 DB::Raw("(select name from public.users as u where u.id = f.user_id) as nama_user "),
-		     	DB::raw("(select concat(c.nama,
-		                (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=f.kode_daerah) as nama_daerah")
-		     	)->where('tahun','<=',$tahun)->where('tahun_selesai','>=',$tahun)->where('jenis',$jenis)->get();
+                DB::raw("(select concat(c.nama,
+                        (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=f.kode_daerah) as nama_daerah")
+                )->where('tahun','<=',$tahun)->where('tahun_selesai','>=',$tahun)->where('jenis',$jenis)->get();
 
-     			return view('dash.kebijakan.file.index')->with(['data'=>$data,'jenis'=>$jenis,'daerah'=>$daerah]);
+                return view('dash.kebijakan.file.index')->with(['data'=>$data,'jenis'=>$jenis,'daerah'=>$daerah]);
 
 
-    		}else{
-    			return abort(404);
-    		}
-    		
-    	}else{
-    		return abort(404);
-    	}
+            }else{
+                return abort(404);
+            }
+            
+        }else{
+            return abort(404);
+        }
 
     }
 
@@ -54,7 +54,7 @@ class FILE extends Controller
         $tahun_mulai=$request->tahun_mulai;
         if($jenis){
             $jenis=strtoupper(trim($jenis));
-            if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA','LAIN_LAIN'])){
+            if(in_array($jenis, ['RPJMD','RKPD','RKPD RANWAL','RENJA','RENSTRA','DPA DINAS','PERKADA APBD','PERDA TARIF','BUSSINESS PLAN','RISPAM','RAD MPL','LKPJ','DDUB','FORMAT 6 DAN 7','PROFIL PDAM','JAKSTRADA','PERDA PENYERTA MODAL','RTRW','PROPOSAL','DATA AKSES AIR MINUM','RPIJM','LAP. KEUANGAN','LAP EVKIN BPKP','PETA KELEMBAGAAN','LAIN_LAIN'])){
 
                 $data=DB::table('public.dokumen_kebijakan_daerah as f')->select('f.*')
                ->where('tahun','=',$tahun_mulai)->where('jenis',$jenis)
@@ -108,7 +108,7 @@ class FILE extends Controller
         $tahun=HP::fokus_tahun();
         if($jenis){
             $jenis=strtoupper(trim($jenis));
-            if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA','LAIN_LAIN'])){
+            if(in_array($jenis, ['RPJMD','RKPD','RKPD RANWAL','RENJA','RENSTRA','DPA DINAS','PERKADA APBD','PERDA TARIF','BUSSINESS PLAN','RISPAM','RAD MPL','LKPJ','DDUB','FORMAT 6 DAN 7','PROFIL PDAM','JAKSTRADA','PERDA PENYERTA MODAL','RTRW','PROPOSAL','DATA AKSES AIR MINUM','RPIJM','LAP. KEUANGAN','LAP EVKIN BPKP','PETA KELEMBAGAAN','LAIN_LAIN'])){
                 $daerah=DB::table('master_daerah as c')->select(
                     'id',
 
@@ -147,7 +147,7 @@ class FILE extends Controller
         if($jenis){
             $tahun_mulai=$request->tahun_mulai;
             $jenis=strtoupper(trim($jenis));
-            if(in_array($jenis, ['RKPD','RENJA','RENSTRA','RPAM','RISPAM','JAKSTRA','RKA','LAIN_LAIN'])){
+            if(in_array($jenis, ['RPJMD','RKPD','RKPD RANWAL','RENJA','RENSTRA','DPA DINAS','PERKADA APBD','PERDA TARIF','BUSSINESS PLAN','RISPAM','RAD MPL','LKPJ','DDUB','FORMAT 6 DAN 7','PROFIL PDAM','JAKSTRADA','PERDA PENYERTA MODAL','RTRW','PROPOSAL','DATA AKSES AIR MINUM','RPIJM','LAP. KEUANGAN','LAP EVKIN BPKP','PETA KELEMBAGAAN','LAIN_LAIN'])){
                 if($request->file('file')){
                     $ext= $request->file->getClientOriginalExtension();
                     $name='file_kebijakan_daerah/'.$request->kode_daerah.'/'.$jenis;

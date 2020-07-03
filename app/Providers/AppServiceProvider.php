@@ -129,31 +129,31 @@ class AppServiceProvider extends ServiceProvider
                     'can'=>'role.daerah',
                     'submenu'=>[
                        
-                        [
-                            "text"=>'JAKSTRA',
-                            'url'=>route('d.kb.f.index',['jenis'=>'JAKSTRA'])
-                        ],
-                        
-                        [
-                            "text"=>'RENSTRA',
-                            'url'=>route('d.kb.f.index',['jenis'=>'RENSTRA'])
-                        ],
-                        [
-                            "text"=>'RISPAM',
-                            'url'=>route('d.kb.f.index',['jenis'=>'RISPAM'])
-                        ],
-                        [
-                            "text"=>'RPAM',
-                            'url'=>route('d.kb.f.index',['jenis'=>'RPAM'])
-                        ],
-                        [
-                            "text"=>'RKA',
-                            'url'=>route('d.kb.f.index',['jenis'=>'RKA'])
-                        ],
-                        [
-                            "text"=>'RKPD FINAL',
-                            'url'=>route('d.kb.f.index',['jenis'=>'RKPD'])
-                        ]
+                        [ 'text'=>'RPJMD', 'url'=>route('d.kb.f.index',['jenis'=>'RPJMD'])]
+                      ,[ 'text'=>'RKPD', 'url'=>route('d.kb.f.index',['jenis'=>'RKPD'])]
+                      ,[ 'text'=>'RKPD RANWAL', 'url'=>route('d.kb.f.index',['jenis'=>'RKPD RANWAL'])]
+                      ,[ 'text'=>'RENJA', 'url'=>route('d.kb.f.index',['jenis'=>'RENJA'])]
+                      ,[ 'text'=>'RENSTRA', 'url'=>route('d.kb.f.index',['jenis'=>'RENSTRA'])]
+                      ,[ 'text'=>'DPA DINAS', 'url'=>route('d.kb.f.index',['jenis'=>'DPA DINAS'])]
+                      ,[ 'text'=>'PERKADA APBD', 'url'=>route('d.kb.f.index',['jenis'=>'PERKADA APBD'])]
+                      ,[ 'text'=>'PERDA TARIF', 'url'=>route('d.kb.f.index',['jenis'=>'PERDA TARIF'])]
+                      ,[ 'text'=>'BUSSINESS PLAN', 'url'=>route('d.kb.f.index',['jenis'=>'BUSSINESS PLAN'])]
+                      ,[ 'text'=>'RISPAM', 'url'=>route('d.kb.f.index',['jenis'=>'RISPAM'])]
+                      ,[ 'text'=>'RAD MPL', 'url'=>route('d.kb.f.index',['jenis'=>'RAD MPL'])]
+                      ,[ 'text'=>'LKPJ', 'url'=>route('d.kb.f.index',['jenis'=>'LKPJ'])]
+                      ,[ 'text'=>'DDUB', 'url'=>route('d.kb.f.index',['jenis'=>'DDUB'])]
+                      ,[ 'text'=>'FORMAT 6 DAN 7', 'url'=>route('d.kb.f.index',['jenis'=>'FORMAT 6 DAN 7'])]
+                      ,[ 'text'=>'PROFIL PDAM', 'url'=>route('d.kb.f.index',['jenis'=>'PROFIL PDAM'])]
+                      ,[ 'text'=>'JAKSTRADA', 'url'=>route('d.kb.f.index',['jenis'=>'JAKSTRADA'])]
+                      ,[ 'text'=>'PERDA PENYERTA MODAL', 'url'=>route('d.kb.f.index',['jenis'=>'PERDA PENYERTA MODAL'])]
+                      ,[ 'text'=>'RTRW', 'url'=>route('d.kb.f.index',['jenis'=>'RTRW'])]
+                      ,[ 'text'=>'PROPOSAL', 'url'=>route('d.kb.f.index',['jenis'=>'PROPOSAL'])]
+                      ,[ 'text'=>'DATA AKSES AIR MINUM', 'url'=>route('d.kb.f.index',['jenis'=>'DATA AKSES AIR MINUM'])]
+                      ,[ 'text'=>'RPIJM', 'url'=>route('d.kb.f.index',['jenis'=>'RPIJM'])]
+                      ,[ 'text'=>'LAP. KEUANGAN', 'url'=>route('d.kb.f.index',['jenis'=>'LAP. KEUANGAN'])]
+                      ,[ 'text'=>'LAP EVKIN BPKP', 'url'=>route('d.kb.f.index',['jenis'=>'LAP EVKIN BPKP'])]
+                      ,[ 'text'=>'PETA KELEMBAGAAN', 'url'=>route('d.kb.f.index',['jenis'=>'PETA KELEMBAGAAN'])]
+
 
                     ]
                 ]);
