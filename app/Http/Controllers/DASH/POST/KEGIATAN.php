@@ -14,16 +14,55 @@ class KEGIATAN extends Controller
 {
     //
 
+    public function active_url(Request $request){
 
+         $valid=Validator::make($request->all(),[
+            'url'=>'required|active_url',
+        ]);
+        if($valid->fails()){
+              return [
+                'success'=>false,
+                'meta'=>[
+                ]
+            ];
+
+        }else{
+
+            $meta=get_meta_tags($request->url);
+            // return $meta;
+
+            return [
+                'success'=>true,
+                'meta'=>[
+                    'title'=>isset($meta['title'])?$meta['title']:'',
+                    'description'=>isset($meta['description'])?$meta['description']:'',
+                    'image'=>[
+                        'url'=>isset($meta['image'])?$meta['image']:''
+                    ]
+                ]
+            ];
+        }
+
+
+    }
     public function file_store(Request $request){
         $valid=Validator::make($request->all(),[
-            'image'=>'required|file|mimes:png,jpg,jpeg'
+            'image'=>'nullable|file|mimes:png,jpg,jpeg',
+            'file'=>'nullable|file'
         ]);
 
         if($valid->fails()){
+            return [
+                'success'=>false,
+                'file'=>[
+                    'url'=>''
+                ]
+            ];
 
         }else{
-            $path=($request->image->store('public/kegiatan/file'));
+           
+           if($request->image){
+             $path=($request->image->store('public/kegiatan/file'));
             $path=url(Storage::url($path));
 
             return [
@@ -32,6 +71,24 @@ class KEGIATAN extends Controller
                     'url'=>$path
                 ]
             ];
+           }
+
+           if($request->file){
+
+            $path=($request->file->store('public/kegiatan/file'));
+            $path=url(Storage::url($path));
+
+            return [
+                'success'=>true,
+                'file'=>[
+                    'url'=>$path,
+                    'name'=>$request->file->getClientOriginalName()
+                ]
+            ];
+
+           }
+
+            
         }
 
     }

@@ -90,6 +90,8 @@
 	
 	
 
+  
+ 
 	 var token = "{{ csrf_token()}}";
 	  var editor = new EditorJS({
       /**
@@ -130,8 +132,41 @@
           class: Checklist,
           inlineToolbar: true,
         },
-        embed: Embed,
+         raw: RawTool,
+        embed: {
+          class: Embed,
+          config: {
+            services: {
+              youtube: true,
+              coub: true,
+              pdf: {
+                regex: /(^http.*)([.]pdf$)/,
+                embedUrl: 'https://codepen.io/<%= remote_id %>?height=300&theme-id=0&default-tab=css,result&embed-version=2',
+                html: "<iframe height='300' scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'></iframe>",
+                height: 300,
+                width: 600,
+                id: (groups) =>{
+                  console.log(groups);
+                  return  groups.join('');
+                }
+              }
+            },
+              patterns:{
+                pdf:/(^http.*)([.]pdf$)/
+              }
 
+          }
+        },
+        inlineCode: {
+          class: InlineCode,
+          shortcut: 'CMD+SHIFT+M',
+        },
+        personality: {
+        class: Personality,
+        config: {
+          endpoint:  '{{Route('d.post.kegiatan.file_store')}}'  // Your backend file uploader endpoint
+          },
+        },
         quote: {
           class: Quote,
           inlineToolbar: true,
@@ -141,28 +176,24 @@
           },
           shortcut: 'CMD+SHIFT+O'
         },
-        image: {
-            class: ImageTool,
-            config: {
-          //   	uploader:{
-          //   		uploadByFile(file){
-			       //      return MyAjax.upload(file).then((res) => {
-
-			       //        // return {
-			       //        //   success: 1,
-			       //        //   file: {
-			       //        //     url: 'https://codex.so/upload/redactor_images/o_80beea670e49f04931ce9e3b2122ac70.jpg',
-			       //        //     // any other image data you want to store, such as width, height, color, extension, etc
-			       //        //   }
-			       //        // };
-			       //  });
-		        // }
-
-          //   	},
+        attaches: {
+          class: AttachesTool,
+          config: {
+         
                 additionalRequestHeaders: {
                     "Authorization": 'Bearer {{Auth::User()->api_token}}',
                     "X-CSRF-TOKEN": token
-
+                },
+                endpoint: '{{Route('d.post.kegiatan.file_store')}}'
+            }
+        },
+        image: {
+            class: ImageTool,
+            config: {
+         
+                additionalRequestHeaders: {
+                    "Authorization": 'Bearer {{Auth::User()->api_token}}',
+                    "X-CSRF-TOKEN": token
                 },
                 endpoints: {
                     byFile: '{{Route('d.post.kegiatan.file_store')}}',
@@ -170,6 +201,8 @@
                 }
             }
         },
+
+
 
         // warning: Warning,
 
@@ -190,7 +223,12 @@
         //   shortcut: 'CMD+SHIFT+C'
         // },
 
-        linkTool: LinkTool,
+        linkTool: {
+          class: LinkTool,
+            config: {
+              endpoint: '{{route('d.post.kegiatan.active_url')}}', // Your backend endpoint for url data fetching
+            }
+        },
 
         embed: Embed,
 

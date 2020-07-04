@@ -14,10 +14,11 @@ Route::prefix('dash-admin')->middleware('auth:web')->group(function(){
 	});
 
 	Route::prefix('prokeg')->group(function(){
-	Route::get('/','DASH\PROKEG@index')->name('d.prokeg.index');
-	Route::get('/detail/{id}','DASH\PROKEG@detail')->name('d.prokeg.detail');
-	Route::get('/pemetaan/{id}','DASH\PROKEG@pemetaan')->name('d.prokeg.pemetaan');
-	Route::post('/pemetaan-store','DASH\PROKEG@pemetaan_store')->name('d.prokeg.pemetaan.store');
+		Route::get('/rkpd/data/{kodepemda}','DASH\RKPD\IO@download');
+		Route::get('/','DASH\PROKEG@index')->name('d.prokeg.index');
+		Route::get('/detail/{id}','DASH\PROKEG@detail')->name('d.prokeg.detail');
+		Route::get('/pemetaan/{id}','DASH\PROKEG@pemetaan')->name('d.prokeg.pemetaan');
+		Route::post('/pemetaan-store','DASH\PROKEG@pemetaan_store')->name('d.prokeg.pemetaan.store');
 
 	});
 
@@ -27,7 +28,7 @@ Route::prefix('dash-admin')->middleware('auth:web')->group(function(){
 			Route::get('editor',function(){
 				return view('dash.post.template.them');
 			});
-			Route::post('file-upload','DASH\POST\KEGIATAN@file_store')->name('d.post.kegiatan.file_store');
+			// Route::post('file-upload','DASH\POST\KEGIATAN@file_store')->name('d.post.kegiatan.file_store');
 			Route::get('','DASH\POST\KEGIATAN@index')->name('d.post.kegiatan.index');
 			Route::post('file',function(){
 				return '<img src="'.'https://media-exp1.licdn.com/dms/image/C560BAQHMnA03XDdf3w/company-logo_200_200/0?e=2159024400&v=beta&t=C7KMOtnrJwGrMXmgIk2u1B8a7VRfgxMwXng9cdP9kZk'.'"></img>';

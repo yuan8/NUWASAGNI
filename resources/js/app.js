@@ -9,9 +9,16 @@ window.Header = require('@editorjs/header');
 window.LinkTool = require('@editorjs/link');
 window.RawTool = require('@editorjs/raw');
 window.Checklist = require('@editorjs/checklist');
-window.Embed = require('@editorjs/embed');
+const Embed = require('@editorjs/embed');
 window.Quote = require('@editorjs/quote');
 window.Table = require('@editorjs/table');
+window.AttachesTool = require('@editorjs/attaches');
+window.InlineCode = require('@editorjs/inline-code');
+window.Personality = require('@editorjs/personality');
+
+// 
+
+window.Embed=Embed;
 
 // var YoneEditor=new EditorJS;
 
