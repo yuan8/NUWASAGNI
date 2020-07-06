@@ -40,6 +40,52 @@ var edjsHTML = (function () {
             let t = e.caption ? e.caption : "Image";
             return `<div class="text-center col-md-12"><img src="${e.file.url}" class="img-responsive" style="max-width:80%; margin:auto;" alt="${t}" /></div>`;
         },
+        attaches: ({ data: e }) => {
+                var icon='fa-file';
+                var color='btn-default';
+                switch(e.file.extension){
+                    case 'pdf':
+                        icon='fa-file-pdf-o';
+                        color='bg-maroon';
+                    break;
+                    case'docx':
+                        icon='fa-file-word-o';
+                        color='bg-blue';
+                    break;
+                    case'doc':
+                        icon='fa-file-word-o';
+                        color='bg-blue';
+                    break;
+                    case'xls':
+                        icon='fa-file-excel-o';
+                        color='bg-green';
+                    break;
+                    case'xlsx':
+                        icon='fa-file-excel-o';
+                        color='bg-green';
+                    break;
+                    default:
+                        icon='fa-file';
+                        color='bg-yellow';
+                    break;
+                }
+
+            return `<div class="info-box ${color}">`+
+                `<span class="info-box-icon">`+
+                `<i class=" `+icon+`" style="border:1px solid; padding:10px; border-top-left-radius:5px; border-bottom-right-radius:5px; font-size:8px;">.${e.file.extension}</i>`+
+                `</span>`+
+                `<div class="info-box-content">`+
+                  `<span class="info-box-text">${e.file.name}</span>`+
+                  // `<span class="info-box-number">92,050</span>`+
+                  `<div class="progress">`+
+                  `  <div class="progress-bar" style="width: 20%"></div>`+
+                 ` </div>`+
+                `  <span class="progress-description"><a href="${e.file.url}" target="_blank" class="text-white"><i class="fa fa-download"></i> Download / View</a></span>`+
+               ` </div>`+
+              `</div>`;
+
+            return `<div class="" style="margin-bottom:5px; margin-top:5px;"><a href="${e.file.url}" target="_blank" class="btn  `+color+`"  ><i class=" `+icon+`" style="border:1px solid; padding:5px; border-top-left-radius:5px; border-bottom-right-radius:5px; font-size:8px;">.${e.file.extension}</i> &nbsp;&nbsp;&nbsp;  ${e.file.name}</a></div>`;
+        },
         paragraph: ({ data: e }) => `<p> ${e.text} </p>`,
         embed: ({ data: e }) => {
 

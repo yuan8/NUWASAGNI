@@ -4,7 +4,7 @@
 @section('content_header')
      <div class="row">
     	<div class="col-md-12">
-    		<h3 class="text-uppercase text-center">PROGRAM KEGIATAN PER DAERAH TERKAIR SUMBER DAYA AIR</h3>
+    		<h3 class="text-uppercase text-center">PROGRAM KEGIATAN PER DAERAH TERKAIR AIR MINUM</h3>
     	</div>
     </div>
    

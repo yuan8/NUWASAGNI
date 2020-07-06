@@ -270,7 +270,7 @@ public function per_provinsi(){
         ->whereNotNull('k.id_program')
         ->where('k.status',5)
         ->where('k.id_sub_urusan',12)
-
+        ->whereIn('k.status',[4,5])
         ->whereNull('u.kode_daerah_parent')
         ->select(
             "u.id as id",

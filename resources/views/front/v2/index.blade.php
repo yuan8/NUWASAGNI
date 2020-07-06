@@ -571,6 +571,8 @@ var c={};
           }
         }
 
+        console.log(data_chace);
+
 
         map_table_index=$('#map_table_index').DataTable({
           dom: 'Bfrtip',
@@ -681,10 +683,7 @@ var c={};
             {
               render:function(data,style,dataRow){
                 var dm='';
-                if(dataRow.nama_daerah=='KABUPATEN DELI SERDANG / PROVINSI SUMATERA UTARA'){
-                }
-
-
+            
                 if(dataRow.jumlah_kegiatan){
 
                   dm+='<a href="" class="btn btn-success btn-xs">RKPD {{HP::fokus_tahun()}}</a>';

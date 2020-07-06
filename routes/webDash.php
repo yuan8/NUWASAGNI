@@ -75,6 +75,10 @@ Route::prefix('dash-admin')->middleware('auth:web')->group(function(){
 		Route::get('/map/upload','DASH\OUTPUT\MAP@upload')->name('d.out.map.upload');
 		Route::post('/map/upload','DASH\OUTPUT\MAP@store')->name('d.out.map.store');
 		Route::get('/post/{post}','DASH\OUTPUT\MAP@index')->name('d.out.post.index');
+		Route::get('/post-detail/{id}','DASH\OUTPUT\POST@show')->name('d.out.post.show');
+		Route::post('/post-detail/{id}','DASH\OUTPUT\POST@update')->name('d.out.post.update');
+		Route::post('/post-detroy/{id}','DASH\OUTPUT\POST@destroy')->name('d.out.post.delete');
+		
 		Route::get('/post-create/','DASH\OUTPUT\POST@post_create')->name('d.out.post.create');
 		Route::post('/post-create/','DASH\OUTPUT\POST@post_store')->name('d.out.post.store');
 		Route::get('/post-dokumen-create/','DASH\OUTPUT\POST@post_dokumen_create')->name('d.out.dokumen.create');

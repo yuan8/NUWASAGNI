@@ -36,6 +36,9 @@
                         @if($jenis==2)
                             <th>CONTENT</th>     
                         @endif
+                        <th>
+                            PUBLISH
+                        </th>
     					<th>
     						UPDATED AT
     					</th>
@@ -53,7 +56,9 @@
                              @if($jenis==2)
                                 <td>{{$d->meta_content}}</td>     
                             @endif
-
+                            <td>
+                                {{Carbon\Carbon::parse($d->publish_date)->format('d F Y')}}
+                            </td>
     						<td>
     							{{Carbon\Carbon::parse($d->updated_at)->format('d F Y')}}
     							<br>
@@ -61,9 +66,21 @@
     						</td>
     						<td>
     							<div class="btn-group">
-        							<a href="" class="btn btn-xs btn-primary">Detail</a>
-        							<a href="{{url($d->file_path)}}" class="btn btn-xs btn-warning"target="_blank">View</a>
-                                    <button class="btn btn-xs btn-danger">Hapus</button>
+                                    @if($d->type==1)
+                                        <a href=" class="btn btn-xs btn-primary">Update</a>
+                                    @elseif($d->type==2)
+                                        <a href="{{route('d.out.post.show',['id'=>$d->id])}}" class="btn btn-xs btn-primary">Update</a>
+                                    @elseif($d->type==3)
+                                        <a href="" class="btn btn-xs btn-primary">Update</a>
+                                    @endif
+        							
+        							@if($d->type==2)
+                                        <a href="{{route('own.out.post.show',['id'=>$d->id,'slug'=>HP::slugify($d->title)])}}" class="btn btn-xs btn-warning"target="_blank">View</a>
+                                    @else
+                                        <a href="{{url($d->file_path).'?slug='.HP::slugify($d->title)}}" class="btn btn-xs btn-warning"target="_blank">View</a>
+                                    @endif
+
+                                    <button class="btn btn-xs btn-danger" onclick="delete({{$d->id}})">Hapus</button>
     							</div>
     						</td>
     					</tr>
