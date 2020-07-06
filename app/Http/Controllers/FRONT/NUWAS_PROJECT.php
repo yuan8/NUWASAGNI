@@ -274,8 +274,7 @@ class NUWAS_PROJECT extends Controller
             'r.color',
             DB::raw("(case when n.kode_daerah is not null then 'target' else null end) as target"),
             'r.regional',
-
-            DB::raw("(select string_agg(distinct(f.jenis),'||') from public.dokumen_kebijakan_daerah as f where f.jenis <> 'LAIN_LAIN' and f.tahun <=".$tahun." and f.tahun_selesai <=".$tahun." and f.kode_daerah=r.kode_daerah) as doc_kebijakan_daerah"),
+            DB::raw("(select string_agg(distinct(f.jenis),'||') from public.dokumen_kebijakan_daerah as f where f.jenis <> 'LAIN_LAIN' and f.tahun <=".$tahun." and f.tahun_selesai >=".$tahun." and f.kode_daerah=r.kode_daerah) as doc_kebijakan_daerah"),
             DB::raw("(replace('".route('ty.daerah',['kode_daerah'=>'xxx'])."','xxx',r.kode_daerah)) as link_tipologi"),
             DB::raw("(select concat(nama_pdam,' -> ',kategori_pdam) from public.pdam  where pdam.kode_daerah = n.kode_daerah ) as pdam "),
              DB::raw("(select concat(c.nama,
@@ -284,6 +283,8 @@ class NUWAS_PROJECT extends Controller
         ->orderBy('r.kode_daerah','asc')
         ->orderBy('n.tahun','asc')
         ->get();
+
+
 
 
         $data_reg_all=[];
