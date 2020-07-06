@@ -301,13 +301,13 @@
             <div class="panel-body">
                 <div class="swiper-container-backpoint" >
                     <div class="swiper-wrapper">
-                        @foreach($output as $out)
+                    @foreach($output as $out)
                       <div class="swiper-slide">
 
-                          <div class="box-content-img " style="background-image: url({{$out->type==1?url('out_back_map.png'):''}})">
+                          <div class="box-content-img " style="background-image: url({{$out->type==1?url('out_back_map.png'):($out->type==2?asset($out->file_path):'')}})">
                           <div class="back-op">
                           <div class="content-dom">
-                            <a href="{{url($out->file_path)}}" target="_blank">{{$out->title}}</a>
+                            <a href="{{$out->type==2?route('own.out.post.show',['id'=>$out->id,'slug'=>HP::slugify($out->title)]):url($out->file_path)}}" target="_blank">{{$out->title}}</a>
                             <br>
                             <small>{{Carbon\Carbon::now()->format('d M Y')}}</small>
                           </div>

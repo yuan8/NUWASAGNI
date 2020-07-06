@@ -25,7 +25,8 @@ class Dashboard extends Controller
          $album=DB::table('album')
         ->where('created_at','>=',Carbon::parse($tahun.'-'.'01-01')->startOfDay())
         ->where('created_at','<=',Carbon::parse($tahun.'-'.'12-15')->endOfMonth())
-        ->orderBy('id','DESC')
+        ->where('sticky',true)
+        ->orderBy('updated_at','DESC')
         ->limit(10)->get();
 
         $public_world_bank=scandir(storage_path('app/public/publikasi_world_bank_air_bersih'));

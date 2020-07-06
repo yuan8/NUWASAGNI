@@ -120,6 +120,10 @@ Route::prefix('output')->group(function(){
 
 	});
 
+	Route::prefix('post')->middleware('auth:web')->group(function(){
+		Route::get('article/{id}/{slug?}','DASH\OUTPUT\POST@show_article')->name('own.out.post.show');
+	});
+
 
 });
 

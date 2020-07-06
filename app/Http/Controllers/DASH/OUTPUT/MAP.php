@@ -14,17 +14,23 @@ class MAP extends Controller
 {
     //
 
-    public function index(){
+    public function index($jenis='map'){
       
+
+        if($jenis=='map'){
+            $j=1;
+        }else{
+            $j=2;
+        }
 
     	$tahun=HP::fokus_tahun();
     	$data=DB::table('output_publish as p')
     	->leftJoin('users as u','u.id','=','p.user_id')
     	->select('p.*','u.name as nama_user')
     	->where('p.tahun',$tahun)
-    	->where('p.type',1)
+    	->where('p.type',$j)
     	->orderBy('p.updated_at','DESC')->paginate(10);
-    	return view('dash.output.map.index')->with('data',$data);
+    	return view('dash.output.map.index')->with(['data'=>$data,'jenis'=>$j]);
     }
 
     public function upload(){

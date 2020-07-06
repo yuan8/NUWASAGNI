@@ -26,6 +26,33 @@ class HelperProvider extends ServiceProvider
         //
     }
 
+    public static function slugify($text)
+{
+  // replace non letter or digits by -
+  $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+
+  // transliterate
+  $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+  // remove unwanted characters
+  $text = preg_replace('~[^-\w]+~', '', $text);
+
+  // trim
+  $text = trim($text, '-');
+
+  // remove duplicate -
+  $text = preg_replace('~-+~', '-', $text);
+
+  // lowercase
+  $text = strtolower($text);
+
+  if (empty($text)) {
+    return 'n-a';
+  }
+
+  return $text;
+}
+
     static function get_tahun_rpjmn(){
         $tahun=static::fokus_tahun();
         $tahun_start=2020;
@@ -67,8 +94,8 @@ class HelperProvider extends ServiceProvider
     static public function fokus_tahun(){
         if(Auth::User()){
             if(!empty(session('fokus_tahun'))){
-                if(session('fokus_tahun')){
-                 return (int) session('fokus_tahun');
+                if(session('fokus_tahun')!==false){
+                    return (int) session('fokus_tahun');
 
                 }else{
                     Auth::logout();

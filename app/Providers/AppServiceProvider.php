@@ -46,8 +46,8 @@ class AppServiceProvider extends ServiceProvider
                             'url'=>route('d.out.map.index')
                         ],
                         [
-                            'text'=>'POST',
-                            'url'=>route('p.prokeg.urusan')
+                            'text'=>'ARTIKEL / DOKUMEN',
+                            'url'=>route('d.out.post.index',['post'=>'text'])
                         ]
                     ]
                 ]);

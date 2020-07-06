@@ -38,6 +38,10 @@ Route::prefix('dash-admin')->middleware('auth:web')->group(function(){
 
 			Route::get('create','DASH\POST\KEGIATAN@create')->name('d.post.kegiatan.create');
 			Route::post('store','DASH\POST\KEGIATAN@store')->name('d.post.kegiatan.store');
+			Route::get('update/{id}','DASH\POST\KEGIATAN@show')->name('d.post.kegiatan.show');
+			Route::post('update/{id}','DASH\POST\KEGIATAN@update')->name('d.post.kegiatan.update');
+
+
 			
 
 		});	
@@ -70,6 +74,10 @@ Route::prefix('dash-admin')->middleware('auth:web')->group(function(){
 		Route::get('/map','DASH\OUTPUT\MAP@index')->name('d.out.map.index');
 		Route::get('/map/upload','DASH\OUTPUT\MAP@upload')->name('d.out.map.upload');
 		Route::post('/map/upload','DASH\OUTPUT\MAP@store')->name('d.out.map.store');
+		Route::get('/post/{post}','DASH\OUTPUT\MAP@index')->name('d.out.post.index');
+		Route::get('/post-create/','DASH\OUTPUT\POST@post_create')->name('d.out.post.create');
+		Route::post('/post-create/','DASH\OUTPUT\POST@post_store')->name('d.out.post.store');
+		Route::get('/post-dokumen-create/','DASH\OUTPUT\POST@post_dokumen_create')->name('d.out.dokumen.create');
 	});
 
 

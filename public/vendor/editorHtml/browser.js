@@ -38,7 +38,7 @@ var edjsHTML = (function () {
         },
         image: ({ data: e }) => {
             let t = e.caption ? e.caption : "Image";
-            return `<img src="${e.file.url}" alt="${t}" />`;
+            return `<div class="text-center col-md-12"><img src="${e.file.url}" class="img-responsive" style="max-width:80%; margin:auto;" alt="${t}" /></div>`;
         },
         paragraph: ({ data: e }) => `<p> ${e.text} </p>`,
         embed: ({ data: e }) => {
