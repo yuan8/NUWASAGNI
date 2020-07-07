@@ -65,6 +65,9 @@
                 <div class="navbar-custom-menu">
 
                     <ul class="nav navbar-nav" >
+                        <li class="">
+                            <a href="{{route('pilih_tahun')}}" ><i class="fa fa-clock"></i> GANTI TAHUN AKSES</a>
+                        </li>
                         @if(Auth::user())
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">

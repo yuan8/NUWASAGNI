@@ -88,12 +88,39 @@ class IO extends Controller
 		$sheet = $spreadsheet->getSheetByName('PROGRAM');
 		// $sheet->
 
+
 		$start=3;
+
+
+		$sheet->setCellValue('A'.$start,"KODEPEMDA");
+		$sheet->setCellValue('B'.$start,"KODESKPD");
+		$sheet->setCellValue('C'.$start,"URAI SKPD");
+		$sheet->setCellValue('D'.$start,"KODE BIDANG");
+		$sheet->setCellValue('E'.$start,"URAI BIDANG");
+		$sheet->setCellValue('F'.$start,"ID URUSAN");
+		$sheet->setCellValue('G'.$start,"ID PROGRAM");
+		$sheet->setCellValue('H'.$start,"KODE PROGRAM");
+		$sheet->setCellValue('I'.$start,"URAI PROGRAM");
+		$sheet->setCellValue('J'.$start,"ID INDIKATOR / CAPAIAN");
+		$sheet->setCellValue('K'.$start,"KODE INDIKATOR / CAPAIAN");
+		$sheet->setCellValue('L'.$start,"URAI INDIKATOR / CAPAIAN");
+		$sheet->setCellValue('M'.$start,"TARGET INDIKATOR / CAPAIAN");
+		$sheet->setCellValue('N'.$start,"SATUAN INDIKATOR / CAPAIAN");
+		$sheet->setCellValue('O'.$start,"TAGING SPM INDIKATOR / CAPAIAN");
+		
+		$sheet->getStyle('A'.$start.':O'.$start)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('6587C0');
+
+		$start++;
+		$sheet->freezePane('O'.$start);
+		$filter_start=$start-1;
+
 
 		$id_p='';
 		$id_c='';
 		$id_k='';
 		$id_i='';
+		$pindex=0;
+		$cindex=0;
 
 		foreach ($data as $key => $d) {
 			$d=(array)$d;
@@ -102,6 +129,7 @@ class IO extends Controller
 			$d['jenis_k']='';
 
 			if($id_p!=$d['id_p']){
+				$pindex++;
 				$sheet->setCellValue('A'.$start, $d['kodepemda']);
 				$sheet->setCellValue('B'.$start, $d['kodeskpd']);
 				$sheet->setCellValue('C'.$start, $d['uraiskpd']);
@@ -112,11 +140,20 @@ class IO extends Controller
 				$sheet->setCellValue('H'.$start, $d['kode_p']);
 				$sheet->setCellValue('I'.$start, $d['urai_p']);
 				$id_p=$d['id_p'];
+
+				if($pindex%2){
+					$sheet->getStyle('A'.$start.':O'.$start)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('6fc1e4');
+				}else{
+					$sheet->getStyle('A'.$start.':O'.$start)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('a7c6da');
+				}
+
 				$start++;
 
 			}
 
 			if($id_c!=$d['id_c']){
+				$cindex++;
+
 
 				$sheet->setCellValue('A'.$start, $d['kodepemda']);
 				$sheet->setCellValue('B'.$start, $d['kodeskpd']);
@@ -133,6 +170,13 @@ class IO extends Controller
 				$sheet->setCellValue('M'.$start, $d['target_c']);
 				$sheet->setCellValue('N'.$start, $d['satuan_c']);
 				$sheet->setCellValue('O'.$start, $d['kode_spm_c']);
+
+				if($cindex%2){
+					$sheet->getStyle('A'.$start.':O'.$start)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('aadfba');
+				}else{
+					$sheet->getStyle('A'.$start.':O'.$start)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('d7e8d7');
+				}
+
 				
 				$id_c=$d['id_c'];
 				$start++;
@@ -143,6 +187,7 @@ class IO extends Controller
 		
 
 		}
+		$sheet->setAutoFilter('A'.$filter_start.':O'.($start-1));
 
 		$sheet = $spreadsheet->getSheetByName('KEGIATAN');
 		// $sheet->

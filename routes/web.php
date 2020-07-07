@@ -13,6 +13,10 @@
 
 
 Auth::routes();
+Route::get('xxx',function(){
+	BPPSPAM::storingdata('pgsql')
+});
+
 Route::middleware('auth:web')->get('logout',function(){
 	Auth::logout();
 	return redirect('/');

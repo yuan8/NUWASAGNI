@@ -84,6 +84,10 @@ Route::prefix('dash-admin')->middleware('auth:web')->group(function(){
 		Route::get('/post-dokumen-create/','DASH\OUTPUT\POST@post_dokumen_create')->name('d.out.dokumen.create');
 	});
 
+	Route::prefix('daerah-target')->group(function(){
+		Route::get('/','DASH\DEARAHNUWAS@index')->name('d.daerah.index');
+	});
+
 
 	Route::prefix('user')->middleware('can:role.superadmin')->group(function(){
 		Route::get('/map','DASH\OUTPUT\MAP@index')->name('d.user.index');

@@ -33,57 +33,22 @@ class AppServiceProvider extends ServiceProvider
         $classter=substr($request->path(), 0,10);
 
         if($classter=='dash-admin'){
+
+
              $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
 
-                $event->menu->add('MAIN NAVIGATION');
-                  $event->menu->add([
-                    'text' => 'OUTPUT',
-                     'can'=>'role.admin',
-
-                    'submenu'=>[
-                        [
-                            'text'=>'MAP',
-                            'url'=>route('d.out.map.index')
-                        ],
-                        [
-                            'text'=>'ARTIKEL / DOKUMEN',
-                            'url'=>route('d.out.post.index',['post'=>'text'])
-                        ]
-                    ]
-                ]);
-
-                // $event->menu->add([
-                //     'text' => 'ONLINE MEET',
-                //      'can'=>'role.admin',
-
-                //     'url'=>route('d.meet.index')
-                // ]);
-
-
+              $event->menu->add('MASTERING PEMDA');
                 $event->menu->add([
-                    'text' => 'KEGIATAN',
-                     'can'=>'role.admin',
-                     'submenu'=>[
-                        [
-                            'text'=>'Post',
-                            'url'=>route('d.post.kegiatan.index')
-
-
-                        ],
-                         [
-                            'text'=>'Tambah Post',
-                            'url'=>route('d.post.kegiatan.create')
-
-                            
-
-                        ]
-
-                     ]
-                   
+                    "text"=>'TARGET PEMDA',
+                    'url'=>route('d.daerah.index')
                 ]);
 
-              
-               
+                  $event->menu->add([
+                    "text"=>'PROFIL TARGET PEMDA',
+                    'url'=>route('d.daerah.index')
+                ]);
+
+                $event->menu->add('DATA RKPD');
                 $event->menu->add([
                     'text' => 'PROGRAM KEG '.HP::fokus_tahun(),
                      'can'=>'role.admin',
@@ -102,26 +67,31 @@ class AppServiceProvider extends ServiceProvider
                     
                 ]);
 
-                 $event->menu->add([
-                    'text' => 'BOT',
-                     'can'=>'role.superadmin',
-                    'submenu'=>[
-                        [
-                            'text'=>'SAT',
-                            'url'=>url('')
 
-                        ],
-                        [
-                            'text'=>'RISPAM',
-                            'url'=>url('')
-                        ]
-                    ]
+
+                $event->menu->add('DATA SAT');
+
+                $event->menu->add([
+                    "text"=>'SAT',
+                    'url'=>route('d.daerah.index')
                 ]);
 
-                 $event->menu->add([
-                    "text"=>'UPLOAD FILE LAIN LAIN',
-                    'url'=>route('d.kb.f.index',['jenis'=>'LAIN_LAIN'])
-                 ]);
+
+
+                $event->menu->add('OLAH DATA');
+
+                $event->menu->add([
+                    "text"=>'INPUT DATA OLAH RKPD',
+                    'url'=>route('d.daerah.index')
+                ]);
+
+
+
+                $event->menu->add('PENDUKUNG');
+
+
+
+
 
                 $event->menu->add([
                     'text' => 'FILE KEBIJAKAN',
@@ -157,6 +127,75 @@ class AppServiceProvider extends ServiceProvider
 
                     ]
                 ]);
+
+                $event->menu->add([
+                    "text"=>'UPLOAD FILE LAIN LAIN',
+                    'url'=>route('d.kb.f.index',['jenis'=>'LAIN_LAIN'])
+                 ]);
+
+
+                $event->menu->add('PELAKSANAAN');
+                  $event->menu->add([
+                    'text' => 'OUTPUT',
+                     'can'=>'role.admin',
+
+                    'submenu'=>[
+                        [
+                            'text'=>'MAP',
+                            'url'=>route('d.out.map.index')
+                        ],
+                        [
+                            'text'=>'ARTIKEL / DOKUMEN',
+                            'url'=>route('d.out.post.index',['post'=>'text'])
+                        ]
+                    ]
+                ]);
+
+
+                $event->menu->add([
+                    'text' => 'KEGIATAN',
+                     'can'=>'role.admin',
+                     'submenu'=>[
+                        [
+                            'text'=>'Post',
+                            'url'=>route('d.post.kegiatan.index')
+
+
+                        ],
+                         [
+                            'text'=>'Tambah Post',
+                            'url'=>route('d.post.kegiatan.create')
+
+                            
+
+                        ]
+
+                     ]
+                   
+                ]);
+
+              
+               
+                
+                 $event->menu->add([
+                    'text' => 'BOT',
+                     'can'=>'role.superadmin',
+                    'submenu'=>[
+                        [
+                            'text'=>'SAT',
+                            'url'=>url('')
+
+                        ],
+                        [
+                            'text'=>'RISPAM',
+                            'url'=>url('')
+                        ]
+                    ]
+                ]);
+
+               
+
+               
 
                 $event->menu->add([
                     'text' => 'USER',

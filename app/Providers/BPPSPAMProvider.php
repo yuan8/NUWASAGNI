@@ -31,7 +31,7 @@ class BPPSPAMProvider extends ServiceProvider
     }
 
     public static function storingdata($con){
-      $tahun_fokus=2019;
+         $tahun_fokus=2019;
         static::init($tahun_fokus,$con);
 
         $schema='';

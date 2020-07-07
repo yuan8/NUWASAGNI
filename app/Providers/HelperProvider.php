@@ -27,31 +27,31 @@ class HelperProvider extends ServiceProvider
     }
 
     public static function slugify($text)
-{
-  // replace non letter or digits by -
-  $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+        {
+          // replace non letter or digits by -
+          $text = preg_replace('~[^\pL\d]+~u', '-', $text);
 
-  // transliterate
-  $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+          // transliterate
+          $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
 
-  // remove unwanted characters
-  $text = preg_replace('~[^-\w]+~', '', $text);
+          // remove unwanted characters
+          $text = preg_replace('~[^-\w]+~', '', $text);
 
-  // trim
-  $text = trim($text, '-');
+          // trim
+          $text = trim($text, '-');
 
-  // remove duplicate -
-  $text = preg_replace('~-+~', '-', $text);
+          // remove duplicate -
+          $text = preg_replace('~-+~', '-', $text);
 
-  // lowercase
-  $text = strtolower($text);
+          // lowercase
+          $text = strtolower($text);
 
-  if (empty($text)) {
-    return 'n-a';
-  }
+          if (empty($text)) {
+            return 'n-a';
+          }
 
-  return $text;
-}
+          return $text;
+        }
 
     static function get_tahun_rpjmn(){
         $tahun=static::fokus_tahun();
@@ -100,15 +100,20 @@ class HelperProvider extends ServiceProvider
                 }else{
                     Auth::logout();
                     header("Location: ".route('login'));
+                    redirect('login');
                     return 0;
                 }
             }else{
                 Auth::logout();
                 header("Location: ".route('login'));
+                redirect('login');
+
                 return 0;
             }
         }else{
             header("Location: ".route('login'));
+            redirect('login');
+
             return 0;
 
         }
