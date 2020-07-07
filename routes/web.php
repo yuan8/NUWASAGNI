@@ -14,7 +14,7 @@
 
 Auth::routes();
 Route::get('xxx',function(){
-	BPPSPAM::storingdata('pgsql')
+	BPPSPAM::storingdata('pgsql');
 });
 
 Route::middleware('auth:web')->get('logout',function(){
