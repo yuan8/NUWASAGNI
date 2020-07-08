@@ -86,6 +86,15 @@ Route::prefix('dash-admin')->middleware('auth:web')->group(function(){
 
 	Route::prefix('daerah-target')->group(function(){
 		Route::get('/','DASH\DEARAHNUWAS@index')->name('d.daerah.index');
+		Route::get('/create','DASH\DEARAHNUWAS@create')->name('d.daerah.create');
+		Route::post('/store','DASH\DEARAHNUWAS@store')->name('d.daerah.strore');
+		Route::get('/show/{id}','DASH\DEARAHNUWAS@show')->name('d.daerah.show');
+		Route::post('/delete/{id}','DASH\DEARAHNUWAS@delete')->name('d.daerah.show');
+
+
+
+
+
 	});
 
 

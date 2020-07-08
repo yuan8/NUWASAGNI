@@ -170,6 +170,18 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
         ],
+         'myranwal' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => '192.168.123.190',
+            'port' =>3306,
+            'database' => 'rkpd_data_ranwal',
+            'username' => 'admin',
+            'password' =>'S@qpx231azq2',
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
 
     ],
 

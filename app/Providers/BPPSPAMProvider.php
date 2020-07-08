@@ -112,6 +112,7 @@ class BPPSPAMProvider extends ServiceProvider
                       $d[$key]=null;
                     }else if(strpos($value,'%')!==false){
                         $d[$key]=(double)str_replace(',','.',(str_replace('%','',(str_replace('.','',$value)))));
+                        $d[$key]=$d[$key]/100;
                     }else{
                       if(in_array($key,['kategori','keterangan'])){
                         $d[$key]=$value;

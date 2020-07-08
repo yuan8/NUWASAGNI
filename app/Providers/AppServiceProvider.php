@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Gate;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use Illuminate\Http\Request;
 use Hp;
+use DB;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -174,6 +175,15 @@ class AppServiceProvider extends ServiceProvider
                    
                 ]);
 
+                $event->menu->add([
+                    'text' => 'KORDINASI',
+                    'icon'=>'fa fa-users',
+                    'url'=>''
+                    
+                ]);
+
+
+
               
                
                 
@@ -203,6 +213,8 @@ class AppServiceProvider extends ServiceProvider
 
                     'url'=>route('d.user.index')
                  ]);
+
+
 
              });
 
@@ -246,17 +258,41 @@ class AppServiceProvider extends ServiceProvider
 
                  $event->menu->add([
                     'text' => 'KELEMBAGAAN',
-                    'icon'=>'fa fa-users',
+                    'icon'=>'fa fa-university',
                     'url'=>route('ty.index')
                     
                 ]);
 
-                   $event->menu->add([
+                  $event->menu->add([
                     'text' => 'CAPAIAN SPM',
                     'icon'=>'fa fa-tint',
                     'url'=>''
                     
                 ]);
+
+
+                  $kor=DB::table('public.kordinasi_kategory')->get();
+                  $korsub=[];
+                  foreach ($kor as $key => $k) {
+                    
+                    $korsub[]=[
+                      'text'=>$k->title,
+                      'url'=>''
+
+                    ];
+                      
+                    # code...
+                  }
+
+
+                 $event->menu->add([
+                  'text' => 'KORDINASI',
+                  'icon'=>'fa fa-users',
+
+                  'submenu'=>$korsub
+                  
+                  ]);
+
 
                 // $event->menu->add([
                 //     'text' => 'PROGRAM KEGIATAN',

@@ -216,21 +216,27 @@ class SAT extends Controller
 
 
         // IF(OR(G30="",G31="",G32="")
+        // 1
         if((empty($data['sat_nilai_kinerja_ttl_dr_bppspam_nilai']))OR (empty($data['sat_nilai_aspek_keuangan_dr_bppspam_nilai'])) OR (empty($data['sat_nilai_aspek_operasional_dr_bppspam_nilai']) )){
             return null;
 
         // IF(AND(G30>=G18,G31>=G23,G32>=G27,G59>G62)
+        // 2
+
         }else if(($data['sat_nilai_kinerja_ttl_dr_bppspam_nilai']>=$bppspam_top) AND ($data['sat_nilai_aspek_keuangan_dr_bppspam_nilai']>=$bppspam_f_top) AND ($data['sat_nilai_aspek_operasional_dr_bppspam_nilai']>=$bppspam_o_top) AND ($cakupan_pelayanan_di_daerah_pelayanan>$bppspam_p_top) ){
             return 5;
 
             //C37 sehat berkelanjutan
 
         // IF(AND(G30>=G18,OR(G59<G62,G59>G62))
+        // 3
         }else if(($data['sat_nilai_kinerja_ttl_dr_bppspam_nilai']>=$bppspam_top) AND (($cakupan_pelayanan_di_daerah_pelayanan<$bppspam_p_top)OR($cakupan_pelayanan_di_daerah_pelayanan>$bppspam_p_top))){
             return 4;
             // C38  sehat
 
         // IF(AND(G30>=G19,G30<G18,G59>=G63)
+        // 4
+
         }else if(($data['sat_nilai_kinerja_ttl_dr_bppspam_nilai']>=$bppspam_mid) AND ($data['sat_nilai_kinerja_ttl_dr_bppspam_nilai']<$bppspam_top) AND ($cakupan_pelayanan_di_daerah_pelayanan>=$bppspam_p_mid)){
 
             return 4;
@@ -238,31 +244,39 @@ class SAT extends Controller
 
         // IF(AND(G30>=G19,GH31>G24,G32>G28) SAT
         // IF(AND(G30>=G19,G31>G24,G32>G28)  SELF CALL
+        // 5
+
         }else if(($data['sat_nilai_kinerja_ttl_dr_bppspam_nilai']>=$bppspam_mid) AND ($data['sat_nilai_aspek_keuangan_dr_bppspam_nilai']>$bppspam_f_bot) AND ($data['sat_nilai_aspek_operasional_dr_bppspam_nilai']>$bppspam_o_bot)){
             return 4;
             //C38  sehat
         
         // IF(AND(G30>=G19,G30<G18,G59<G63)
+        // 6
+
         }else if(($data['sat_nilai_kinerja_ttl_dr_bppspam_nilai']>=$bppspam_mid) AND ($data['sat_nilai_kinerja_ttl_dr_bppspam_nilai']<$bppspam_top) AND ($cakupan_pelayanan_di_daerah_pelayanan<$bppspam_p_mid)){
             return 3;
             //C39 potensi sehat
 
         // IF(AND(G30>=G20,G30<G19,G31>=G24,G32>=G28,G59>G62)
+        // 7
         }else if(($data['sat_nilai_kinerja_ttl_dr_bppspam_nilai']>=$bppspam_bot) AND ($data['sat_nilai_kinerja_ttl_dr_bppspam_nilai']<$bppspam_mid) AND ($data['sat_nilai_aspek_keuangan_dr_bppspam_nilai']>=$bppspam_f_bot) AND ($data['sat_nilai_aspek_operasional_dr_bppspam_nilai']>=$bppspam_o_bot) AND ($cakupan_pelayanan_di_daerah_pelayanan>$bppspam_p_top)){
             return 3;
             //C39 potensi sehat
 
             // IF(AND(G30>G20,G30<G19,OR(G31<G24,G32<G28)
+        // 8
         }else if(($data['sat_nilai_kinerja_ttl_dr_bppspam_nilai']>$bppspam_bot) AND ($data['sat_nilai_kinerja_ttl_dr_bppspam_nilai']<$bppspam_mid) AND (($data['sat_nilai_aspek_keuangan_dr_bppspam_nilai']<$bppspam_f_bot)OR($data['sat_nilai_aspek_operasional_dr_bppspam_nilai']<$bppspam_o_bot))){
              return 2;
             //C40 kurang sehat
         
              // IF(AND(G30>G20,G30<G19,G59<G62)
+        // 9
         }else if(($data['sat_nilai_kinerja_ttl_dr_bppspam_nilai']>$bppspam_bot) AND ($data['sat_nilai_kinerja_ttl_dr_bppspam_nilai']<$bppspam_mid) AND ($cakupan_pelayanan_di_daerah_pelayanan<$bppspam_p_top) ){
              return 2;
             //C40 kurang sehat
 
              // IF(AND(G30<=G20,G59>G62)
+        // 10
         }else if(($data['sat_nilai_kinerja_ttl_dr_bppspam_nilai']<=$bppspam_bot) AND ($cakupan_pelayanan_di_daerah_pelayanan>$bppspam_p_top) ){
              return 2;
             //C40 kurang sehat

@@ -3,7 +3,7 @@
 
 @section('content_header')
 
-	<h1>DAERAH NUWSP {{$tahun .' - '. ($tahun+1)}}</h1>
+	<h1>DAERAH NUWSP </h1>
 
 @stop
 
@@ -12,6 +12,7 @@
 		<div class="col-md-12">
 			<div class="box box-primary">
 				<div class="box-body">
+					<a href="{{route('d.daerah.create')}}"  class="btn btn-success btn-xs" style="margin-bottom: 10px;">Tambah Target Baru</a>
 					<table class="table table-bordered table-condensed" id="datatable">
 						<thead>
 							<tr>
@@ -19,7 +20,7 @@
 								<th  rowspan="2">NAMA DAERAH</th>
 								<th  rowspan="2">NAMA PROVINSI</th>
 								<th colspan="3" >PRIORITAS</th>
-								<th style="min-width: 100px;">ACTION</th>
+								<th rowspan="2" style="min-width: 100px;">ACTION</th>
 							</tr>
 							<tr>
 								<th>JENIS PRIORITAS HIBAH</th>
@@ -38,7 +39,7 @@
 								<td>{{$d->tahun!=1?'Rp.'.number_format($d->nilai_bantuan,3,'.',','):''}}</td>
 								<td>
 									<div class="btn-group">
-										<a href="" class="btn btn-xs btn-warning">Update</a>
+										<a href="{{route('d.daerah.show',['id'=>$d->id])}}" class="btn btn-xs btn-warning">Update</a>
 										<a href="" class="btn btn-xs btn-danger">Delete</a>
 
 									</div>
