@@ -15,6 +15,8 @@ Route::prefix('dash-admin')->middleware('auth:web')->group(function(){
 
 	Route::prefix('prokeg')->group(function(){
 		Route::get('/rkpd/data/{kodepemda}','DASH\RKPD\IO@download');
+		Route::get('/rkpd/data-index/{kodepemda}','DASH\RKPD\IO@index');
+
 		Route::get('/','DASH\PROKEG@index')->name('d.prokeg.index');
 		Route::get('/detail/{id}','DASH\PROKEG@detail')->name('d.prokeg.detail');
 		Route::get('/pemetaan/{id}','DASH\PROKEG@pemetaan')->name('d.prokeg.pemetaan');

@@ -94,9 +94,8 @@ class HelperProvider extends ServiceProvider
     static public function fokus_tahun(){
         if(Auth::User()){
             if(!empty(session('fokus_tahun'))){
-                if(session('fokus_tahun')!==false){
+                if(session('fokus_tahun')){
                     return (int) session('fokus_tahun');
-
                 }else{
                     Auth::logout();
                     header("Location: ".route('login'));
