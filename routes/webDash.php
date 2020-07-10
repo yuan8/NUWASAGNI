@@ -14,6 +14,17 @@ Route::prefix('dash-admin')->middleware('auth:web')->group(function(){
 	});
 
 	Route::prefix('prokeg')->group(function(){
+		Route::prefix('master')->group(function(){
+			Route::get('/','DASH\RKPD\MASTER@index')->name('d.master.prokeg.index');
+			Route::get('/download/{kodepemda}','DASH\RKPD\IO@index')->name('d.master.prokeg.download');
+			Route::post('/upload/','DASH\RKPD\IO@upload')->name('d.master.prokeg.upload');
+			Route::get('/upload/','DASH\RKPD\MASTER@upload')->name('d.master.prokeg.upload_form');
+
+
+
+
+		});
+	
 		Route::get('/rkpd/data/{kodepemda}','DASH\RKPD\IO@download');
 		Route::get('/rkpd/data-index/{kodepemda}','DASH\RKPD\IO@index');
 
@@ -27,17 +38,8 @@ Route::prefix('dash-admin')->middleware('auth:web')->group(function(){
 
 	Route::prefix('post')->group(function(){
 		Route::prefix('kegiatan')->group(function(){
-			Route::get('editor',function(){
-				return view('dash.post.template.them');
-			});
-			// Route::post('file-upload','DASH\POST\KEGIATAN@file_store')->name('d.post.kegiatan.file_store');
+			
 			Route::get('','DASH\POST\KEGIATAN@index')->name('d.post.kegiatan.index');
-			Route::post('file',function(){
-				return '<img src="'.'https://media-exp1.licdn.com/dms/image/C560BAQHMnA03XDdf3w/company-logo_200_200/0?e=2159024400&v=beta&t=C7KMOtnrJwGrMXmgIk2u1B8a7VRfgxMwXng9cdP9kZk'.'"></img>';
-				
-			})->name('d.post.file.up');
-
-
 			Route::get('create','DASH\POST\KEGIATAN@create')->name('d.post.kegiatan.create');
 			Route::post('store','DASH\POST\KEGIATAN@store')->name('d.post.kegiatan.store');
 			Route::get('update/{id}','DASH\POST\KEGIATAN@show')->name('d.post.kegiatan.show');
@@ -92,10 +94,6 @@ Route::prefix('dash-admin')->middleware('auth:web')->group(function(){
 		Route::post('/store','DASH\DEARAHNUWAS@store')->name('d.daerah.strore');
 		Route::get('/show/{id}','DASH\DEARAHNUWAS@show')->name('d.daerah.show');
 		Route::post('/delete/{id}','DASH\DEARAHNUWAS@delete')->name('d.daerah.show');
-
-
-
-
 
 	});
 

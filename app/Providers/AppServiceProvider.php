@@ -8,7 +8,7 @@ use App\Policies\PostPolicy;
 use Illuminate\Support\Facades\Gate;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use Illuminate\Http\Request;
-use Hp;
+use HP;
 use DB;
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,51 +40,68 @@ class AppServiceProvider extends ServiceProvider
 
               $event->menu->add('MASTERING PEMDA');
                 $event->menu->add([
-                    "text"=>'TARGET PEMDA',
-                    'url'=>route('d.daerah.index')
-                ]);
+                    "text"=>'DAERAH NUWSP',
+                    'url'=>route('d.daerah.index'),
+                     'can'=>'role.admin',
 
+                ]);
+                 $event->menu->add([
+                    "text"=>'IKFD PEMDA',
+                    'url'=>route('d.daerah.index'),
+                     'can'=>'role.admin',
+
+                ]);
                   $event->menu->add([
-                    "text"=>'PROFIL TARGET PEMDA',
-                    'url'=>route('d.daerah.index')
+                    "text"=>'PAD',
+                    'url'=>route('d.daerah.index'),
+                     'can'=>'role.admin',
+
                 ]);
 
                 $event->menu->add('DATA RKPD');
-                $event->menu->add([
-                    'text' => 'PROGRAM KEG '.HP::fokus_tahun(),
-                     'can'=>'role.admin',
-                     'submenu'=>[
-                        [
-                            'text'=>'RPJMN ',
-                            'url'=>route('d.kb.rpjmn.index')
-                        ],
-                        [
-                            'text'=>'RKPD ',
-                            'url'=>route('d.prokeg.index')
-                        ],
-
-                     ]
+                 $event->menu->add([
+                    'text' => 'MASTER '.HP::fokus_tahun(),
+                    'can'=>'role.admin',
+                    'url'=>route('d.master.prokeg.index')
 
                     
                 ]);
 
+                $event->menu->add([
+                    'text' => 'HASIL PEMETAAN '.HP::fokus_tahun(),
+                    'can'=>'role.admin',
+                    'url'=>route('d.prokeg.index')
 
 
-                $event->menu->add('DATA SAT');
+                    
+                ]);
+                $event->menu->add([
+                    "text"=>'UPLOAD DATA PEMATAAN RKPD',
+                    'url'=>route('d.master.prokeg.upload_form'),
+                    'can'=>'role.admin',
+
+                ]);
+
+
+
+                $event->menu->add('DATA PDAM');
 
                 $event->menu->add([
                     "text"=>'SAT',
-                    'url'=>route('d.daerah.index')
+                    'url'=>route('d.daerah.index'),
+
+                ]);
+
+                  $event->menu->add([
+                    "text"=>'BPPSPAM',
+                    'url'=>route('d.daerah.index'),
+
                 ]);
 
 
 
-                $event->menu->add('OLAH DATA');
 
-                $event->menu->add([
-                    "text"=>'INPUT DATA OLAH RKPD',
-                    'url'=>route('d.daerah.index')
-                ]);
+               
 
 
 
@@ -158,13 +175,13 @@ class AppServiceProvider extends ServiceProvider
                      'can'=>'role.admin',
                      'submenu'=>[
                         [
-                            'text'=>'Post',
+                            'text'=>'ARTIKEL',
                             'url'=>route('d.post.kegiatan.index')
 
 
                         ],
                          [
-                            'text'=>'Tambah Post',
+                            'text'=>'TAMBAH ARTIKEL',
                             'url'=>route('d.post.kegiatan.create')
 
                             
@@ -178,8 +195,8 @@ class AppServiceProvider extends ServiceProvider
                 $event->menu->add([
                     'text' => 'KORDINASI',
                     'icon'=>'fa fa-users',
-                    'url'=>''
-                    
+                    'url'=>'',
+                    'can'=>'role.admin'
                 ]);
 
 
@@ -234,16 +251,23 @@ class AppServiceProvider extends ServiceProvider
                  $event->menu->add([
                     'text' => 'PETA DUKUNGAN',
                     'icon'=>'fa fa-map',
-                   
                     'submenu'=>[
+                        // [
+                        //     'text'=>'PROKEG  - CHART',
+                        //     'url'=>route('p.prokeg')
+                        // ],
                         [
-                            'text'=>'PER DAERAH (AIR MINUM) - CHART',
-                            'url'=>route('p.prokeg')
+                          'text'=>'NOMENKLATUR (PERMENDAGRI 90) '.HP::fokus_tahun()
                         ],
                          [
-                            'text'=>'PER DAERAH (AIR MINUM) - TABLE',
+                            'text'=>'PROGRAM KEGIATAN'.HP::fokus_tahun().'',
                             'url'=> route('d.index')
-                        ]
+                        ],
+                        [
+                            'text'=>'PAD - TABLE',
+                            'url'=> route('d.index')
+                        ],
+                      
                     ]
                     
                 ]);
@@ -252,14 +276,36 @@ class AppServiceProvider extends ServiceProvider
                  $event->menu->add([
                     'text' => 'KINERJA AIR MINUM',
                     'icon'=>'fa fa-thumbs-up ',
-                    'url'=>''
+                    'submenu'=>[
+                       
+                        [
+                          'text'=>'INDIKATOR PROKEG '.HP::fokus_tahun()
+                        ],
+                        [
+                          'text'=>'RAKORTEK '.HP::fokus_tahun()
+
+                        ],
+                       
+                    ]
                     
                 ]);
 
                  $event->menu->add([
                     'text' => 'KELEMBAGAAN',
                     'icon'=>'fa fa-university',
-                    'url'=>route('ty.index')
+                    'submenu'=>[
+                          [
+                            'text'=>'TIPOLOGI PEMDA',
+                             'url'=>route('ty.index')
+                          ],
+                         [
+                            'text'=>'IKFD '.HP::fokus_tahun(),
+                            'url'=> route('d.index')
+                        ]
+
+
+                    ]
+                   
                     
                 ]);
 
@@ -272,9 +318,17 @@ class AppServiceProvider extends ServiceProvider
 
 
                   $kor=DB::table('public.kordinasi_kategory')->get();
-                  $korsub=[];
+                  $korsub=[
+                     [
+                      'text'=>'JADWAL KEGIATAN TEAM NUWSP '.HP::fokus_tahun(),
+                      
+                    ],
+                    [
+                      'text'=>'HASIL KEGIATAN TEAM NUWSP '.HP::fokus_tahun(),
+                    ]
+                  ];
                   foreach ($kor as $key => $k) {
-                    
+
                     $korsub[]=[
                       'text'=>$k->title,
                       'url'=>''
@@ -286,10 +340,11 @@ class AppServiceProvider extends ServiceProvider
 
 
                  $event->menu->add([
-                  'text' => 'KORDINASI',
+                  'text' => 'KEGIATAN',
                   'icon'=>'fa fa-users',
 
                   'submenu'=>$korsub
+
                   
                   ]);
 
@@ -311,8 +366,19 @@ class AppServiceProvider extends ServiceProvider
                 
                 $event->menu->add([
                     'text' => 'PROFILE PDAM',
-                    'url'=>route('p.pdam'),
-                    'icon'=>'fa fa-door-open'
+                    'icon'=>'fa fa-door-open',
+                    'submenu'=>[
+                      [
+                        'text'=>'SAT',
+                        'url'=>route('p.pdam'),
+
+                      ],
+                      [
+                        'text'=>'BPPSPAM',
+                        'url'=>route('p.pdam'),
+
+                      ]
+                    ]
 
                 ]);
 

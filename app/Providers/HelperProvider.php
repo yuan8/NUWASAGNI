@@ -97,23 +97,21 @@ class HelperProvider extends ServiceProvider
                 if(session('fokus_tahun')){
                     return (int) session('fokus_tahun');
                 }else{
-                    Auth::logout();
-                    header("Location: ".route('login'));
-                    redirect('login');
+                    // Auth::logout();
+                    // header("Location: ".route('login'));
+                    // redirect('login');
                     return 0;
                 }
             }else{
-                Auth::logout();
-                header("Location: ".route('login'));
+                // Auth::logout();
+                // header("Location: ".route('login'));
                 redirect('login');
 
                 return 0;
             }
         }else{
-            header("Location: ".route('login'));
-            redirect('login');
-
-            return 0;
+          
+          return 0;
 
         }
     

@@ -36,7 +36,7 @@
 				<div class="form-group">
 					<label>TAHUN MULAI BERLAKU</label>
 					<select class="form-control" required="" name="tahun_mulai">
-						<?php for ($i=(int)HP::fokus_tahun(); $i>(HP::fokus_tahun()-20); $i--) { ?> 
+						<?php for ($i=(int)HP::fokus_tahun(); $i>(HP::fokus_tahun()-25); $i--) { ?> 
 
 							<option value="{{$i}}">{{$i}}</option>
 						<?php
@@ -49,7 +49,7 @@
 				<div class="form-group">
 					<label>TAHUN SELESAI BERLAKU</label>
 						<select class="form-control" required="" name="tahun_selesai">
-							<?php for ($i=(int)HP::fokus_tahun(); $i<(HP::fokus_tahun()+20); $i++) { ?> 
+							<?php for ($i=(int)HP::fokus_tahun(); $i<(HP::fokus_tahun()+25); $i++) { ?> 
 								<option value="{{$i}}">{{$i}}</option>
 							<?php
 						}
@@ -164,6 +164,9 @@
 		table_data.rows.add(data_source).draw();
 
 	});
+
+
+	$('select').select2();
 
 
 	

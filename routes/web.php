@@ -34,21 +34,15 @@ Route::middleware('auth:web')->group(function(){
 
 	Route::prefix('daerah')->group(function(){
 		Route::get('doc/{kode_daerah}/{jenis}','FRONT\DOKUMEN@list')->name 	('d.doc.list');
-
 	});
 
 
 	Route::prefix('pdam')->group(function(){
-
 		Route::get('/', 'FRONT\PDAM@index')->name('p.pdam');
-
 		Route::get('/map', 'FRONT\PDAM@map')->name('p.pdam.map');
-
 		Route::get('/sat-laporan/{id}', 'FRONT\PDAM@sat')->name('p.laporan_sat');
-
 		Route::prefix('simspam')->group(function(){
 			Route::get('/{id}','FRONT\SIMSPAM@index')->name('p.simspam.perpipaan');
-
 		});
 	});
 
@@ -57,19 +51,15 @@ Route::middleware('auth:web')->group(function(){
 		Route::get('/{kode_daerah}/program','FRONT\DUKUNGAN@program')->name('d.program');
 		Route::get('/{kode_daerah}/program/{id_program}/kegiatan','FRONT\DUKUNGAN@kegiatan')->name('d.program.kegiatan');
 		Route::get('/{kode_daerah}/program/{id_program}/kegiatan/{id_kegiatan}/sumber-dana','FRONT\DUKUNGAN@sumberdana')->name('d.program.kegiatan.sumberdana');
-
-
 	});
+
 
 	Route::prefix('typologi')->group(function(){
 		Route::get('/','FRONT\TYPOLOGI@index')->name('ty.index');
 		Route::get('/{kode_daerah}/dinas','FRONT\TYPOLOGI@detail_daerah')->name('ty.daerah');
-
-
-	
-
-
 	});
+
+
 
 	Route::prefix('prokeg')->group(function(){
 		Route::get('/', 'FRONT\PROKEG@index')->name('p.prokeg');
@@ -85,18 +75,9 @@ Route::middleware('auth:web')->group(function(){
 
 		Route::get('/urusan', 'FRONT\PROKEG@index')->name('p.prokeg.urusan');
 
-
 		Route::get('/program-kegiatan-data/{id}', 'FRONT\PROKEG@data')->name('pr.data');
 
 		Route::get('/program-kegiatan-table', 'FRONT\PROKEG@list_program_kegiatan_daerah')->name('pr.table');
-
-
-
-		
-
-
-
-
 
 	});
 
@@ -104,9 +85,6 @@ Route::middleware('auth:web')->group(function(){
 		Route::get('/', 'FRONT\NUWAS_PROJECT@index')->name('p.nuwas.index');
 		Route::get('/prokeg', 'FRONT\NUWAS_PROJECT@prokeg_index')->name('p.nuwas.prokeg.index');
 		Route::get('/prokeg/detail/{id}', 'FRONT\NUWAS_PROJECT@prokeg_detail')->name('p.nuwas.prokeg.detail');
-
-
-
 	});
 
 	Route::get('/','FRONT\Dashboard@index');
@@ -115,20 +93,15 @@ Route::middleware('auth:web')->group(function(){
 
 
 Route::prefix('output')->group(function(){
-
 	Route::prefix('map')->group(function(){
 		Route::get('module-builder/show/{tahun}/{id}','OUTPUT\MAP@show')->name('own.out.map');
 		Route::get('module-builder-offlin/{tahun}/{id}/{id_doc}','OUTPUT\MAP@buildOffLine')->name('own.out.offline');
 		Route::get('module-builder/store','OUTPUT\MAP@convertion');
-
-
 	});
 
 	Route::prefix('post')->middleware('auth:web')->group(function(){
 		Route::get('article/{id}/{slug?}','DASH\OUTPUT\POST@show_article')->name('own.out.post.show');
 	});
-
-
 });
 
 

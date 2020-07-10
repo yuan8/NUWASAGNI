@@ -21,6 +21,19 @@
 
     const TOKEN_KN='{{(Auth::User())?'Bearer '.Auth::User()->api_token:''}}';
 
+    <?php 
+        if(Auth::User()){
+            if(HP::fokus_tahun()){
+
+            }else{
+                Auth::logout();
+                header("Location: ".route('login'));
+
+            }
+        }
+
+    ?>
+
     const API_CON = axios.create({
           timeout: 10000,
           headers: {
@@ -136,6 +149,31 @@ return num.replace(/ /g,',');
     } );
 
 </script>
+<style type="text/css">
+    .sidebar{
+        max-height: calc(100vh - 50px);
+        overflow-y: scroll;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 4px transparent; 
+      border-radius: 10px;
+    }
+     
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #ffa222; 
+      border-radius: 10px;
+    }
+    .nav>li>a{
+        padding: 15px 10px;
+    }
+</style>
 
 </body>
 </html>

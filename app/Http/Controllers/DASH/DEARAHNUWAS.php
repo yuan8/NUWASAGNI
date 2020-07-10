@@ -103,8 +103,8 @@ class DEARAHNUWAS extends Controller
         
             DB::table('daerah_nuwas')->insert([
                 'kode_daerah'=>$request->kode_daerah,
-                'tahun'=>$request->tahun,
-                'tahun_selesai'=>$request->tahun,
+                'tahun'=>empty($request->tahun)?1:$request->tahun,
+                'tahun_selesai'=>empty($request->tahun)?1:$request->tahun,
                 'jenis_bantuan'=>$jenis_bantuan,
                 'nilai_bantuan'=>$nilai_bantuan
             ]);
