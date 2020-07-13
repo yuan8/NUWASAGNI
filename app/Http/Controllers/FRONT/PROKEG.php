@@ -707,6 +707,7 @@ public function per_kota($id){
 
 
     public function dash_daerah($tahun=2020){
+        
         $data=DB::table(DB::raw("master_daerah as d"))
         ->Leftjoin("prokeg.tb_".$tahun."_status_file_daerah as s","s.kode_daerah", "=","d.id")
         ->Leftjoin("prokeg.tb_".$tahun."_kegiatan as tk",'tk.kode_daerah','=','d.id')

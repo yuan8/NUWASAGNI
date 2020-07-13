@@ -260,12 +260,13 @@ class AppServiceProvider extends ServiceProvider
                           'text'=>'NOMENKLATUR (PERMENDAGRI 90) '.HP::fokus_tahun()
                         ],
                          [
-                            'text'=>'PROGRAM KEGIATAN'.HP::fokus_tahun().'',
+                            'text'=>'PROGRAM KEGIATAN '.HP::fokus_tahun().'',
                             'url'=> route('d.index')
                         ],
                         [
                             'text'=>'PAD - TABLE',
-                            'url'=> route('d.index')
+                            'url'=> route('f.pad.index')
+
                         ],
                       
                     ]
@@ -279,11 +280,10 @@ class AppServiceProvider extends ServiceProvider
                     'submenu'=>[
                        
                         [
-                          'text'=>'INDIKATOR PROKEG '.HP::fokus_tahun()
+                          'text'=>'INDIKATOR PROGRAM KEGIATAN '.HP::fokus_tahun()
                         ],
                         [
                           'text'=>'RAKORTEK '.HP::fokus_tahun()
-
                         ],
                        
                     ]
@@ -295,12 +295,16 @@ class AppServiceProvider extends ServiceProvider
                     'icon'=>'fa fa-university',
                     'submenu'=>[
                           [
+                            'text'=>'PROFIL PEMDA',
+                             'url'=>route('kl.index')
+                          ],
+                          [
                             'text'=>'TIPOLOGI PEMDA',
                              'url'=>route('ty.index')
                           ],
                          [
-                            'text'=>'IKFD '.HP::fokus_tahun(),
-                            'url'=> route('d.index')
+                            'text'=>'IKFD '.(HP::fokus_tahun()-1),
+                            'url'=> route('ikfd.index',['tahun'=>HP::fokus_tahun()-1])
                         ]
 
 
@@ -375,7 +379,7 @@ class AppServiceProvider extends ServiceProvider
                       ],
                       [
                         'text'=>'BPPSPAM',
-                        'url'=>route('p.pdam'),
+                        'url'=>route('bppspam.index'),
 
                       ]
                     ]

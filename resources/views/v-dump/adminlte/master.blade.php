@@ -42,50 +42,6 @@
         .editor-render img{
             max-width: 100%;
         }
-        body{
-            font-size: 10px;
-        }
-        tbody{
-            background: #c7d7e4;
-            font-weight: bold;
-            color: #222;
-        }
-        thead  {
-            background: #f39c12;
-            color:#222!important;
-        }
-        .with-border{
-            border-color: #f39c12!important;
-        }
-
-        .box{
-            border-color: #f39c12!important;
-        }
-        .col-no-padding{
-            padding: 0px;
-        }
-
-        .header-page{
-            margin-left:0px;
-            margin-right:0px;
-            background: #f39c12;
-            padding-left:10px;
-            padding-right:10px;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            color: #222;
-            font-weight: bold;
-            font-size: 10px;
-            padding-top: 10px;
-            border:2px solid #222 ;
-            border-top:none;
-            box-shadow: 1px 1px 1px #222;
-            margin-bottom: 15px;
-
-
-        }
-       
-
     </style>
 
     <!--[if lt IE 9]>
@@ -96,10 +52,6 @@
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-
-<style type="text/css">
-    
-</style>
 <body class="hold-transition @yield('body_class')">
 
 @yield('body')
@@ -154,17 +106,6 @@ return num.replace(/ /g,',');
             return a + b;
         }, 0 );
     } );
-
-    if($('.table-init-datatable').html()!=undefined){
-        $('.table-init-datatable').dataTable();
-    }
-
-    if($('.select-init-select-2').html()!=undefined){
-        $('.select-init-select-2').select2();
-
-    }
-
-
     
 </script>
 
@@ -175,8 +116,6 @@ return num.replace(/ /g,',');
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script>
-<script src="{{asset('vendor/Sticky/index.js')}}"></script>
-
 @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
 
 @include('sweetalert::alert')
@@ -198,34 +137,8 @@ return num.replace(/ /g,',');
         }
     } );
 
-    sticky = new Sticky('.sticky-top');
-
-
-    // window.onscroll = function() {myFunction()};
-    // function myFunction() {
-    //   $('[data-sticky-top]').each(function(i,dom){
-    //     // console.log((((dom.offsetTop)-60)-window.pageYOffset));
-
-    //     //         if((((dom.offsetTop)-60)-window.pageYOffset)<0){
-    //     //             $(dom).css("width",dom.offsetWidth);
-    //     //             $(dom).css("top",60);
-    //     //             $(dom).addClass("sticky-top");
-
-
-    //     //         }else{
-    //     //             $(dom).removeClass("sticky-top");
-    //     //         }
-
-    //         $(dom).addClass('sticky-top');          
-    //   });
-    // }
-
 </script>
 <style type="text/css">
-    .sticky-top{
-      z-index: 9;
-    }    
-
     .sidebar{
         max-height: calc(100vh - 50px);
         overflow-y: scroll;
@@ -249,11 +162,6 @@ return num.replace(/ /g,',');
     .nav>li>a{
         padding: 15px 10px;
     }
-      table tr, table td{
-            font-size: 10px;
-        } 
-
-
 </style>
 
 </body>

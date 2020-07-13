@@ -16,6 +16,47 @@ class HelperProvider extends ServiceProvider
         //
     }
 
+    static function sat_indikator($text){
+        $text=str_replace('fkl','fiskal',$text);
+        $text=str_replace('pel','pelayanan',$text);
+        $text=str_replace('jar','jaringan',$text);
+        $text=str_replace('dg','dengan',$text);
+        $text=str_replace('dlm','dalam',$text);
+        $text=str_replace('kum','kumulatif',$text);
+        $text=str_replace('lap','laporan',$text);
+        $text=str_replace('per','periode',$text);
+        $text=str_replace('dds','didistribusikan',$text);
+        $text=str_replace('sam','sambungan',$text);
+        $text=str_replace('ppp','perpipaan',$text);
+        $text=str_replace('bkn','bukan',$text);
+        $text=str_replace('pop','populasi',$text);
+        $text=str_replace('yg','yang',$text);
+        $text=str_replace('tg','target',$text);
+        $text=str_replace('pjl','penjualan',$text);
+        $text=str_replace('pensut','penyusutan',$text);
+        $text=str_replace('lstrk','listrik',$text);
+        $text=str_replace('trl','terlayani',$text);
+        $text=str_replace('pny','penyediaan',$text);
+        $text=str_replace('_u','_untuk',$text);
+        $text=str_replace('alk','alokasi',$text);
+        $text=str_replace('dr','dari',$text);
+        $text=str_replace('slm','selama',$text);
+        $text=str_replace('diop','dioperasikan',$text);
+        $text=str_replace('pd','penduduk',$text);
+        $text=str_replace('sbl','sebelumnya',$text);
+        $text=str_replace('prd','period',$text);
+        $text=str_replace('ttl','total',$text);
+        $text=str_replace('hg','harga',$text);
+        $text=str_replace('pdpt','pendapatan',$text);
+        $text=str_replace('by','biaya',$text);
+        $text=str_replace('ln','lainlain',$text);
+        $text=str_replace('rek','rekening',$text);
+        $text=str_replace('_nilai','',$text);
+        $text=str_replace('sat_','',$text);
+        return strtoupper(str_replace('_',' ',$text));
+
+    }
+
     /**
      * Bootstrap services.
      *
@@ -92,24 +133,27 @@ class HelperProvider extends ServiceProvider
     }
 
     static public function fokus_tahun(){
+
         if(Auth::User()){
             if(!empty(session('fokus_tahun'))){
                 if(session('fokus_tahun')){
+                    
                     return (int) session('fokus_tahun');
                 }else{
-                    // Auth::logout();
-                    // header("Location: ".route('login'));
-                    // redirect('login');
+                    Auth::logout();
+                    header("Location: ".route('login'));
+                    exit();
                     return 0;
                 }
             }else{
-                // Auth::logout();
-                // header("Location: ".route('login'));
-                redirect('login');
 
+                Auth::logout();
+                header("Location: ".route('login'));
+                exit();
                 return 0;
             }
         }else{
+
           
           return 0;
 

@@ -2,11 +2,18 @@
 
 
 @section('content_header')
-    <div class="row bg-navy">
-        <div class="col-md-12">
-            <h5 class="text-center ">KONDISI PDAM {{HP::fokus_tahun()}}</h5>
-        </div>
+
+   <div style="width: 100%; float: left;">
+      <div class=" text-center header-page">
+        <p class="text-uppercase">KONDISI PDAM TAHUN {{HP::fokus_tahun()}} - (SAT)</p>
+      </div>
     </div>
+   
+    <style type="text/css">
+      .progress-description, .info-box-text{
+        font-size:8px!important;
+      }
+    </style>
 @stop
 
 @section('content')
@@ -100,6 +107,9 @@
                         <th>KODE</th>
                         <th>NAMA PDAM</th>
                         <th>DAERAH</th>
+                        <th>NAMA PROVINSI</th>
+                        <th>TAHUN PRIORITAS </th>
+                        <th>JENIS HIBAH </th>
                         <th>STATUS PDAM</th>
                         <th>PERIODE LAPORAN DIGUNAKAN</th>
                         <th>KETERANGAN DATA</th>
@@ -112,11 +122,15 @@
                     @foreach($data as $d)
                     <tr class="{{$d->target_nuwas?'bg bg-primary':''}}">
                         <td>{{$d->id}}</td>
-                        <td>{{strtoupper($d->nama_pdam)}} {{$d->target_nuwas?'(Target Nuwas '.HP::fokus_tahun().')':''}}</td>
+                        <td>{{strtoupper($d->nama_pdam)}}</td>
+
                         <td>{{strtoupper($d->nama_daerah)}}
                             <br>
-                            <small>{{strtoupper($d->nama_provinsi)}}</small>
+                            <small></small>
                         </td>
+                        <td>{{strtoupper($d->nama_provinsi)}}</td>
+                         <td>{{HP::fokus_tahun()}}</td>
+                         <td></td>
                         <td>
                             {{$d->kategori_pdam}}
                         </td>

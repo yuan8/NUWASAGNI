@@ -22,7 +22,8 @@ class Dashboard extends Controller
     	->where('status',5)
     	->first();
 
-         $album=DB::table('album')
+
+         $album=DB::connection('pgsql')->table('album')
         ->where('created_at','>=',Carbon::parse($tahun.'-'.'01-01')->startOfDay())
         ->where('created_at','<=',Carbon::parse($tahun.'-'.'12-15')->endOfMonth())
         ->where('sticky',true)
@@ -35,7 +36,7 @@ class Dashboard extends Controller
         $public_world_bank=array_values($public_world_bank);
 
 
-        $output=DB::table('output_publish as p')
+        $output=DB::connection('pgsql')->table('public.output_publish as p')
         ->leftJoin('users as u','u.id','=','p.user_id')
         ->select('p.*','u.name as nama_user')
         ->where('p.tahun',$tahun)

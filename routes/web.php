@@ -14,7 +14,7 @@
 
 Auth::routes();
 Route::get('xxx',function(){
-	BPPSPAM::storingdata('pgsql');
+	return HP::sat_indikator('$text');
 });
 
 Route::middleware('auth:web')->get('logout',function(){
@@ -23,7 +23,17 @@ Route::middleware('auth:web')->get('logout',function(){
 });
 
 
+
+
+
 Route::middleware('auth:web')->group(function(){
+	
+	Route::prefix('data-pad')->group(function(){
+		Route::get('/data', 'FRONT\PAD@index')->name('f.pad.index');
+		Route::get('/detail/{kode_daerah}', 'FRONT\PAD@detail')->name('pad.detail');
+	});
+
+
 	Route::get('/home',function(){
 		return redirect('/');
 	});
@@ -35,6 +45,16 @@ Route::middleware('auth:web')->group(function(){
 	Route::prefix('daerah')->group(function(){
 		Route::get('doc/{kode_daerah}/{jenis}','FRONT\DOKUMEN@list')->name 	('d.doc.list');
 	});
+
+	Route::prefix('ikfd')->group(function(){
+		Route::get('/','FRONT\IKFD@index')->name('ikfd.index');
+	});
+
+	Route::prefix('bppspam')->group(function(){
+		Route::get('/','FRONT\BPPSPAM@index')->name('bppspam.index');
+	});
+
+
 
 
 	Route::prefix('pdam')->group(function(){
@@ -48,6 +68,8 @@ Route::middleware('auth:web')->group(function(){
 
 	Route::prefix('dukungan')->group(function(){
 		Route::get('/','FRONT\DUKUNGAN@index')->name('d.index');
+		Route::get('/{kode_daerah}','FRONT\DUKUNGAN@detail')->name('d.detail');
+
 		Route::get('/{kode_daerah}/program','FRONT\DUKUNGAN@program')->name('d.program');
 		Route::get('/{kode_daerah}/program/{id_program}/kegiatan','FRONT\DUKUNGAN@kegiatan')->name('d.program.kegiatan');
 		Route::get('/{kode_daerah}/program/{id_program}/kegiatan/{id_kegiatan}/sumber-dana','FRONT\DUKUNGAN@sumberdana')->name('d.program.kegiatan.sumberdana');
@@ -57,6 +79,10 @@ Route::middleware('auth:web')->group(function(){
 	Route::prefix('typologi')->group(function(){
 		Route::get('/','FRONT\TYPOLOGI@index')->name('ty.index');
 		Route::get('/{kode_daerah}/dinas','FRONT\TYPOLOGI@detail_daerah')->name('ty.daerah');
+	});
+
+	Route::prefix('kelembagaan')->group(function(){
+		Route::get('/profil-pemda','FRONT\KELEMBAGAAN@index')->name('kl.index');
 	});
 
 

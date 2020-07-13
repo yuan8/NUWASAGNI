@@ -11,7 +11,8 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Carbon\Carbon;
-
+use Storage;
+use Alert;
 class IO extends Controller
 {
 
@@ -108,6 +109,12 @@ class IO extends Controller
 					'd'=>0,
 					'nama'=>'ID PROGRAM'
 				],
+				'id_c'=>[
+					'p'=>0,
+					'c'=>1,
+					'd'=>0,
+					'nama'=>'ID CAPAIAN'
+				],
 				'kode_p'=>[
 					'p'=>1,
 					'c'=>1,
@@ -196,7 +203,12 @@ class IO extends Controller
 					'd'=>1,
 					'nama'=>'URAI BIDANG'
 				],
-				
+				'id_i'=>[
+					'p'=>0,
+					'c'=>1,
+					'd'=>0,
+					'nama'=>'ID INDIKATOR'
+				],
 				'id_p'=>[
 					'p'=>1,
 					'c'=>1,
@@ -979,18 +991,29 @@ class IO extends Controller
     // static function 
 
 	public function index($kodepemda,Request $request){
+		$tahun=HP::fokus_tahun();
 
 		if($request->pemda){
 			$kodepemda=$request->pemda;
 		}else{
+			$antri=DB::connection('sinkron_prokeg')->table('rkpd.master_'.$tahun.'_rkpd_sinkron')->where('kodepemda',$kodepemda)->first();
+
+			if($antri){
+				Alert::warning('Mohon maaf',' masih terdapat antrian data pada PEMDA ini mohon untuk mencoba kembali dalam beberapa menit');
+
+				return back();
+			}
+
 			$kodepemda=[$kodepemda];
+
 		}
 
-		$tahun=HP::fokus_tahun();
 
 		if($request->tahun){
 			$tahun=$request->tahun;
 		}
+
+
 
 		$pemda_d=DB::table('master_daerah')->whereIn('id',$kodepemda)->get();
 
@@ -1060,12 +1083,13 @@ class IO extends Controller
 		if($request->urusan){
 			$kurusan=$request->urusan;
 			$data=$data->whereRaw(
-			"k.id_urusan in (".implode(',', $kurusan).") and k.kodepemda in ('".implode(",'",$kodepemda)."')"
+				"k.id_urusan in (".implode(',', $kurusan).") and k.kodepemda in ('".implode(",'",$kodepemda)."')"
 			);
+
 		}else{
 
 			$data=$data->whereRaw(
-			"k.id_urusan in (".implode(',', $kurusan).") and k.kodepemda in ('".implode(",'",$kodepemda)."')"
+				"k.id_urusan in (".implode(',', $kurusan).") and k.kodepemda in ('".implode(",'",$kodepemda)."')"
 			);
 
 			// ->orWhereRaw(
@@ -1128,7 +1152,7 @@ class IO extends Controller
             }
         );
         $response->headers->set('Content-Type', 'application/vnd.ms-excel');
-        $response->headers->set('Content-Disposition', 'attachment;filename="RKPD-'.implode('-', $kodepemda).'-'.$tahun.'.xlsx"');
+        $response->headers->set('Content-Disposition', 'attachment;filename="RKPD-'.implode('-', $kodepemda).'-'.$meta['pemda']['nama'].'-'.$tahun.'-'.Carbon::now().'.xlsx"');
         $response->headers->set('Cache-Control','max-age=0');
         return $response;
 	}
@@ -1163,18 +1187,22 @@ class IO extends Controller
 			$d=(array)$d;
 
 			if($id_p!=$d['id_p']){
-				$d['context']='P';
-				$sheet=static::append($d,$start,'p',$sheet,$f,$section);
-				$id_p=$d['id_p'];
-				$start++;		
+				if(null!=$d['id_k']){
+					$d['context']='P';
+					$sheet=static::append($d,$start,'p',$sheet,$f,$section);
+					$id_p=$d['id_p'];
+					$start++;
+				}		
 
 			}
 
 			if($id_c!=$d['id_c']){
-				$d['context']='C';
-				$sheet=static::append($d,$start,'c',$sheet,$f,$section);
-				$id_c=$d['id_c'];
-				$start++;		
+				if(null!=$d['id_c']){
+					$d['context']='C';
+					$sheet=static::append($d,$start,'c',$sheet,$f,$section);
+					$id_c=$d['id_c'];
+					$start++;
+				}		
 
 			}
 
@@ -1206,18 +1234,22 @@ class IO extends Controller
 			$d=(array)$d;
 
 			if($id_k!=$d['id_k']){
-				$d['context']='P';
-				$sheet=static::append($d,$start,'p',$sheet,$f,$section);
-				$id_k=$d['id_k'];
-				$start++;		
+				if(null!=$d['id_k']){
+					$d['context']='P';
+					$sheet=static::append($d,$start,'p',$sheet,$f,$section);
+					$id_k=$d['id_k'];
+					$start++;
+				}	
 
 			}
 
 			if($id_i!=$d['id_i']){
-				$d['context']='C';
-				$sheet=static::append($d,$start,'c',$sheet,$f,$section);
-				$id_i=$d['id_i'];
-				$start++;		
+				if(null!=$d['id_i']){
+					$d['context']='C';
+					$sheet=static::append($d,$start,'c',$sheet,$f,$section);
+					$id_i=$d['id_i'];
+					$start++;
+				}		
 
 			}
 
@@ -1247,20 +1279,27 @@ class IO extends Controller
 		foreach ($data as $key => $d) {
 			$d=(array)$d;
 
-			if($id_k!=$d['id_k']){
-				$d['context']='P';
-				$sheet=static::append($d,$start,'p',$sheet,$f,$section);
-				$id_k=$d['id_k'];
-				$start++;		
+				if($d['id_ksd']){
+					if($id_k!=$d['id_k']){
+					if($d['id_k']!=null){
+						$d['context']='P';
+						$sheet=static::append($d,$start,'p',$sheet,$f,$section);
+						$id_k=$d['id_k'];
+						$start++;		
 
-			}
+					}
+				}
 
-			if($id_ksd!=$d['id_ksd']){
-				$d['context']='C';
-				$sheet=static::append($d,$start,'c',$sheet,$f,$section);
-				$id_ksd=$d['id_ksd'];
-				$start++;		
+				if($id_ksd!=$d['id_ksd']){
+				
+					if($d['id_ksd']!=null){
+						$d['context']='C';
+						$sheet=static::append($d,$start,'c',$sheet,$f,$section);
+						$id_ksd=$d['id_ksd'];
+						$start++;	
+					}	
 
+				}
 			}
 
 		}
@@ -1273,16 +1312,9 @@ class IO extends Controller
 	}
 
 	
-
-	public function upload(Request $request){
-
-		if($request->file){
-			$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($request->file);
-			$sheet = $spreadsheet->getSheetByName('MASTER');
-			$master=$sheet->toArray()[23];
-
+	static function mapping(){
 			$data=[
-				'program'=>[
+				'PROGRAM'=>[
 					'field'=>[
 						'kodepemda'=>'kodepemda',
 						'tahun'=>'tahun',
@@ -1297,7 +1329,7 @@ class IO extends Controller
 					],
 					'data'=>[]
 				],
-				'capaian'=>[
+				'PROGRAM CAPAIAN'=>[
 					'field'=>[
 						'kodepemda'=>'kodepemda',
 						'tahun'=>'tahun',
@@ -1314,7 +1346,7 @@ class IO extends Controller
 					],
 					'data'=>[]
 				],
-				'kegiatan'=>[
+				'KEGIATAN'=>[
 					'field'=>[
 						'kodepemda'=>'kodepemda',
 						'tahun'=>'tahun',
@@ -1324,6 +1356,10 @@ class IO extends Controller
 						'id_p'=>'id_program',
 						'kode_k'=>'kodekegiatan',
 						'id_k'=>'id',
+						'id_u'=>'id_urusan',
+						'id_s'=>'id_sub_urusan',
+						'kode_jenis_k'=>'jenis',
+						'kode_lintas_urusan_k'=>'kode_lintas_urusan',
 						'urai_k'=>'uraikegiatan',
 						'anggaran_k'=>'pagu',
 
@@ -1332,26 +1368,37 @@ class IO extends Controller
 					],
 					'data'=>[]
 				],
-				'kegiatan_prioritas'=>[
+				'KEGIATAN PRIOROTAS'=>[
 					'field'=>[],
 					'data'=>[]
 				],
-				'kegiatan_sumberdana'=>[
+				'KEGIATAN SUMBERDANA'=>[
+					'field'=>[
+						'id_ksd'=>'id',
+						'urai_ksd'=>'sumberdana',
+						'anggaran_ksd'=>'pagu',
+						'kode_k'=>'kodekegiatan',
+						'kode_p'=>'kodeprogram',
+						'kodeskpd'=>'kodeskpd',
+						'kodebidang'=>'kodebidang',
+						'kodepemda'=>'kodepemda',
+						'id_k'=>'id_kegiatan',
+						'kode_ksd'=>'kodesumberdana',
+					],
+					'data'=>[]
+				],
+				'KEGIATAN LOKASI'=>[
 					'field'=>[],
 					'data'=>[]
 				],
-				'kegiatan_lokasi'=>[
-					'field'=>[],
-					'data'=>[]
-				],
-				'kegiatan_indikator'=>[
+				'KEGIATAN INDIKATOR'=>[
 					'field'=>[
 						'kodepemda'=>'kodepemda',
 						'tahun'=>'tahun',
 						'kodeskpd'=>'kodeskpd',
 						'kodebidang'=>'kodebidang',
 						'kode_p'=>'kodeprogram',
-						'id_p'=>'id_program',
+						'id_k'=>'id_kegiatan',
 						'kode_k'=>'kodekegiatan',
 						'kode_i'=>'kodeindikator',
 						'id_i'=>'id',
@@ -1363,58 +1410,241 @@ class IO extends Controller
 					],
 					'data'=>[]
 				],
-				'sub_kegiatan'=>[
+				'KEGIATAN SUBKEGIATAN'=>[
 					'field'=>[],
 					'data'=>[]
 				],
 			];
 
-			$sheet = $spreadsheet->getSheetByName('KEGIATAN');
+			return $data;
+	}
 
-			foreach ($sheet->toArray() as $k => $d) {
-				# code...
 
-				if($k>=5){
-					$dy=[];
-					foreach ($d as $key => $dx) {
-						if(in_array($master[$key], ['id_p','id_k','id_i','id_c','id_u','id_s','id','kode_jenis_k','kode_spm','anggaran_k','anggaran_i'])){
-							$dy[$master[$key]]=(float)(!empty($dx)?($dx!=0?$dx:null):null);
-						}else{
-							$dy[$master[$key]]=(string)($dx);
-						}
-					}
+	public function upload(Request $request){
+		$sumber_data='NUWSP';
+		$tahun=HP::fokus_tahun();
+
+		if($request->file){
+			$data_map=static::mapping();
+
+			$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($request->file);
+			$sheet = $spreadsheet->getSheetByName('MASTER');
+			$master=[];
+			for ($i=1; $i <$spreadsheet->getSheetCount(); $i++) { 
 					
-					if($dy['context']='p'){
-						$di=[];
-						foreach ($dy as $key => $value) {
-							if(in_array($key,array_keys($data['kegiatan']['field']))){
-								
-								$di[$data['kegiatan']['field'][$key]]=$value;
+				$c=$sheet->toArray()[22+$i];
+				$c=(array_filter($c, function($value) { return !is_null($value) && $value !== ''; }));
+				$n=$c[count($c)-1];
+				unset($c[count($c)-1]);
+				$master[$n]=$c;
+			
+			}
+
+			$meta=[
+				'kodepemda'=>null,
+				'nama_pemda'=>null,
+				'tahun'=>HP::fokus_tahun(),
+				'status'=>5,
+				
+			];
+
+			foreach ($master as $key_sheet => $cols) {
+				$sheet = $spreadsheet->getSheetByName($key_sheet);
+
+				foreach ($sheet->toArray() as $k => $d) {
+					if($k==1){
+						$meta['kodepemda']=$d[1];
+						$meta['nama_pemda']=$d[2];
+					}
+
+					if($k>=5){
+
+						$dy=[];
+						foreach ($d as $kd => $dx){
+							
+
+							if($kd<(count($master[$key_sheet])) ){
+
+								if(in_array($master[$key_sheet][$kd], ['id_p','id_k','id_i','id_c','id_u','id_s','id','kode_jenis_k','kode_spm','anggaran_k','anggaran_i'])){
+									$dy[$master[$key_sheet][$kd]]=(!empty($dx)?((($dx!=0)OR($dx!='0'))? (float)$dx :null):null);
+								}else{
+									$dy[$master[$key_sheet][$kd]]=(string)($dx);
+								}
 							}
 						}
 
-						if($di!=[]){
-							dd($di);
-							$data['kegiatan']['data'][]=$di;
+						
+						if($key_sheet=='PROGRAM'){
+							if($dy['context']=='P'){
+								$di=[];
+								foreach ($dy as $key => $value) {
+									if(in_array($key,array_keys($data_map['PROGRAM']['field']))){
+										$di[$data_map['PROGRAM']['field'][$key]]=$value;
+									}
+								}
 
+								if($di!=[]){
+									$data_map['PROGRAM']['data'][]=$di;
+								}
+
+							}else if($dy['context']=='C'){
+
+								$di=[];
+								foreach ($dy as $key => $value) {
+									if(in_array($key,array_keys($data_map['PROGRAM CAPAIAN']['field']))){
+										$di[$data_map['PROGRAM CAPAIAN']['field'][$key]]=$value;
+									}
+								}
+
+								if($di!=[]){
+									$data_map['PROGRAM CAPAIAN']['data'][]=$di;
+								}
+
+							}
 						}
 
-					}else{
+						if($key_sheet=='KEGIATAN'){
+							if($dy['context']=='P'){
+								$di=[];
+								foreach ($dy as $key => $value) {
+									if(in_array($key,array_keys($data_map['KEGIATAN']['field']))){
+										$di[$data_map['KEGIATAN']['field'][$key]]=$value;
+									}
+								}
+
+								if($di!=[]){
+									$data_map['KEGIATAN']['data'][]=$di;
+								}
+
+							}else if($dy['context']=='C'){
+
+								$di=[];
+
+								foreach ($dy as $key => $value) {
+									if(in_array($key,array_keys($data_map['KEGIATAN INDIKATOR']['field']))){
+										$di[$data_map['KEGIATAN INDIKATOR']['field'][$key]]=$value;
+									}
+								}
+
+
+								if($di!=[]){
+									$data_map['KEGIATAN INDIKATOR']['data'][]=$di;
+								}
+
+							}
+						}
+
+						if($key_sheet=='KEGIATAN SUMBERDANA'){
+							 if($dy['context']=='C'){
+
+								$di=[];
+								foreach ($dy as $key => $value) {
+									if(in_array($key,array_keys($data_map['KEGIATAN SUMBERDANA']['field']))){
+										$di[$data_map['KEGIATAN SUMBERDANA']['field'][$key]]=$value;
+									}
+								}
+
+								if($di!=[]){
+									$data_map['KEGIATAN SUMBERDANA']['data'][]=$di;
+								}
+
+							}
+						}
 
 					}
-
 				}
 
 
+			
+			}
+
+			$data_return=array('meta'=>$meta,
+				'data'=>$data_map);
+
+			static::addDtaToDB($meta['kodepemda'],$data_map,$tahun,5);
+
+			Storage::put('JSON_INTEGRASI_RKPD/FINAL/'.$sumber_data.'/'.$meta['kodepemda'].'.json',json_encode($data_return));
+
+			$flag=DB::connection('sinkron_prokeg')->table('rkpd.master_'.$tahun.'_rkpd_sinkron')->where([
+				'kodepemda'=>$meta['kodepemda'],
+				'flag'=>$sumber_data
+			])->first();
+
+			if($flag){
+				DB::connection('sinkron_prokeg')->table('rkpd.master_'.$tahun.'_rkpd_sinkron')->where([
+					'kodepemda'=>$meta['kodepemda'],
+					'flag'=>$sumber_data
+				])->update([
+					'date_updated'=>Carbon::now()
+				]);
+
+			}else{
+				DB::connection('sinkron_prokeg')->table('rkpd.master_'.$tahun.'_rkpd_sinkron')->insert([
+					'kodepemda'=>$meta['kodepemda'],
+					'flag'=>$sumber_data,
+					'date_updated'=>Carbon::now()
+				]);
 
 			}
 
+			Alert::success('success','Data '.$meta['nama_pemda'].' Berhasil Diupload');
+			return view('dash.prokeg.master.upload')->with('meta_upload_rekap',[
+				'nama_pemda'=>$meta['nama_pemda'],
+				'tahun'=>$meta['tahun'],
+				'jumlah_program'=>count($data_map['PROGRAM']['data']),
+				'jumlah_program_capaian'=>count($data_map['PROGRAM CAPAIAN']['data']),
+				'jumlah_kegiatan'=>count($data_map['KEGIATAN']['data']),
+				'jumlah_kegiatan_indikator'=>count($data_map['KEGIATAN INDIKATOR']['data']),
+				'jumlah_kegiatan_sumberdana'=>count($data_map['KEGIATAN SUMBERDANA']['data']),
+			]);
 
 
 
 
 		}
 
+
+	}
+
+
+	static function addDtaToDB($pemda,$data,$tahun,$status){
+
+		$data_status=DB::connection('myfinal')->table('master_'.$tahun.'_status')->get();
+
+
+		
+		foreach ($data_status as $key => $value) {
+			# code...
+				DB::connection('sinkron_prokeg')->table('rkpd.master_'.$tahun.'_status')
+					->updateOrInsert(['kodepemda'=>$value->kodepemda],(array)$value);
+		}
+
+	
+
+		foreach ($data as $key => $value) {
+			$data_ar=$value['data'];
+
+			$table='master_'.$tahun.'_'.str_replace(' ', '_', strtolower($key));
+
+			foreach ($data_ar as  $d) {
+				$d['tahun']=$tahun;
+				$d['status']=$status;
+				
+				if((isset($d['id'])) and ($d['id']!=null)){
+					DB::connection('sinkron_prokeg')->table('rkpd.'.$table)
+					->updateOrInsert(['id'=>$d['id']],$d);
+				}
+				
+			}
+		}
+
+		DB::connection('sinkron_prokeg')->table('rkpd.master_'.$tahun.'_status_data')
+			->updateOrInsert(['kodepemda'=>$pemda],[
+				'kodepemda'=>$pemda,
+				'status_data'=>5,
+				'push_date'=>Carbon::now(),
+				'updated_at'=>Carbon::now(),
+		]);
 
 	}
 

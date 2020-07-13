@@ -3,16 +3,19 @@
 
 @section('content_header')
 	@if($pdam->daerah_nuwas)
-	<div class="row  text-center">
+	<div class="row  text-center" style="border-bottom:1px solid #222">
 		<div class="col-md-12 bg bg-yellow">
 			<b class="text-dark">MERUPAKAN DAERAH NUWAS {{HP::fokus_tahun()}} DENGAN TIPE BANTUAN ({{$pdam->jenis_bantuan}})</b>
 		</div>
 	</div>
 	@endif
-    <div class="text-center text-uppercase">
-    	<h3 class="text-center">KONDISI {{strtoupper($pdam->nama_pdam)}} ({{strtoupper($pdam->kategori_pdam)}})</h3>
-    <small class="text-white text-center">PERIODE {{Carbon\Carbon::parse($pdam->periode_laporan)->format('F Y')}}</small>
+    <div class="text-center text-uppercase header-page">
+    	<p class="text-center">KONDISI {{strtoupper($pdam->nama_pdam)}} ({{strtoupper($pdam->kategori_pdam)}}) - PERIODE LAPORAN {{Carbon\Carbon::parse($pdam->periode_laporan)->format('F Y')}}</p>
     </div>
+ 
+
+
+   
 @stop
 
 @section('content')
@@ -45,14 +48,14 @@ if($pdam->open_hours!=null){
 	<div class="col-md-12">
 		<div class="box box-primary" style="margin-bottom: 0px;">
 			<div class="box-header with-border">
-				<p class="text-center"><b>TRAFIK PDAM DARI LAPORAN SEBELUMNYA</b></p>
+				<p class="text-center"><b>TRAFIK {{strtoupper($pdam->nama_pdam)}} DARI LAPORAN SEBELUMNYA </b></p>
 			</div>
 			<div class="box-body table-responsive" >
 				<table class="table-bordered table">
 			 	<thead>
 			 	<tr>
 			 		<th colspan="2" class="text-center">LAPORAN SEBELUMNYA</th>
-			 		<th colspan="8" class="text-center">DATA TERAHIR</th>
+			 		<th colspan="8" class="text-center text-uppercase">DATA TERAHIR {{Carbon\Carbon::parse($pdam->periode_laporan)->format('F Y')}}</th>
 			 	</tr>
 				<tr>
 					<th>
@@ -213,7 +216,7 @@ if($pdam->open_hours!=null){
 		<b>DOKUMEN INI DIGUNAKAN SEBAGAI LAPORAN TERAHIR</b>
 	</div>
 	@endif
-	<div class="row text-dark">
+	<div class="row text-dark" style="border-top:1px solid #222">
 		@foreach($open_hours as $d)
 		<div style="width:calc(100%/7)!important;" class=" col-md-12 {{HP::hari_ini($d['key'])?'bg-yellow text-dark':'bg-default'}}" style="border-right:1px solid #222">
 			<b>{{$d['key']}} : {{$d['value']}}</b>
@@ -222,67 +225,91 @@ if($pdam->open_hours!=null){
 	</div>
 
 	<div class="row no-gutter bg-default-g text-dark">
-		<div class="col-md-3">
-			<div class="box box-primary">
+		<div class="col-md-3" >
+			<div class="box box-primary " >
 				<div class="box-body">
 					@if($pdam->url_image)
 					<img src="{{$pdam->url_image}}" class="img-responsive">
 					@endif
-					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>Alamat</th>
-								<td>{{$pdam->alamat}}
-									@if($pdam->url_direct)
-									<br>
+					<div class="sticky-top" data-margin-top="60">
+						<a href="" class="btn btn-primary btn-sm col-md-12"><b>DOWNLOAD LAPORAN</b></a>
+						<table class="table table-bordered ">
+							<thead>
+								<tr>
+									<th>NAMA PDAM</th>
+									<td>{{strtoupper($pdam->nama_pdam)}}
+										
+									</td>
 
-									<a href="{{$pdam->url_direct}}" ><i class="fa fa-map"></i> Direct</a>
-									@endif
-								</td>
+									
+								</tr>
+								<tr>
+									<th>Alamat</th>
+									<td>{{$pdam->alamat}}
+										@if($pdam->url_direct)
+										<br>
 
-								
-							</tr>
-							<tr>
-								<th>No Telp</th>
-								<td>{{$pdam->no_telpon}}</td>
-							</tr>
-							<tr>
-								<th>Website</th>
-								<td>
-									@if($pdam->website)
-										<a href="{{$pdam->website}}" target="_blank">{{$pdam->website}}</a>
-									@else
-										-
-									@endif
+										<a href="{{$pdam->url_direct}}" ><i class="fa fa-map"></i> Direct</a>
+										@endif
+									</td>
 
-								</td>
-							</tr>
-						</thead>
-					</table>
+									
+								</tr>
+								<tr>
+									<th>No Telp</th>
+									<td>{{$pdam->no_telpon}}</td>
+								</tr>
+								<tr>
+									<th>Website</th>
+									<td>
+										@if($pdam->website)
+											@php
+												$web=$pdam->website;
+												if(strpos($web, 'http')!==false){
 
-					@if(count($pdam_else)>0)
-						<h5 class="text-center"><b>PDAM LAINYA DI DAERAH INI</b></h5>
+												}else{
+													$web='http://'.$pdam->website;
+
+												}
+
+
+											@endphp
+											<a href="{{$web}}" target="_blank">{{$pdam->website}}</a>
+										@else
+											-
+										@endif
+
+									</td>
+								</tr>
+							</thead>
+						</table>
+
+						@if(count($pdam_else)>0)
+							<h5 class="text-center"><b>PDAM LAINYA DI DAERAH INI</b></h5>
+							<hr>
+							@foreach($pdam_else as $e)
+							<a href="{{route('p.laporan_sat',['id'=>$e->id_laporan_terahir])}}" class="btn btn-warning col-md-12">{{strtoupper($e->nama_pdam)}} <small>({{$e->kategori_pdam}})</small>
+								<br>{{Carbon\Carbon::parse($e->periode_laporan)->format('F Y')}}
+								<br>
+								<small>INPUT - {{Carbon\Carbon::parse($e->updated_input_at)->format('d F Y')}}</small>
+							</a>
+							@endforeach	
+							<h5 class="text-center">----</h5>
+							<hr>
+						@endif
+
+
+						<h5 class="text-center"><b>LAPORAN LAINYA PDAM INI</b></h5>
 						<hr>
-						@foreach($pdam_else as $e)
-						<a href="{{route('p.laporan_sat',['id'=>$e->id_laporan_terahir])}}" class="btn btn-warning col-md-12">{{strtoupper($e->nama_pdam)}} <small>({{$e->kategori_pdam}})</small>
-							<br>{{Carbon\Carbon::parse($e->periode_laporan)->format('F Y')}}
-							<br>
-							<small>INPUT - {{Carbon\Carbon::parse($e->updated_input_at)->format('d F Y')}}</small>
-						</a>
-						@endforeach	
-						<h5 class="text-center">----</h5>
-						<hr>
-					@endif
-
-
-					<h5 class="text-center"><b>LAPORAN LAINYA PDAM INI</b></h5>
-					<hr>
-					@foreach($else as $e)
-					<a href="{{route('p.laporan_sat',['id'=>$e->id])}}" class="btn btn-primary col-md-12">PERIODE LAPORAN {{Carbon\Carbon::parse($e->periode_laporan)->format('F Y')}}
-						<br>
-						<small>INPUT - {{Carbon\Carbon::parse($e->updated_input_at)->format('d F Y')}}</small>
-					</a>
-					@endforeach					
+						<div style="max-height: 200px; overflow-y: scroll;">
+							@foreach($else as $e)
+							<a href="{{route('p.laporan_sat',['id'=>$e->id])}}" class="btn btn-primary col-md-12">PERIODE LAPORAN {{Carbon\Carbon::parse($e->periode_laporan)->format('F Y')}}
+								<br>
+								<small>INPUT - {{Carbon\Carbon::parse($e->updated_input_at)->format('d F Y')}}</small>
+							</a>
+							@endforeach	
+						</div>
+					</div>				
 				</div>
 			</div>
 
@@ -340,7 +367,7 @@ if($pdam->open_hours!=null){
 					        </tr>
 					        <tr>
     
-							    <td>sat_nilai_kinerja_ttl_dr_bppspam_nilai</td>
+							    <td>{{HP::sat_indikator('sat_nilai_kinerja_ttl_dr_bppspam_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_nilai_kinerja_ttl_dr_bppspam_tahun }}</td>
 							    
@@ -353,7 +380,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_nilai_aspek_keuangan_dr_bppspam_nilai</td>
+							    <td>{{HP::sat_indikator('sat_nilai_aspek_keuangan_dr_bppspam_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_nilai_aspek_keuangan_dr_bppspam_tahun }}</td>
 							    
@@ -366,7 +393,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_nilai_aspek_pel_dr_bppspam_nilai</td>
+							    <td>{{HP::sat_indikator('sat_nilai_aspek_pel_dr_bppspam_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_nilai_aspek_pel_dr_bppspam_tahun }}</td>
 							    
@@ -379,7 +406,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_nilai_aspek_operasional_dr_bppspam_nilai</td>
+							    <td>{{HP::sat_indikator('sat_nilai_aspek_operasional_dr_bppspam_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_nilai_aspek_operasional_dr_bppspam_tahun }}</td>
 							    
@@ -392,7 +419,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_nilai_aspek_sdm_dr_bppspam_nilai</td>
+							    <td>{{HP::sat_indikator('sat_nilai_aspek_sdm_dr_bppspam_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_nilai_aspek_sdm_dr_bppspam_tahun }}</td>
 							    
@@ -405,7 +432,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_status_kinerja_pdam_tahun_sbl_nilai</td>
+							    <td>{{HP::sat_indikator('sat_status_kinerja_pdam_tahun_sbl_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_status_kinerja_pdam_tahun_sbl_tahun }}</td>
 							    
@@ -418,7 +445,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_status_kinerja_pdam_2_tahun_sbl_nilai</td>
+							    <td>{{HP::sat_indikator('sat_status_kinerja_pdam_2_tahun_sbl_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_status_kinerja_pdam_2_tahun_sbl_tahun }}</td>
 							    
@@ -431,7 +458,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_status_kinerja_pdam_3_tahun_sbl_nilai</td>
+							    <td>{{HP::sat_indikator('sat_status_kinerja_pdam_3_tahun_sbl_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_status_kinerja_pdam_3_tahun_sbl_tahun }}</td>
 							    
@@ -444,7 +471,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_jumlah_pd_di_wilayah_administratif_nilai</td>
+							    <td>{{HP::sat_indikator('sat_jumlah_pd_di_wilayah_administratif_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_jumlah_pd_di_wilayah_administratif_tahun }}</td>
 							    
@@ -457,7 +484,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_jumlah_pd_di_wilayah_pel_teknis_nilai</td>
+							    <td>{{HP::sat_indikator('sat_jumlah_pd_di_wilayah_pel_teknis_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_jumlah_pd_di_wilayah_pel_teknis_tahun }}</td>
 							    
@@ -470,7 +497,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_jumlah_pd_trl_nilai</td>
+							    <td>{{HP::sat_indikator('sat_jumlah_pd_trl_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_jumlah_pd_trl_tahun }}</td>
 							    
@@ -483,7 +510,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_jumlah_jiwa_per_keluarga_data_bps_nilai</td>
+							    <td>{{HP::sat_indikator('sat_jumlah_jiwa_per_keluarga_data_bps_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_jumlah_jiwa_per_keluarga_data_bps_tahun }}</td>
 							    
@@ -496,7 +523,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_jumlah_pelanggan_ttl_nilai</td>
+							    <td>{{HP::sat_indikator('sat_jumlah_pelanggan_ttl_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_jumlah_pelanggan_ttl_tahun }}</td>
 							    
@@ -509,7 +536,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_jumlah_sam_baru_kum_slm_per_lap_nilai</td>
+							    <td>{{HP::sat_indikator('sat_jumlah_sam_baru_kum_slm_per_lap_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_jumlah_sam_baru_kum_slm_per_lap_tahun }}</td>
 							    
@@ -522,7 +549,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_jumlah_sam_rumah_tangga_nilai</td>
+							    <td>{{HP::sat_indikator('sat_jumlah_sam_rumah_tangga_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_jumlah_sam_rumah_tangga_tahun }}</td>
 							    
@@ -535,7 +562,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_jumlah_sistem_yg_beroperasi_nilai</td>
+							    <td>{{HP::sat_indikator('sat_jumlah_sistem_yg_beroperasi_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_jumlah_sistem_yg_beroperasi_tahun }}</td>
 							    
@@ -548,7 +575,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_jumlah_ikk_atau_cabang_yg_diop_nilai</td>
+							    <td>{{HP::sat_indikator('sat_jumlah_ikk_atau_cabang_yg_diop_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_jumlah_ikk_atau_cabang_yg_diop_tahun }}</td>
 							    
@@ -561,7 +588,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_volume_air_yg_diproduksi_kum_slm_per_lap_nilai</td>
+							    <td>{{HP::sat_indikator('sat_volume_air_yg_diproduksi_kum_slm_per_lap_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_volume_air_yg_diproduksi_kum_slm_per_lap_tahun }}</td>
 							    
@@ -574,7 +601,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_apakah_tersedia_meter_induk_nilai</td>
+							    <td>{{HP::sat_indikator('sat_apakah_tersedia_meter_induk_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_apakah_tersedia_meter_induk_tahun }}</td>
 							    
@@ -587,7 +614,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_volume_air_yg_dds_kum_slm_per_lap_nilai</td>
+							    <td>{{HP::sat_indikator('sat_volume_air_yg_dds_kum_slm_per_lap_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_volume_air_yg_dds_kum_slm_per_lap_tahun }}</td>
 							    
@@ -600,7 +627,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_volume_air_yg_terjual_kum_slm_per_lap_nilai</td>
+							    <td>{{HP::sat_indikator('sat_volume_air_yg_terjual_kum_slm_per_lap_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_volume_air_yg_terjual_kum_slm_per_lap_tahun }}</td>
 							    
@@ -613,7 +640,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_kapasitas_pengambilan_air_baku_nilai</td>
+							    <td>{{HP::sat_indikator('sat_kapasitas_pengambilan_air_baku_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_kapasitas_pengambilan_air_baku_tahun }}</td>
 							    
@@ -626,7 +653,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_kapasitas_produksi_air_yg_terpasang_nilai</td>
+							    <td>{{HP::sat_indikator('sat_kapasitas_produksi_air_yg_terpasang_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_kapasitas_produksi_air_yg_terpasang_tahun }}</td>
 							    
@@ -639,7 +666,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_jam_operasional_pel_ratarata_nilai</td>
+							    <td>{{HP::sat_indikator('sat_jam_operasional_pel_ratarata_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_jam_operasional_pel_ratarata_tahun }}</td>
 							    
@@ -652,7 +679,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_ttl_pemakaian_lstrk_kum_slm_per_lap_nilai</td>
+							    <td>{{HP::sat_indikator('sat_ttl_pemakaian_lstrk_kum_slm_per_lap_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_ttl_pemakaian_lstrk_kum_slm_per_lap_tahun }}</td>
 							    
@@ -665,7 +692,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_ttl_pemakaian_bbm_kum_slm_per_lap_nilai</td>
+							    <td>{{HP::sat_indikator('sat_ttl_pemakaian_bbm_kum_slm_per_lap_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_ttl_pemakaian_bbm_kum_slm_per_lap_tahun }}</td>
 							    
@@ -678,7 +705,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_ttl_by_lstrk_kum_slm_per_lap_nilai</td>
+							    <td>{{HP::sat_indikator('sat_ttl_by_lstrk_kum_slm_per_lap_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_ttl_by_lstrk_kum_slm_per_lap_tahun }}</td>
 							    
@@ -691,7 +718,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_tarif_lstrk_pln_u_pdam_nilai</td>
+							    <td>{{HP::sat_indikator('sat_tarif_lstrk_pln_u_pdam_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_tarif_lstrk_pln_u_pdam_tahun }}</td>
 							    
@@ -704,7 +731,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_ttl_by_bbm_kum_slm_per_lap_nilai</td>
+							    <td>{{HP::sat_indikator('sat_ttl_by_bbm_kum_slm_per_lap_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_ttl_by_bbm_kum_slm_per_lap_tahun }}</td>
 							    
@@ -717,7 +744,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_hg_bbm_nilai</td>
+							    <td>{{HP::sat_indikator('sat_hg_bbm_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_hg_bbm_tahun }}</td>
 							    
@@ -730,7 +757,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_ttl_by_usaha_tanpa_pensut_kum_slm_per_lap_nilai</td>
+							    <td>{{HP::sat_indikator('sat_ttl_by_usaha_tanpa_pensut_kum_slm_per_lap_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_ttl_by_usaha_tanpa_pensut_kum_slm_per_lap_tahun }}</td>
 							    
@@ -743,7 +770,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_ttl_by_usaha_dg_pensut_kum_slm_per_lap_nilai</td>
+							    <td>{{HP::sat_indikator('sat_ttl_by_usaha_dg_pensut_kum_slm_per_lap_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_ttl_by_usaha_dg_pensut_kum_slm_per_lap_tahun }}</td>
 							    
@@ -756,7 +783,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_tarif_air_ratarata_nilai</td>
+							    <td>{{HP::sat_indikator('sat_tarif_air_ratarata_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_tarif_air_ratarata_tahun }}</td>
 							    
@@ -769,7 +796,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_pdpt_air_data_rek_ditagih_kum_slm_prd_lap_nilai</td>
+							    <td>{{HP::sat_indikator('sat_pdpt_air_data_rek_ditagih_kum_slm_prd_lap_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_pdpt_air_data_rek_ditagih_kum_slm_prd_lap_tahun }}</td>
 							    
@@ -782,7 +809,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_penerimaan_dr_pjl_air_kum_slm_per_lap_nilai</td>
+							    <td>{{HP::sat_indikator('sat_penerimaan_dr_pjl_air_kum_slm_per_lap_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_penerimaan_dr_pjl_air_kum_slm_per_lap_tahun }}</td>
 							    
@@ -795,7 +822,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_pdpt_yg_ln_kum_slm_per_lap_nilai</td>
+							    <td>{{HP::sat_indikator('sat_pdpt_yg_ln_kum_slm_per_lap_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_pdpt_yg_ln_kum_slm_per_lap_tahun }}</td>
 							    
@@ -808,7 +835,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_apakah_pemda_mempunyai_rispam_nilai</td>
+							    <td>{{HP::sat_indikator('sat_apakah_pemda_mempunyai_rispam_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_apakah_pemda_mempunyai_rispam_tahun }}</td>
 							    
@@ -821,7 +848,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_tahun_rispam_diterbitkan_nilai</td>
+							    <td>{{HP::sat_indikator('sat_tahun_rispam_diterbitkan_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_tahun_rispam_diterbitkan_tahun }}</td>
 							    
@@ -834,7 +861,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_lamanya_masa_berlaku_rispam_nilai</td>
+							    <td>{{HP::sat_indikator('sat_lamanya_masa_berlaku_rispam_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_lamanya_masa_berlaku_rispam_tahun }}</td>
 							    
@@ -847,7 +874,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_apakah_pemda_sedang_menyiapkan_rispam_nilai</td>
+							    <td>{{HP::sat_indikator('sat_apakah_pemda_sedang_menyiapkan_rispam_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_apakah_pemda_sedang_menyiapkan_rispam_tahun }}</td>
 							    
@@ -860,7 +887,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_tahun_rispam_akan_diterbitkan_nilai</td>
+							    <td>{{HP::sat_indikator('sat_tahun_rispam_akan_diterbitkan_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_tahun_rispam_akan_diterbitkan_tahun }}</td>
 							    
@@ -873,7 +900,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_jumlah_pd_proyeksi_di_tahun_tg_dlm_rispam_nilai</td>
+							    <td>{{HP::sat_indikator('sat_jumlah_pd_proyeksi_di_tahun_tg_dlm_rispam_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_jumlah_pd_proyeksi_di_tahun_tg_dlm_rispam_tahun }}</td>
 							    
@@ -886,7 +913,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_tg_pop_yg_akan_trl_dg_jar_ppp_nilai</td>
+							    <td>{{HP::sat_indikator('sat_tg_pop_yg_akan_trl_dg_jar_ppp_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_tg_pop_yg_akan_trl_dg_jar_ppp_tahun }}</td>
 							    
@@ -899,7 +926,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_tg_pop_yg_akan_trl_dg_jar_bkn_ppp_nilai</td>
+							    <td>{{HP::sat_indikator('sat_tg_pop_yg_akan_trl_dg_jar_bkn_ppp_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_tg_pop_yg_akan_trl_dg_jar_bkn_ppp_tahun }}</td>
 							    
@@ -912,7 +939,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_tg_cakupan_pel_jar_ppp_di_tahun_tg_nilai</td>
+							    <td>{{HP::sat_indikator('sat_tg_cakupan_pel_jar_ppp_di_tahun_tg_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_tg_cakupan_pel_jar_ppp_di_tahun_tg_tahun }}</td>
 							    
@@ -925,7 +952,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_tg_cakupan_pel_jar_bkn_ppp_di_tahun_tg_nilai</td>
+							    <td>{{HP::sat_indikator('sat_tg_cakupan_pel_jar_bkn_ppp_di_tahun_tg_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_tg_cakupan_pel_jar_bkn_ppp_di_tahun_tg_tahun }}</td>
 							    
@@ -938,7 +965,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_alk_apbd_u_penyertaan_modal_pdam_nilai</td>
+							    <td>{{HP::sat_indikator('sat_alk_apbd_u_penyertaan_modal_pdam_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_alk_apbd_u_penyertaan_modal_pdam_tahun }}</td>
 							    
@@ -951,7 +978,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_alk_dak_u_pny_air_minum_nilai</td>
+							    <td>{{HP::sat_indikator('sat_alk_dak_u_pny_air_minum_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_alk_dak_u_pny_air_minum_tahun }}</td>
 							    
@@ -964,7 +991,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_alk_apbd_lainnya_u_pny_air_minum_nilai</td>
+							    <td>{{HP::sat_indikator('sat_alk_apbd_lainnya_u_pny_air_minum_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_alk_apbd_lainnya_u_pny_air_minum_tahun }}</td>
 							    
@@ -977,7 +1004,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_jumlah_ttl_apbd_pemda_nilai</td>
+							    <td>{{HP::sat_indikator('sat_jumlah_ttl_apbd_pemda_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_jumlah_ttl_apbd_pemda_tahun }}</td>
 							    
@@ -990,7 +1017,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_kapasitas_fkl_pemda_nilai</td>
+							    <td>{{HP::sat_indikator('sat_kapasitas_fkl_pemda_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_kapasitas_fkl_pemda_tahun }}</td>
 							    
@@ -1003,7 +1030,7 @@ if($pdam->open_hours!=null){
 							</tr>
 							<tr>
 							    
-							    <td>sat_dana_investasi_non_pemerintah_nilai</td>
+							    <td>{{HP::sat_indikator('sat_dana_investasi_non_pemerintah_nilai')}}</td>
 							    
 							    <td class="text-center">{{ $data->sat_dana_investasi_non_pemerintah_tahun }}</td>
 							    

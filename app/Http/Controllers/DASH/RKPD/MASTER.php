@@ -22,14 +22,7 @@ class MASTER extends Controller
     	$pemda=DB::table('daerah_nuwas')->get()->pluck('kode_daerah');
 
 
-    	// $data=DB::connection('myfinal')->table('master_'.$tahun.'_kegiatan as k')
-    	// ->leftJoin('master_'.$tahun.'_kegiatan_indikator as i','i.id_kegiatan','=','k.id')
-    	// ->where('k.status',5)
-    	// ->where('i.status',5)
-
-    	// ->whereIn('k.kodepemda',$pemda)
-    	// ->get();
-
+ 
         $id_urusan=[3,4];
         $data=DB::connection('myfinal')->table('master_'.$tahun.'_kegiatan as k')->select(
             DB::raw("sum(pagu) as pagu"),

@@ -18,9 +18,10 @@ class PROKEG extends Controller
     	->select(
     		'd.*',
     		DB::raw("null as target_nuwas"),
+    		DB::raw("null as jenis_bantuan"),
     		 DB::raw("(select concat(c.nama,
                 (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=d.id) as nama_daerah"),
-    		DB::raw("(select count(*) from prokeg.tb_".$tahun."_kegiatan  as k where k.kode_daerah=d.id and k.id_urusan=3 and k.id_sub_urusan=12 and status=5) as jumlah_kegiatan")
+    		DB::raw("(select count(*) from rkpd.master_".$tahun."_kegiatan  as k where ( k.kodepemda=d.id and k.id_urusan=3 and k.id_sub_urusan=12 and status=5) or ( k.kodepemda=d.id and k.id_urusan=3 and k.kode_lintas_urusan=12 and status=5)) as jumlah_kegiatan")
     	)->orderBy('id','ASC')->get();
     	
     	$provinsi=[];
@@ -34,7 +35,13 @@ class PROKEG extends Controller
     		if($d->kode_daerah_parent==null){
     			$provinsi[]=$d;
     		}
+
+
     	}
+
+
+
+
 
     	return view('dash.prokeg.index')->with('data',$data)->with('provinsi',$provinsi);
     }

@@ -4,8 +4,7 @@
 @section('content_header')
 <div class="row bg-navy">
 	<div class="col-md-12">
-		<h4 class="text-center"> DAERAH NUWSP TAHUN {{HP::fokus_tahun()}} - {{HP::fokus_tahun()+1}}</h4>
-
+		<h4 class="text-center"></h4>
     <h5 class="text-center"> PROGRAM KEGIATAN TAHUN {{HP::fokus_tahun()}} -  <small class="text-white">AIR MINUM</small> </h5>
 	</div>
 </div>
@@ -283,7 +282,7 @@
       {
         name:'TOTAL ANGGARAN',
         type:'line',
-        color:'red',
+        color:'#05668d',
         yAxis:0,
 
         data:[],
@@ -332,12 +331,6 @@
                   }
                   last=group;
             });
-
-           
-
-
-
-
 
 	      var api = this.api();
 		     $( api.table().column(1).footer() ).html('TOTAL');
@@ -595,9 +588,10 @@ table_daerah.on('order.dt search.dt', function () {
                    chart: {
                           zoomType: 'xy',
                           scrollablePlotArea: {
-                              minWidth:(data_show.length * 150),
+                              minWidth:(data_show.length * 110),
                               scrollPositionX: 1
                           },
+                          backgroundColor:'#fff',
                           plotBorderWidth: 2,
                       },
                   navigator: {
@@ -609,8 +603,15 @@ table_daerah.on('order.dt search.dt', function () {
                   subtitle: {
                       text: ''
                   },
+                  colors:['#80b918','#bfd200','#fff'],
                   xAxis: {
                       categories: glob_var.category,
+                      label:{
+                        style: {
+                                color: '#222'
+                      },
+                      },
+                      color:'#222',
                       gridLineWidth: 1,
                       gridZIndex: 4,
                       crosshair: true

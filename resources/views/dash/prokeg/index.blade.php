@@ -36,11 +36,11 @@
   					</div>
   					<div class="col-md-3">
   						<div class="form-group">
-  							<label>TARGET NUWAS</label>
+  							<label>MEDAPATKAN HIBAH</label>
   							<select id="target_nuwas_filter" class="filter form-control">
-  								<option value="">SEMUA</option>
+  								<option value="">- </option>
   								<option value="1">YA</option>
-  								<option value="0">TIDAK MEMILIKI</option>
+  								<option value="0">BUKAN</option>
 
   							</select>
   						</div>
@@ -66,7 +66,7 @@
   						<tr>
   							<th>KODE</th>
   							<th>NAMA DAERAH</th>
-  							<th>TARGET NUWAS</th>
+  							<th>JENIS HIBAH ({{HP::fokus_tahun()}})</th>
   							<th>JUMLAH KEGIATAN</th>
   							<th>ACTION</th>
 
@@ -124,8 +124,11 @@
 				data:'target_nuwas',
 				render:function(data){
 					if(data!=null){
-						return data.jenis_bantuan.replace(/@/g,' ');
-
+            if(data.jenis_bantuan){
+              return data.jenis_bantuan.replace(/@/g,' ');
+            }
+            return '';
+  						
 					}else{
 						return '';
 					}

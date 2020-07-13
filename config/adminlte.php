@@ -253,17 +253,17 @@ return [
                 [
                     'type' => 'js',
                     'asset' => true,
-                    'location' => url('vendor/DataTables/datatables.min.js'),
+                    'location' => ('vendor/DataTables/datatables.min.js'),
                 ],
                 [
                     'type' => 'js',
                     'asset' => true,
-                    'location' => url('vendor/DataTables/dataTables.bootstrap.min.js'),
+                    'location' => ('vendor/DataTables/dataTables.bootstrap.min.js'),
                 ],
                 [
                     'type' => 'css',
                     'asset' => true,
-                    'location' => url('vendor/DataTables/datatables.min.css'),
+                    'location' => ('vendor/DataTables/datatables.min.css'),
                 ],
             ],
         ],
