@@ -52,6 +52,8 @@ Route::middleware('auth:web')->group(function(){
 
 	Route::prefix('bppspam')->group(function(){
 		Route::get('/','FRONT\BPPSPAM@index')->name('bppspam.index');
+		Route::get('/{kode_daerah}/','FRONT\BPPSPAM@detail')->name('bppspam.detail');
+
 	});
 
 

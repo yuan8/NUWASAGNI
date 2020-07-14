@@ -32,11 +32,11 @@ class BPPSPAMProvider extends ServiceProvider
 
     public static function storingdata($con){
          $tahun_fokus=2019;
-        static::init($tahun_fokus,$con);
+        // static::init($tahun_fokus,$con);
 
         $schema='';
         $schema_public='';
-        if($con=='pgsql'){
+        if($con=='simspam'){
             $schema='bppspam.';
             $schema_public='public.';
         }else{
@@ -45,50 +45,53 @@ class BPPSPAMProvider extends ServiceProvider
         }
 
 
-        foreach (['bppspam_data_penilaian'=>'pdam_penilaian','bppspam_data_nilai'=>'pdam_hasil_nilai','bppspam_data_keterangan'=>'pdam_keterangan'] as $ke => $tb) {
+        foreach (['bppspam_data_keterangan'=>'bppspam_data_keterangan','bppspam_data_penilaian'=>'bppspam_data_penilaian','bppspam_data_nilai'=>'bppspam_data_nilai'] as $ke => $tb) {
 
-            $dt=DB::connection('mybppspam')->table($tb)->get();
+            $dt=DB::connection('mybppspam')->table($tb.' as i')
+            ->select(
+                DB::raw("(select nama_pdam from master_bppspam_pdam as p where p.id =i.id_pdam limit 1) as nama_pdam "),
+                DB::raw("(select kodepemda from master_bppspam_pdam as p where p.id =i.id_pdam limit 1) as kode_daerah ")
+                ,
+                DB::raw("i.*")
+
+            )
+            ->get();
+
+
+            $pdam=null;
+             $xxx[]=[];
             foreach ($dt as $l=> $d) {
                 $d=(array)$d;
-                $d['pemda']=str_replace('00','',($d['pemda'].''));
-                $tbx=str_replace('xxx', $d['tahun'], $ke);
+              $pdam=DB::connection($con)->table($schema_public.'pdam')
+                        ->where('kode_daerah',$d['kode_daerah'])->pluck('id')->first();
+              
                 // if($d['pemda']=='1202'){
                 //   dd($d);
                 // }
 
 
-                $pdam=DB::connection($con)->table($schema_public.'master_bppspam_pdam')
-                ->where('kodepemda',$d['pemda'])->pluck('id')->first();
-
-
-
-
+               
                 if(!$pdam){
 
-
-                    $dtpdam=(array)DB::connection('pgsql')->table('pdam')->where('kode_daerah',$d['pemda'])->first();
-                    if($dtpdam){
-                      unset($dtpdam['kode_daerah']);
-                      unset($dtpdam['id']);
-                      $dtpdam['kodepemda']=$d['pemda'];
-                    }else{
-                      $dtpdam=array(
-                        'kodepemda'=>$d['pemda'],
+                   $dtpdam=array(
+                        'kode_daerah'=>$d['kode_daerah'],
                         'nama_pdam'=>$d['nama_pdam']
                       );
-                    }
 
-                    $pdam=DB::connection($con)->table($schema_public.'master_bppspam_pdam')
+                    $pdam=DB::connection($con)->table($schema_public.'pdam')
                      ->insertGetId(
                         $dtpdam
                      );
 
                 }
-
-                unset($d['nama_pdam']);
-                unset($d['pemda']);
+                
                 $d['id_pdam']=$pdam;
-                if(isset($d['periode_plan'])){
+                unset($d['nama_pdam']);
+
+
+
+
+                if(array_key_exists('periode_plan',$d)){
                   $pp=explode('-',$d['periode_plan']);
                   $d['periode_plan_awal']=isset($pp[0])?$pp[0]:null;
                   $d['periode_plan_ahir']=isset($pp[1])?$pp[1]:null;
@@ -100,12 +103,15 @@ class BPPSPAMProvider extends ServiceProvider
 
 
 
+
                 $dox=$d;
+
 
 
                 foreach ($dox as $key => $value) {
                   // code...
                   $value=trim($value);
+
                   if(is_string($value)){
                     $value=str_replace(['(',')'],'',$value);
                     if(in_array($value,['-','','~','-0'])){
@@ -131,7 +137,7 @@ class BPPSPAMProvider extends ServiceProvider
 
 
 
-                DB::connection($con)->table($schema.$tbx)->insertOrIgnore($d);
+                DB::connection($con)->table($schema.$tb)->insertOrIgnore($d);
 
             }
         }
@@ -152,7 +158,7 @@ class BPPSPAMProvider extends ServiceProvider
         $schema_public='';
 
 
-        if($con=='pgsql'){
+        if($con=='simspam'){
             $schema='bppspam.';
             $schema_public='public.';
 
@@ -162,77 +168,19 @@ class BPPSPAMProvider extends ServiceProvider
             $schema_public='';
 
 
+
+
         }
-            if(!Schema::connection($con)->hasTable($schema_public.'master_daerah')){
-                Schema::connection($con)->create($schema_public.'master_daerah',function(Blueprint $table)use($schema,$schema_public){
+    
 
+            
 
-
-                    $table->string('id',4)->primary()->index();
-                    $table->string('nama');
-                    $table->string('kode_daerah_parent')->nullable();
-
-                });
-
-                $dt=DB::table('master_daerah')->select('id','nama','kode_daerah_parent')->get();
-                $dt=json_encode($dt);
-                $dt=json_decode($dt,true);
-
-                DB::connection($con)->table($schema_public.'master_daerah')->insertOrIgnore($dt);
-
-            }
-
-
-            if(!Schema::connection($con)->hasTable($schema_public.'master_bppspam_pdam')){
-                Schema::connection($con)->create($schema_public.'master_bppspam_pdam',function(Blueprint $table)use($schema,$schema_public){
-                    $table->bigIncrements('id');
-                    $table->string('kodepemda',4)->unique();
-                    $table->string('kode_pdam')->nullable();
-                    $table->string('nama_pdam');
-                    $table->string('kordinat')->nullable();
-                    $table->text('alamat')->nullable();
-                    $table->text('open_hours')->nullable();
-                    $table->string('no_telpon',20)->nullable();
-                    $table->string('website',200)->nullable();
-                    $table->text('url_image')->nullable();
-                    $table->text('url_direct')->nullable();
-                    $table->string('id_laporan_terahir')->nullable();
-                    $table->string('id_laporan_terahir_2')->nullable();
-                    $table->integer('period_tahun')->nullable();
-                    $table->tinyInteger('period_bulan')->nullable();
-                    $table->date('periode_laporan')->nullable();
-                    $table->tinyInteger('kategori_pdam_kode')->nullable();
-                    $table->tinyInteger('kategori_pdam_kode_self')->nullable();
-                    $table->string('kategori_pdam')->nullable();
-                    $table->string('kategori_pdam_self')->nullable();
-                    $table->dateTime('updated_input_at')->nullable();
-                    $table->tinyInteger('periode_tahun_bppspam')->nullable();
-                    $table->string('kategori_pdam_bppspam')->nullable();
-                    $table->timestamps();
-
-                    $table->index(['kodepemda']);
-                    $table->index(['kategori_pdam_bppspam']);
-                    $table->index(['periode_tahun_bppspam']);
-
-                    $table->foreign('kodepemda')->references('id')
-                    ->on($schema_public.'master_daerah')
-                    ->onDelete('cascade')->onUpdate('cascade');
-
-
-
-
-
-                 });
-
-
-            }
-
-
-
+   
             if(!Schema::connection($con)->hasTable($schema.'bppspam_data_keterangan')){
                 Schema::connection($con)->create($schema.'bppspam_data_keterangan',function(Blueprint $table)use($schema,$schema_public){
                     $table->bigIncrements('id');
                     $table->bigInteger('id_pdam')->unsigned();
+                    $table->string('kode_daerah',4);
                     $table->tinyInteger('kode_buku')->nullable();
                     $table->integer('kode_hal')->nullable();
                     $table->integer('tahun')->nullable();
@@ -270,10 +218,10 @@ class BPPSPAMProvider extends ServiceProvider
                     $table->integer('periode_plan_awal')->nullable();
                     $table->integer('periode_plan_ahir')->nullable();
 
-                    $table->unique(['id_pdam','tahun']);
+                    $table->unique(['kode_daerah','tahun']);
 
                     $table->foreign('id_pdam')->references('id')
-                    ->on($schema_public.'master_bppspam_pdam')
+                    ->on($schema_public.'pdam')
                     ->onDelete('cascade')->onUpdate('cascade');
 
                 });
@@ -286,6 +234,7 @@ class BPPSPAMProvider extends ServiceProvider
                     Schema::connection($con)->create($schema.'bppspam_'.$tahun.'_nilai',function(Blueprint $table)use($tahun,$schema,$schema_public){
                         $table->bigIncrements('id');
                         $table->bigInteger('id_pdam')->unsigned();
+                        $table->string('kode_daerah',4);
                         $table->tinyInteger('kode_buku')->nullable();
                         $table->integer('kode_hal')->nullable();
                         $table->integer('tahun')->nullable();
@@ -314,10 +263,10 @@ class BPPSPAMProvider extends ServiceProvider
                         $table->double('kinerja_total',25,3)->nullable();
                         $table->string('kategori',60)->nullable();
 
-                        $table->unique(['id_pdam','tahun']);
+                        $table->unique(['kode_daerah','tahun']);
 
                         $table->foreign('id_pdam')->references('id')
-                        ->on($schema_public.'master_bppspam_pdam')
+                        ->on($schema_public.'pdam')
                         ->onDelete('cascade')->onUpdate('cascade');
 
                     });
@@ -329,6 +278,7 @@ class BPPSPAMProvider extends ServiceProvider
 
                         $table->bigIncrements('id');
                         $table->bigInteger('id_pdam')->unsigned();
+                        $table->string('kode_daerah',4);
                         $table->tinyInteger('kode_buku')->nullable();
                         $table->integer('kode_hal')->nullable();
                         $table->integer('tahun')->nullable();
@@ -358,16 +308,47 @@ class BPPSPAMProvider extends ServiceProvider
                         $table->string('kategori',60)->nullable();
                         $table->mediumText('keterangan')->nullable();
 
-                        $table->unique(['id_pdam','tahun']);
+                        $table->unique(['kode_daerah','tahun']);
 
 
 
                         $table->foreign('id_pdam')->references('id')
-                        ->on($schema_public.'master_bppspam_pdam')
+                        ->on($schema_public.'pdam')
                         ->onDelete('cascade')->onUpdate('cascade');
 
                     });
 
+
+
+                }
+
+
+
+                if(Schema::connection($con)->hasTable($schema.'view_bppspam_penilaian_kategori')){
+
+                    DB::connection($con)->statement("
+                        CREATE OR REPLACE VIEW bppspam.view_bppspam_penilaian_kategori
+                        AS SELECT n.id_pdam,
+                            n.tahun,
+                                CASE
+                                    WHEN n.kinerja_total IS NULL OR n.kinerja_keuangan IS NULL OR n.kinerja_operasi IS NULL THEN NULL::integer
+                                    WHEN n.kinerja_total >= k.bppspam_top AND n.kinerja_keuangan >= k.bppspam_finansial_top AND n.kinerja_operasi >= k.bppspam_oprasional_top AND n.cakupan_pelayanan >= k.bppspam_pelayanan_top THEN 5
+                                    WHEN n.kinerja_total >= k.bppspam_top AND n.cakupan_pelayanan < k.bppspam_pelayanan_top OR n.cakupan_pelayanan > k.bppspam_pelayanan_top THEN 4
+                                    WHEN n.kinerja_total >= k.bppspam_middle AND n.kinerja_total < k.bppspam_top AND n.cakupan_pelayanan >= k.bppspam_pelayanan_middle THEN 4
+                                    WHEN n.kinerja_total >= k.bppspam_middle AND n.kinerja_keuangan > k.bppspam_finansial_bottom AND n.kinerja_operasi > k.bppspam_oprasional_bottom THEN 4
+                                    WHEN n.kinerja_total >= k.bppspam_middle AND n.kinerja_total < k.bppspam_top AND n.cakupan_pelayanan > k.bppspam_pelayanan_middle THEN 3
+                                    WHEN n.kinerja_total >= k.bppspam_bottom AND n.kinerja_total < k.bppspam_middle AND n.kinerja_keuangan >= k.bppspam_finansial_bottom AND n.kinerja_operasi >= k.bppspam_oprasional_bottom AND n.cakupan_pelayanan > k.bppspam_pelayanan_top THEN 3
+                                    WHEN n.kinerja_total > k.bppspam_bottom AND n.kinerja_total < k.bppspam_middle AND n.kinerja_keuangan < k.bppspam_finansial_bottom AND n.kinerja_operasi < k.bppspam_oprasional_bottom THEN 2
+                                    WHEN n.kinerja_total > k.bppspam_bottom AND n.kinerja_total < k.bppspam_middle AND n.cakupan_pelayanan < k.bppspam_pelayanan_top THEN 2
+                                    WHEN n.kinerja_total <= k.bppspam_bottom AND n.cakupan_pelayanan > k.bppspam_pelayanan_top THEN 2
+                                    WHEN n.kinerja_total <= k.bppspam_bottom AND n.cakupan_pelayanan < k.bppspam_pelayanan_top THEN 1
+                                    ELSE NULL::integer
+                                END AS kategori_pdam,
+                            n.kategori AS kategori_bppspam
+                           FROM bppspam.bppspam_data_penilaian n
+                             LEFT JOIN bppspam.konst k ON 1 = 1
+
+                    ");
 
 
                 }

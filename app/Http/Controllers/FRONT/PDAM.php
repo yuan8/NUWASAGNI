@@ -10,22 +10,38 @@ class PDAM extends Controller
 {
     //
 
-    public function index(){
-    	$tahun=HP::fokus_tahun();
+    public function index(Request $request){
+
+        if($request->tahun){
+            $tahun=$request->tahun;
+        }else{
+            $tahun=HP::fokus_tahun();
+        }
     	$data=DB::table('pdam as dt')
         ->leftJoin('audit_sat as sat','sat.id','=','dt.id_laporan_terahir')
     	->leftJoin('master_daerah as d','d.id','=','dt.kode_daerah')
     	->leftJoin('daerah_nuwas as nws',function($q)use ($tahun){
-    		return $q->on('nws.kode_daerah','=','d.id')
-    		->on('nws.tahun','=',DB::raw($tahun));
+    		return $q->on('nws.kode_daerah','=','d.id');
     	})
     	->select('dt.*','d.nama as nama_daerah',
             DB::raw("(select nama from master_daerah as p where p.id=(case when d.kode_daerah_parent is not null then d.kode_daerah_parent else d.id end)) as nama_provinsi"),
-    		DB::raw("(case when nws.id is not null then true else false end) as target_nuwas"),
-            'sat.keterangan'
+            'nws.tahun as target_nuwas',
+            'nws.jenis_bantuan as jenis_bantuan'
+
+
 
     	)
+        ->where('nws.id','!=',null)
+        ->where('dt.id_laporan_terahir','!=',null)
         ->orderBy('kode_daerah','ASC')->get();
+
+        $ids=DB::table('daerah_nuwas as nws')
+        ->select("nws.*")
+        ->leftjoin(DB::raw("(select kode_daerah from public.audit_sat group by kode_daerah) as sat"),'sat.kode_daerah','=','nws.kode_daerah')
+        ->where('sat.kode_daerah','!=',null)
+        ->get()->pluck('kode_daerah');
+
+
 
          $pdam_rekap=(array)DB::table('pdam')
         ->leftJoin('audit_sat as pen','pen.id','=','pdam.id_laporan_terahir' )
@@ -34,24 +50,31 @@ class PDAM extends Controller
         )
         ->groupBy('pen.kategori_pdam_kode')
         ->orderBy('pen.kategori_pdam_kode','DESC')
+        ->whereIn('pdam.kode_daerah',$ids)
         ->get()->toArray();
 
          $pd_a=[];
+
+
         foreach ($pdam_rekap as $key => $pd) {
             $pd_a[$pd->kategori_pdam_kode?$pd->kategori_pdam_kode:0]=$pd;
         }
         $pdam_rekap=$pd_a;
 
 
-    	return view('front.pdam.index')->with('data',$data)->with('pdam_rekap',$pdam_rekap);
+    	return view('front.pdam.index')->with('data',$data)->with('pdam_rekap',$pdam_rekap)->with('tahun',$tahun);
 
 
 
 
     }
 
-    public function sat($id){
-        $tahun=HP::fokus_tahun();
+    public function sat($id,Request $request){
+         if($request->tahun){
+            $tahun=$request->tahun;
+        }else{
+            $tahun=HP::fokus_tahun();
+        }
 
         $db=DB::table('pdam')
         ->where('kode_daerah',$id)
