@@ -24,8 +24,6 @@ Route::middleware('auth:web')->get('logout',function(){
 
 
 
-
-
 Route::middleware('auth:web')->group(function(){
 	
 	Route::prefix('data-pad')->group(function(){
@@ -65,6 +63,10 @@ Route::middleware('auth:web')->group(function(){
 
 	Route::prefix('ikfd')->group(function(){
 		Route::get('/','FRONT\IKFD@index')->name('ikfd.index');
+	});
+
+	Route::prefix('rakortek')->group(function(){
+		Route::get('/','FRONT\RAKORTEK@index')->name('rakortek.index');
 	});
 
 	Route::prefix('rpjmn')->group(function(){

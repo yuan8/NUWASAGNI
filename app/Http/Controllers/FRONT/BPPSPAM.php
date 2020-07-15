@@ -60,9 +60,8 @@ class BPPSPAM extends Controller
     	->leftJoin('bppspam.view_bppspam_penilaian_kategori as k','k.kode_daerah','d.kode_daerah')
         ->leftJoin('public.pdam as pdam','pdam.kode_daerah','=','k.kode_daerah')
         ->groupby('k.kode_daerah')
-        ->orderBy('k.tahun','desc')
+        ->orderBy(DB::raw("max(k.tahun)"),'desc')
         ->where('k.tahun','<',($tahun-1))->get();
-
 
         foreach ($data as $key => $d) {
 
@@ -108,7 +107,7 @@ class BPPSPAM extends Controller
         ->leftJoin('public.pdam as pdam','pdam.kode_daerah','=','k.kode_daerah')
         ->groupby('k.kode_daerah')
         ->groupby('k.tahun')
-        ->orderBy('k.tahun','desc')
+        ->orderBy(DB::RAW('k.tahun'),'desc')
         ->where('d.kode_daerah',$kode_daerah)
         ->where('k.tahun','<',($tahun-1))->first();
 
