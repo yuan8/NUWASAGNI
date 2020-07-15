@@ -284,7 +284,8 @@ class AppServiceProvider extends ServiceProvider
                           'url'=>route('kinerja-rkpd.index')
                         ],
                         [
-                          'text'=>'RAKORTEK '.HP::fokus_tahun()
+                          'text'=>'RAKORTEK '.HP::fokus_tahun(),
+                          'url'=>route('rakortek.index')
                         ],
                        
                     ]
