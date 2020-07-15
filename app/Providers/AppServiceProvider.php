@@ -257,7 +257,8 @@ class AppServiceProvider extends ServiceProvider
                             'url'=>route('rpjmn.index')
                         ],
                         [
-                          'text'=>'NOMENKLATUR (PERMENDAGRI 90) '.HP::fokus_tahun()
+                          'text'=>'NOMENKLATUR (PERMENDAGRI 90) '.HP::fokus_tahun(),
+                          'url'=>route('nomenklatur.index')
                         ],
                          [
                             'text'=>'PROGRAM KEGIATAN '.HP::fokus_tahun().'',

@@ -25,16 +25,12 @@
 						<th colspan="2">TARGET NASIONAL</th>
 						<th colspan="2">KOMITMEN TARGET DAERAH</th>
 						<th rowspan="2">CATATAN</th>
-
 					</tr>
 					<tr>
 						<th>TARGET</th>
 						<th>SATUAN</th>
 						<th>TARGET</th>
 						<th>SATUAN</th>
-
-
-
 
 					</tr>
 				</thead>

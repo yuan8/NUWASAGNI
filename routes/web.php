@@ -71,6 +71,11 @@ Route::middleware('auth:web')->group(function(){
 
 	});
 
+	Route::prefix('nomenklatur')->group(function(){
+		Route::get('/','FRONT\NOMENKLATUR@index')->name('nomenklatur.index');
+
+	});
+
 	Route::prefix('rpjmn')->group(function(){
 		Route::get('/','FRONT\RPJMN@index')->name('rpjmn.index');
 	});

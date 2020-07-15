@@ -14,13 +14,13 @@ class Dashboard extends Controller
     public function index(){
     	$tahun=HP::fokus_tahun();
 
-    	$data_kegiatan=DB::connection('sinkron_prokeg')->table('tb_'.$tahun.'_kegiatan')->where('id_urusan',3)
-    	->select(
-    		DB::raw("sum(anggaran) as jumlah_anggaran"),
-    		DB::raw("count(*) jumlah_kegiatan")
-    	)->where('id_sub_urusan',12)
-    	->where('status',5)
-    	->first();
+    	// $data_kegiatan=DB::connection('sinkron_prokeg')->table('tb_'.$tahun.'_kegiatan')->where('id_urusan',3)
+    	// ->select(
+    	// 	DB::raw("sum(anggaran) as jumlah_anggaran"),
+    	// 	DB::raw("count(*) jumlah_kegiatan")
+    	// )->where('id_sub_urusan',12)
+    	// ->where('status',5)
+    	// ->first();
 
 
          $album=DB::connection('pgsql')->table('album')
@@ -50,7 +50,7 @@ class Dashboard extends Controller
             );
         }
 
-        $data_pdam=DB::table('pdam')->count();
+        // $data_pdam=DB::table('pdam')->count();
 
 
         
@@ -58,8 +58,8 @@ class Dashboard extends Controller
         $berita=DB::table('berita_bangda')->orderBy('created_at','desc')->limit(5)->get();
 
     	return view('front.v2.index')->with([
-    		'data_kegiatan'=>$data_kegiatan,
-            'data_pdam'=>$data_pdam,
+    		// 'data_kegiatan'=>$data_kegiatan,
+            // 'data_pdam'=>$data_pdam,
             'tahun'=>$tahun,
             'album'=>$album,
             'output'=>$output,
