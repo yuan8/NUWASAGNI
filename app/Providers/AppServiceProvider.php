@@ -252,10 +252,10 @@ class AppServiceProvider extends ServiceProvider
                     'text' => 'PETA DUKUNGAN',
                     'icon'=>'fa fa-map',
                     'submenu'=>[
-                        // [
-                        //     'text'=>'PROKEG  - CHART',
-                        //     'url'=>route('p.prokeg')
-                        // ],
+                        [
+                            'text'=>'RPJMN',
+                            'url'=>route('rpjmn.index')
+                        ],
                         [
                           'text'=>'NOMENKLATUR (PERMENDAGRI 90) '.HP::fokus_tahun()
                         ],
@@ -280,7 +280,8 @@ class AppServiceProvider extends ServiceProvider
                     'submenu'=>[
                        
                         [
-                          'text'=>'INDIKATOR PROGRAM KEGIATAN '.HP::fokus_tahun()
+                          'text'=>'INDIKATOR PROGRAM KEGIATAN '.HP::fokus_tahun(),
+                          'url'=>route('kinerja-rkpd.index')
                         ],
                         [
                           'text'=>'RAKORTEK '.HP::fokus_tahun()

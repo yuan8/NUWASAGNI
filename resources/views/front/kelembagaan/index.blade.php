@@ -176,7 +176,7 @@
             <th>KODE</th>
             <th>NAMA DAERAH</th>
             <th>TIPOLOGI PEMDA</th>
-            <th>LUWAS WILAYAH</th>
+            <th>LUAS WILAYAH</th>
             <th>JUMLAH PENDUDUK ADM</th>
             <th>IKFD TAHUN {{HP::fokus_tahun()}}</th>
             <th>KONDISI PDAM</th>

@@ -6,6 +6,9 @@ Route::prefix('bot')->group(function(){
 			Route::get('/cek/{id}','BOT\SAT@checking');
 	});
 	
+			Route::get('/rpjmn','BOT\RPJMN@store');
+
+
 
 	Route::prefix('bppspam')->group(function(){
 			Route::get('/storing',function(){
