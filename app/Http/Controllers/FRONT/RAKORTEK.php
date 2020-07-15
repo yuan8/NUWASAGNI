@@ -10,6 +10,38 @@ class RAKORTEK extends Controller
 {
     //
 
+    public function index(Request $request){
+        if($request->tahun){
+            $tahun=$request->tahun;
+        }else{
+            $tahun=HP::fokus_tahun();
+        }
+
+        $tahun=2021;
+
+        $data=DB::table('daerah_nuwas')->select(DB::RAW("(COUNT(*)) AS jumlah_daerah,sum(case when tahun=".$tahun." then 1 else 0 end ) as jumlah_prioritas, string_agg(concat('\"',kode_daerah,'\"'),',') as list_kode_pemda"))->first();
+
+        $id_pemda_l=str_replace('"', "'", $data->list_kode_pemda);
+
+        $data=DB::connection('rakortek')->table('view_'.$tahun."_rakortek_hasil")
+        ->select(
+            DB::raw("
+                kodepemda,
+                max(pemda) as nama_daerah,
+                max(provinsi) as nama_provinsi,
+                cound(kodeiku) as jumlah_indikator
+                ")
+        )
+        ->groupBy('kodepemda')
+        // ->whereRAW("kodepemda in (".$id_pemda_l.")")
+        ->orderBy('kodepemda','asc')
+        ->get();
+
+        dd($data);
+
+    }
+
+
     public function iku_perurusan(){
         $tahun=2021;
         $bidang=static::akomondir_urusan('');
@@ -154,52 +186,52 @@ class RAKORTEK extends Controller
 
     }
 
-    public function index($ind_type=1){
-        $tahun=2021;
+    // public function index($ind_type=1){
+    //     $tahun=2021;
   
-        $urusan=static::akomondir_urusan();
+    //     $urusan=static::akomondir_urusan();
 
-         $data=DB::connection('rakortek')->table("master_".$tahun."_rakortek_iku_bidang as b")
-        ->whereRaw("left(kodeurusan,1) =(case when length(b.kodepemda)<3 then 'P' else 'K' end)")
-        ->groupBy('b.kodepemda','b.kodeurusan')
-        ->select(
-            DB::RAW("(select nama from public.master_daerah where id = b.kodepemda limit 1) as nama_daerah"),
-            'b.kodepemda as kode_daerah',
-            'b.kodeurusan',
-            DB::raw("left(b.kodeurusan,1) as daerah_kat"),
-            DB::raw("(replace(max(b.bidang_urusan),'URUSAN PEMERINTAHAN BIDANG','')) as nama_bidang"),
-            DB::raw("(count(distinct(b.kodeiku))) as jumlah_i"),
-            DB::raw("(string_agg(distinct(b.kodeiku),'|')) as i_id")
-        )
-        ->whereIn('b.kodeurusan',$urusan)
-        ->get();
+    //      $data=DB::connection('rakortek')->table("master_".$tahun."_rakortek_iku_bidang as b")
+    //     ->whereRaw("left(kodeurusan,1) =(case when length(b.kodepemda)<3 then 'P' else 'K' end)")
+    //     ->groupBy('b.kodepemda','b.kodeurusan')
+    //     ->select(
+    //         DB::RAW("(select nama from public.master_daerah where id = b.kodepemda limit 1) as nama_daerah"),
+    //         'b.kodepemda as kode_daerah',
+    //         'b.kodeurusan',
+    //         DB::raw("left(b.kodeurusan,1) as daerah_kat"),
+    //         DB::raw("(replace(max(b.bidang_urusan),'URUSAN PEMERINTAHAN BIDANG','')) as nama_bidang"),
+    //         DB::raw("(count(distinct(b.kodeiku))) as jumlah_i"),
+    //         DB::raw("(string_agg(distinct(b.kodeiku),'|')) as i_id")
+    //     )
+    //     ->whereIn('b.kodeurusan',$urusan)
+    //     ->get();
 
-         $data_return=[];
+    //      $data_return=[];
 
-         foreach ($data as $key => $d) {
-             # code...
-           if(!isset($data_return[$d->kode_daerah])){
-             $data_return[$d->kode_daerah]=array(
-                'kode_daerah'=>$d->kode_daerah,
-                'nama'=>$d->nama_daerah,
-                'kat'=>$d->daerah_kat,
-                'urusan'=>static::akomondir_urusan('')
-            );
+    //      foreach ($data as $key => $d) {
+    //          # code...
+    //        if(!isset($data_return[$d->kode_daerah])){
+    //          $data_return[$d->kode_daerah]=array(
+    //             'kode_daerah'=>$d->kode_daerah,
+    //             'nama'=>$d->nama_daerah,
+    //             'kat'=>$d->daerah_kat,
+    //             'urusan'=>static::akomondir_urusan('')
+    //         );
 
-             $kodeurusan=str_replace('.','_',str_replace('P.', '', str_replace('K.', '', $d->kodeurusan)));
+    //          $kodeurusan=str_replace('.','_',str_replace('P.', '', str_replace('K.', '', $d->kodeurusan)));
 
-             $data_return[$d->kode_daerah]['urusan'][$kodeurusan]['value']=$d->jumlah_i;
-             $data_return[$d->kode_daerah]['urusan'][$kodeurusan]['i_id']=explode('|', $d->i_id);
+    //          $data_return[$d->kode_daerah]['urusan'][$kodeurusan]['value']=$d->jumlah_i;
+    //          $data_return[$d->kode_daerah]['urusan'][$kodeurusan]['i_id']=explode('|', $d->i_id);
 
 
-           }
+    //        }
 
-         }
+    //      }
     
 
-         return view('front.rakortek.kinerja_urusan.index')->with('data',array_values($data_return))->with('urusan',static::akomondir_urusan(''));
+    //      return view('front.rakortek.kinerja_urusan.index')->with('data',array_values($data_return))->with('urusan',static::akomondir_urusan(''));
 
-    }
+    // }
 
     public function iku_kota($id){
 
