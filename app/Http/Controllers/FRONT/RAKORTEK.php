@@ -10,6 +10,49 @@ class RAKORTEK extends Controller
 {
     //
 
+    public function detail($kodepemda,Request $request){
+        if($request->tahun){
+            $tahun=$request->tahun;
+        }else{
+            $tahun=HP::fokus_tahun();
+        }
+
+        $daerah=DB::table('master_daerah  as d')->where('id',$kodepemda)
+        ->select(
+            DB::RAW("
+                id,
+                nama as nama_daerah
+                "),
+            DB::raw("(select nama from master_daerah as p where p.id= left(d.id,2)) as nama_provinsi"))
+        ->first();
+
+
+
+
+        $tahun=2021;
+
+
+
+        $data=DB::connection('rakortek')->table('view_'.$tahun."_rakortek_hasil as rk")
+        ->select(
+            DB::raw("
+                rk.*
+                ")
+        )
+        ->where('kodepemda',$kodepemda)        
+        ->orderBy('kodepemda','asc')
+        ->get();
+
+
+        return view('front.rakortek.detail')->with([
+        'data'=>$data,
+        'tahun'=>$tahun,
+        'daerah'=>$daerah
+       ]);
+
+
+    }
+
     public function index(Request $request){
         if($request->tahun){
             $tahun=$request->tahun;
@@ -29,15 +72,18 @@ class RAKORTEK extends Controller
                 kodepemda,
                 max(pemda) as nama_daerah,
                 max(provinsi) as nama_provinsi,
-                cound(kodeiku) as jumlah_indikator
+                count(kodeindikator) as jumlah_indikator
                 ")
         )
         ->groupBy('kodepemda')
-        // ->whereRAW("kodepemda in (".$id_pemda_l.")")
+        ->whereRAW("kodepemda in (".$id_pemda_l.")")
         ->orderBy('kodepemda','asc')
         ->get();
 
-        dd($data);
+       return view('front.rakortek.index')->with([
+        'data'=>$data,
+        'tahun'=>$tahun
+       ]);
 
     }
 

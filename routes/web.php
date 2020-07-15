@@ -67,6 +67,8 @@ Route::middleware('auth:web')->group(function(){
 
 	Route::prefix('rakortek')->group(function(){
 		Route::get('/','FRONT\RAKORTEK@index')->name('rakortek.index');
+		Route::get('/detail/{kode_daerah}','FRONT\RAKORTEK@detail')->name('rakortek.detail');
+
 	});
 
 	Route::prefix('rpjmn')->group(function(){
