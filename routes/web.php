@@ -34,11 +34,28 @@ Route::middleware('auth:web')->group(function(){
 	});
 
 
+	Route::prefix('dash-api')->group(function(){
+		Route::get('/existing/{tahun}', 'FRONT\DASH@existing')->name('dash.existing');
+		Route::get('/pdam-bppspam/{tahun}', 'FRONT\DASH@kondisi_pdam_bppspam')->name('dash.pdam_bppspam');
+		Route::get('/ikfd-pemda/{tahun}', 'FRONT\DASH@ikfd')->name('dash.ikfd');
+		Route::get('/pdam_sat/{tahun}', 'FRONT\DASH@pdam_sat')->name('dash.pdam_sat');
+		Route::get('/rkpd/{tahun}', 'FRONT\DASH@rkpd')->name('dash.rkpd');
+
+
+
+
+		
+	});
+
+
 	Route::get('/home',function(){
 		return redirect('/');
 	});
 
+
+
 	Route::get('pilih-tahun','AKSESTAHUN@index')->name('pilih_tahun');
+
 	Route::post('pilih-tahun','AKSESTAHUN@storing')->name('pilih_tahun.store');
 
 
@@ -48,6 +65,14 @@ Route::middleware('auth:web')->group(function(){
 
 	Route::prefix('ikfd')->group(function(){
 		Route::get('/','FRONT\IKFD@index')->name('ikfd.index');
+	});
+
+	Route::prefix('rpjmn')->group(function(){
+		Route::get('/','FRONT\rpjmn@index')->name('rpjmn.index');
+	});
+
+	Route::prefix('kinerja-air-minum')->group(function(){
+		Route::get('/indikator-rkpd','FRONT\KINERJA@index')->name('kinerja-rkpd.index');
 	});
 
 	Route::prefix('bppspam')->group(function(){

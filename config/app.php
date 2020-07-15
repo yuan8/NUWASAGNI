@@ -230,6 +230,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'HP' => App\Providers\HelperProvider::class,
         'BPPSPAM' => App\Providers\BPPSPAMProvider::class,
+        'SAT' => App\Providers\SATProvider::class,
         'Zipper' => 'Chumper\Zipper\Zipper',
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
 

@@ -102,6 +102,8 @@
 	<script type="text/javascript">
 		$('table').dataTable({
 			sort:false,
+			"pageLength": 400,
+			"bPaginate": false
 		});
 	</script>
 

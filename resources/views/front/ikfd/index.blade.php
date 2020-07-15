@@ -12,6 +12,7 @@
 @stop
 
 @section('content')
+	<h1 class="text-center"><b>IKFD TAHUN {{$tahun}} - {{$tahun-2}}</b></h1>
 	<div class="row no-gutter">
 		<div class="col-md-12 col-no-padding">
 			<div class="box-orange box">

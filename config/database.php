@@ -77,6 +77,35 @@ return [
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
+        'rpjmn' => [
+            'driver' => 'pgsql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '5432'),
+            'database' =>'production_sinkron',
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'schema' => 'rpjmn',
+            'sslmode' => 'prefer',
+        ],
+        'rkpd' => [
+            'driver' => 'pgsql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '5432'),
+            'database' =>'production_sinkron',
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'schema' => 'rkpd',
+            'sslmode' => 'prefer',
+        ],
+
         'sinkron_prokeg' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
@@ -134,7 +163,51 @@ return [
             'sslmode' => 'prefer',
         ],
 
+<<<<<<< HEAD
 
+=======
+        'bppspam' => [
+            'driver' => 'pgsql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '5432'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'schema' => 'bppspam',
+            'sslmode' => 'prefer',
+        ],
+         'pemda' => [
+            'driver' => 'pgsql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '5432'),
+            'database' => 'production_sinkron',
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'schema' => 'pemda',
+            'sslmode' => 'prefer',
+        ],
+
+        // 'mybppspam' => [
+        //     'driver' => 'mysql',
+        //     'url' => env('DATABASE_URL'),
+        //     'host' => "191.268.123.190",
+        //     'port' =>3306,
+        //     'database' => 'bppspam',
+        //     'username' => 'admin',
+        //     'password' =>'S@qpx231azq2',
+        //     'charset' => 'utf8',
+        //     'prefix' => '',
+        //     'prefix_indexes' => true,
+        // ],
+>>>>>>> e8833e8b34ba39e7bebb0681982ed2a8d94a30d3
 
          'mybppspam' => [
             'driver' => 'mysql',
@@ -184,6 +257,8 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
         ],
+
+
 
     ],
 

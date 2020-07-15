@@ -94,17 +94,42 @@ class HelperProvider extends ServiceProvider
           return $text;
         }
 
-    static function get_tahun_rpjmn(){
-        $tahun=static::fokus_tahun();
-        $tahun_start=2020;
-        $jumlah_tahun_range=(int)explode('.', (''.($tahun-$tahun_start)/5))[0];
-        $index=($tahun-(($tahun_start)+(4*$jumlah_tahun_range)))+1;
-        return $index;
+    static function get_tahun_rpjmn($tahun=null){
+        if($tahun==null){
+            $tahun=static::fokus_tahun();
+        }
+
+        $tahun_start=2019;
+        $ok=true;
+
+        do{
+            $tahun_start+=1;
+            $tahun_finish=$tahun_start;
+            $tahun_finish+=4;
+            $tahun_start=$tahun_finish-4;
+            
+            if(($tahun_start<=$tahun)and($tahun_finish>=$tahun)){
+                $ok=false;
+
+            }
+
+        }while($ok);
+
+        $index=($tahun-$tahun_start)+1;
+
+        return [
+            'tahun_akses'=>$tahun,
+            'index'=>$index,
+            'start'=>$tahun_start,
+            'finish'=>$tahun_finish
+        ];
         
     }
 
-    static function get_rpjmn_table($tambahan=null){
-        $tahun=static::fokus_tahun();
+    static function get_rpjmn_table($tambahan=null,$tahun=null){
+        if($tahun==null){
+            $tahun=static::fokus_tahun();
+        }
         $tahun_start=2020;
         $jumlah_tahun_range=(int)explode('.', (''.($tahun-$tahun_start)/5))[0];
         $dekade=0;

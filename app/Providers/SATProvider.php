@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
+use Carbon\Carbon;
+use DB;
+use HP;
 class SATProvider extends ServiceProvider
 {
     /**
@@ -26,8 +28,8 @@ class SATProvider extends ServiceProvider
         //
     }
 
-    public function getdata($kode_daerah=null,$tahun=null){
-        $bindding='';
+    public static function getdata($kode_daerah=null,$tahun=null){
+        $bindding=' ';
         $limit='';
 
         if($kode_daerah){
@@ -40,14 +42,13 @@ class SATProvider extends ServiceProvider
         }
 
         if($tahun){
-
             if($bindding!=''){
                 $bindding.=' and ';
             }else{
                 $bindding.=' ';
             }
 
-            $bindding=" li.periode_laporan <= '".Carbon::parse('1-12-'$tahun)->endOfMoth()."'";
+            $bindding.=" (l1.periode_laporan) <= ('".Carbon::parse('1-12-'.$tahun)->endOfMonth()."')::date";
 
         }
 
@@ -95,8 +96,10 @@ class SATProvider extends ServiceProvider
             order by max(l1.periode_laporan) desc, 
             max(l1.updated_input_at) desc  ".$limit;
 
-            
 
+
+            return $sql;
+    
 
     }
 }

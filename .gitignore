@@ -2,6 +2,7 @@
 /public/hot
 /app/NODEJS/SAT/node_modules/*
 /app/NODEJS/SAT/storage/*
+/config/database.php
 /storage/*.key
 /vendor
 .env
