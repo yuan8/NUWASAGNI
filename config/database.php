@@ -163,9 +163,6 @@ return [
             'sslmode' => 'prefer',
         ],
 
-<<<<<<< HEAD
-
-=======
         'bppspam' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
@@ -194,21 +191,6 @@ return [
             'schema' => 'pemda',
             'sslmode' => 'prefer',
         ],
-
-        // 'mybppspam' => [
-        //     'driver' => 'mysql',
-        //     'url' => env('DATABASE_URL'),
-        //     'host' => "191.268.123.190",
-        //     'port' =>3306,
-        //     'database' => 'bppspam',
-        //     'username' => 'admin',
-        //     'password' =>'S@qpx231azq2',
-        //     'charset' => 'utf8',
-        //     'prefix' => '',
-        //     'prefix_indexes' => true,
-        // ],
->>>>>>> e8833e8b34ba39e7bebb0681982ed2a8d94a30d3
-
          'mybppspam' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
