@@ -134,23 +134,12 @@ return [
             'sslmode' => 'prefer',
         ],
 
-        // 'mybppspam' => [
-        //     'driver' => 'mysql',
-        //     'url' => env('DATABASE_URL'),
-        //     'host' => "191.268.123.190",
-        //     'port' =>3306,
-        //     'database' => 'bppspam',
-        //     'username' => 'admin',
-        //     'password' =>'S@qpx231azq2',
-        //     'charset' => 'utf8',
-        //     'prefix' => '',
-        //     'prefix_indexes' => true,
-        // ],
+
 
          'mybppspam' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => '192.168.123.190',
+            'host' =>  env('DB_HOST', 'localhost'),
             'port' =>3306,
             'database' => 'bppspam',
             'username' => 'admin',
@@ -177,8 +166,8 @@ return [
             'host' => env('DB_HOST', 'localhost'),
             'port' =>3306,
             'database' => 'rkpd_data_final',
-            'username' => 'root',
-            'password' =>'',
+            'username' => 'admin',
+            'password' =>'S@qpx231azq2',
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
@@ -186,7 +175,7 @@ return [
          'myranwal' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => '192.168.123.190',
+            'host' =>  env('DB_HOST', 'localhost'),
             'port' =>3306,
             'database' => 'rkpd_data_ranwal',
             'username' => 'admin',
