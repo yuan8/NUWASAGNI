@@ -68,7 +68,7 @@ Route::middleware('auth:web')->group(function(){
 	});
 
 	Route::prefix('rpjmn')->group(function(){
-		Route::get('/','FRONT\rpjmn@index')->name('rpjmn.index');
+		Route::get('/','FRONT\RPJMN@index')->name('rpjmn.index');
 	});
 
 	Route::prefix('kinerja-air-minum')->group(function(){
