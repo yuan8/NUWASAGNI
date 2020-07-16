@@ -1,5 +1,5 @@
 <h5>JADWAL KEGIATAN TEAM NUWSP</h5>
-<table class="table table-condensed table-bordered">
+<table class="table table-condensed table-bordered" style="margin-bottom: 314px;">
 	<thead>
 		<tr>
 			<th>TANGGAL</th>
