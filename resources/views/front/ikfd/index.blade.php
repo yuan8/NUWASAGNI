@@ -33,7 +33,7 @@
 					</div>
 				</div>
 				<div class="box-body table-responsive">
-					<table class="table table-bordered table-init-datatable">
+					<table class="table table-bordered " id="table_ikfd">
 						<thead  >
 							<tr> 
 								<th>KODE PEMDA</th>
@@ -82,6 +82,25 @@
 @stop
 
 @section('js')
-	
+	<script type="text/javascript">
+
+		var table = $('#table_ikfd').DataTable();
+		 
+		
+
+
+	@php 
+		if(isset($_GET['q'])){
+			@endphp
+			setTimeout(function(){
+				table.search("{{$_GET['q']}}").draw();
+			},1000);
+
+			@php
+		}
+	@endphp
+
+	</script>
+
 
 @stop

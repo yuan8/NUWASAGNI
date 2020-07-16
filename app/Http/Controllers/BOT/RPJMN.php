@@ -614,6 +614,8 @@ class RPJMN extends Controller
 			id bigserial NOT NULL,
 			nama text NOT NULL,
 			jenis varchar(10) NOT NULL,
+			index int4 NULL,
+			
 			id_pn int8 NULL,
 			id_pp int8 NULL,
 			id_kp int8 NULL,
@@ -638,6 +640,7 @@ class RPJMN extends Controller
 			nama text NOT NULL,
 			major text NULL,
 			jenis varchar(10) NOT NULL,
+			index int4 NULL,
 			id_pn int8 NULL,
 			id_pp int8 NULL,
 			id_kp int8 NULL,
@@ -742,6 +745,30 @@ class RPJMN extends Controller
    		$d['id_pp']=$id_pp;
    		$d['id_kp']=$id_kp;
    		$d['id_propn']=$id_propn;
+   		switch ($d['jenis']) {
+   			case 'PN':
+   				$k=1;
+   				break;
+   			case 'PP':
+   				$k=2;
+   				break;
+
+   			case 'KP':
+   				$k=3;
+   				break;
+
+   			case 'PROPN':
+   				$k=4;
+   				break;
+   			case 'PRONAS':
+   				$k=5;
+   				break;
+   			default:
+   				# code...
+   				break;
+   		}
+
+   		$d['index']=$k;
 
 
    		$check1=DB::connection('rpjmn')->table($table_rpjmn)->where('info_path',$d['info_path'])->first();
@@ -752,6 +779,32 @@ class RPJMN extends Controller
    		}
 
    		foreach($d_indi as $ind){
+
+   			switch ($ind['jenis']) {
+	   			case 'PN':
+	   				$k=1;
+	   				break;
+	   			case 'PP':
+	   				$k=2;
+	   				break;
+
+	   			case 'KP':
+	   				$k=3;
+	   				break;
+
+	   			case 'PROPN':
+	   				$k=4;
+	   				break;
+	   			case 'PRONAS':
+	   				$k=5;
+	   				break;
+	   			default:
+	   				# code...
+	   				break;
+	   		}
+
+	   		$d['index']=$k;
+
 
 	   		$ind['id_pn']=$id_pn;
 	   		$ind['id_pp']=$id_pp;

@@ -113,7 +113,6 @@
 
 
 <script src="{{ asset('vendor/adminlte/vendor/jquery/dist/jquery.slimscroll.min.js') }}"></script>
-<script src="{{ asset('vendor/adminlte/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <link rel="stylesheet" type="text/css" href="{{asset('vendor/custome/cs.css?v='.date('i'))}}">
 
 <script type="text/javascript" src="{{asset('L_MAP/asset/hi.js')}}"></script>
@@ -167,6 +166,7 @@ return num.replace(/ /g,',');
 
     
 </script>
+<script src="{{ asset('vendor/adminlte/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
 <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.flash.min.js"></script>

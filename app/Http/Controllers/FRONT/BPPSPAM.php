@@ -21,22 +21,30 @@ class BPPSPAM extends Controller
 
         $data_kategori=[
             '0'=>[
-                'jumlah_pdam'=>0
+                'jumlah_pdam'=>0,
+                'name'=>'TIDAK MEMILIKI KATEGORI',
             ],
             '1'=>[
-                'jumlah_pdam'=>0
+                'jumlah_pdam'=>0,
+                'name'=>'SAKIT'
+
             ],
             '2'=>[
-                'jumlah_pdam'=>0
+                'jumlah_pdam'=>0,
+                'name'=>'KURANG SEHAT'
+
             ],
             '3'=>[
-                'jumlah_pdam'=>0
+                'jumlah_pdam'=>0,
+                'name'=>'POTENSI SEHAT'
             ],
             '4'=>[
-                'jumlah_pdam'=>0
+                'jumlah_pdam'=>0,
+                'name'=>'SEHAT'
             ],
             '5'=>[
-                'jumlah_pdam'=>0
+                'jumlah_pdam'=>0,
+                'name'=>'SEHAT BERKELANJUTAN'
             ],
             
         ];
@@ -63,11 +71,13 @@ class BPPSPAM extends Controller
         ->orderBy(DB::raw("max(k.tahun)"),'desc')
         ->where('k.tahun','<',($tahun-1))->get();
 
+
         foreach ($data as $key => $d) {
 
             $data_kategori[($d->kategori_pdam_kode?$d->kategori_pdam_kode:0)]['jumlah_pdam']+=1;
 
         }
+
 
         return view('front.bppspam.index')->with([
             'tahun'=>$tahun,

@@ -37,7 +37,7 @@
       <span class="info-box-icon bg-green" style=" border-radius: 0px;"><i class="fa fa-door-open"></i></span>
       <div class="info-box-content">
         <span class="info-box-text">SEHAT BERKELANJUTAN</span>
-        <span class="info-box-number">{{isset($pdam_rekap[1])?$pdam_rekap[1]->jumlah_pdam:0}} <small>PDAM</small></span>
+        <span class="info-box-number">{{isset($pdam_rekap[5])?$pdam_rekap[5]->jumlah_pdam:0}} <small>PDAM</small></span>
       </div>
       <!-- /.info-box-content -->
     </div>
@@ -50,7 +50,7 @@
       <span class="info-box-icon bg-aqua" style=" border-radius: 0px;"><i class="fa fa-door-open"></i></span>
       <div class="info-box-content">
         <span class="info-box-text">SEHAT</span>
-        <span class="info-box-number">{{isset($pdam_rekap[2])?$pdam_rekap[2]->jumlah_pdam:0}} <small>PDAM</small></span>
+        <span class="info-box-number">{{isset($pdam_rekap[4])?$pdam_rekap[4]->jumlah_pdam:0}} <small>PDAM</small></span>
       </div>
       <!-- /.info-box-content -->
     </div>
@@ -76,7 +76,7 @@
       <span class="info-box-icon bg-yellow" style=" border-radius: 0px;"><i class="fa fa-door-open"></i></span>
       <div class="info-box-content">
         <span class="info-box-text">KURANG SEHAT</span>
-        <span class="info-box-number">{{isset($pdam_rekap[4])?$pdam_rekap[4]->jumlah_pdam:0}} <small>PDAM</small></span>
+        <span class="info-box-number">{{isset($pdam_rekap[2])?$pdam_rekap[2]->jumlah_pdam:0}} <small>PDAM</small></span>
       </div>
       <!-- /.info-box-content -->
     </div>
@@ -88,7 +88,7 @@
       <span class="info-box-icon bg-maroon"><i class="fa fa-door-open"></i></span>
       <div class="info-box-content">
         <span class="info-box-text">SAKIT</span>
-        <span class="info-box-number">{{isset($pdam_rekap[5])?$pdam_rekap[5]->jumlah_pdam:0}} <small>PDAM</small></span>
+        <span class="info-box-number">{{isset($pdam_rekap[1])?$pdam_rekap[1]->jumlah_pdam:0}} <small>PDAM</small></span>
       </div>
       <!-- /.info-box-content -->
     </div>
@@ -165,13 +165,31 @@
 <script type="text/javascript" src="{{asset('L_MAP/ind/kota.js')}}"></script>
 
     <script type="text/javascript">
-        $('#table_pdam').DataTable({
-            sort:false
-        })
+        
           $.get("{{route('p.pdam.map')}}",function(res){
          $('#map_index').html(res);
     });
 
     </script>
+
+     <script type="text/javascript">
+
+    var table = $('#table_pdam').DataTable();
+     
+    
+
+
+  @php 
+    if(isset($_GET['kat'])){
+      @endphp
+      setTimeout(function(){
+        table.search("{{$_GET['kat']}}").draw();
+      },1000);
+
+      @php
+    }
+  @endphp
+
+  </script>
 
 @stop

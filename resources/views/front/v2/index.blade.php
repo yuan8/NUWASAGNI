@@ -104,6 +104,9 @@
   color:#fff;
   width:100%;
 }
+.no-mb{
+  margin-bottom: 0px!important;
+}
 
 </style>
 <div class="row bg-yellow" style="margin-top: -15px;">
@@ -189,18 +192,37 @@
 </div>
 
 <div class="row" id="dash_existing" style="margin-top: 10px;">
+  <div class="overlay">
+        <i class="fa fa-refresh fa-spin"></i>
+      </div>
 </div>
-<div class="row no-gutter" style="border-bottom: 3px solid #222">
-  <div class="col-md-5" id="bppspam_pdam">
-
+<div class="row no-gutter " style="border-bottom: 3px solid #222">
+  <div class="col-md-5" >
     
+     <div class="box no-mb  box-solid bg-default-gradient">
+      <div class="box-body" id="bppspam_pdam"></div>
+    </div>
   </div>
-  <div class="col-md-7" id="ikfd"></div>
+  <div class="col-md-7" >
+    <div class="box no-mb  box-solid bg-green-gradient">
+
+      <div class="box-body" id="ikfd"></div>
+    </div>
 
 </div>
 <div class="row no-gutter" style="border-bottom: 3px solid #222">
-  <div class="col-md-7" id="jadwal_team"></div>
-  <div class="col-md-5" id="sat_pdam"></div>
+  <div class="col-md-7" >
+    <div class="box box-solid bg-blue-gradient">
+      <div class="box-body" id="jadwal_team"></div>
+    </div>
+  </div>
+  <div class="col-md-5" >
+    <div class="box box-solid bg-f-gradient">
+        <div class="box-body" id="sat_pdam"></div>
+        
+    </div>
+
+    </div>
 </div>
 
 <h3 class="text-center">DATA RKPD {{HP::fokus_tahun()}}</h3>
@@ -275,6 +297,7 @@
 @section('js')
 <script type="text/javascript" src="{{asset('L_MAP/ind/ind.js')}}"></script>
 <script type="text/javascript" src="{{asset('L_MAP/ind/kota.js')}}"></script>
+
 
 <script type="text/javascript">
 var c={};
@@ -382,6 +405,7 @@ var c={};
 </div><!-- /.modal -->
 
 
+<script type="text/javascript" src="{{asset('vendor/hightchart/3d.js')}}"></script>
 
 <script type="text/javascript">
     

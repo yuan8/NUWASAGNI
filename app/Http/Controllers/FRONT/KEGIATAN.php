@@ -10,6 +10,15 @@ class KEGIATAN extends Controller
 {
     //
 
+    public function index(){
+        $data=DB::table('album')->paginate(10);
+        
+        return view('front.kegiatan.index')->with('data',$data);
+
+    }
+
+    
+
 
     public function show($id){
     	$data=DB::table('album')->find($id);

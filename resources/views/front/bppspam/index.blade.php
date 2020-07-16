@@ -37,7 +37,7 @@
       <span class="info-box-icon bg-green" style=" border-radius: 0px;"><i class="fa fa-door-open"></i></span>
       <div class="info-box-content">
         <span class="info-box-text">SEHAT BERKELANJUTAN</span>
-        <span class="info-box-number">{{isset($pdam_rekap[1])?$pdam_rekap[1]['jumlah_pdam']:0}} <small>PDAM</small></span>
+        <span class="info-box-number">{{isset($pdam_rekap[5])?$pdam_rekap[5]['jumlah_pdam']:0}} <small>PDAM</small></span>
       </div>
       <!-- /.info-box-content -->
     </div>
@@ -50,7 +50,7 @@
       <span class="info-box-icon bg-aqua" style=" border-radius: 0px;"><i class="fa fa-door-open"></i></span>
       <div class="info-box-content">
         <span class="info-box-text">SEHAT</span>
-        <span class="info-box-number">{{isset($pdam_rekap[2])?$pdam_rekap[2]['jumlah_pdam']:0}} <small>PDAM</small></span>
+        <span class="info-box-number">{{isset($pdam_rekap[4])?$pdam_rekap[4]['jumlah_pdam']:0}} <small>PDAM</small></span>
       </div>
       <!-- /.info-box-content -->
     </div>
@@ -76,7 +76,7 @@
       <span class="info-box-icon bg-yellow" style=" border-radius: 0px;"><i class="fa fa-door-open"></i></span>
       <div class="info-box-content">
         <span class="info-box-text">KURANG SEHAT</span>
-        <span class="info-box-number">{{isset($pdam_rekap[4])?$pdam_rekap[4]['jumlah_pdam']:0}} <small>PDAM</small></span>
+        <span class="info-box-number">{{isset($pdam_rekap[2])?$pdam_rekap[2]['jumlah_pdam']:0}} <small>PDAM</small></span>
       </div>
       <!-- /.info-box-content -->
     </div>
@@ -88,7 +88,7 @@
       <span class="info-box-icon bg-maroon"><i class="fa fa-door-open"></i></span>
       <div class="info-box-content">
         <span class="info-box-text">SAKIT</span>
-        <span class="info-box-number">{{isset($pdam_rekap[5])?$pdam_rekap[5]['jumlah_pdam']:0}} <small>PDAM</small></span>
+        <span class="info-box-number">{{isset($pdam_rekap[1])?$pdam_rekap[1]['jumlah_pdam']:0}} <small>PDAM</small></span>
       </div>
       <!-- /.info-box-content -->
     </div>
@@ -101,7 +101,7 @@
     <div class="col-md-12">
          <div class="box text-dark">
         <div class="box-body">
-            <table class="table table-bordered table-init-datatable" id="table_pdam">
+            <table class="table table-bordered " id="table_pdam">
                 <thead>
                     <tr>
                         <th>KODE</th>
@@ -134,22 +134,24 @@
                         <td></td>
                         <td>
                             @php
-                            switch ($d->kategori_pdam_kode) {
+                            switch ((int)$d->kategori_pdam_kode) {
                               case 0:
                                $cat='TIDAK MEMILIKI PENGKATEGORIAN';
                                 break;
                                 case 1:
                                $cat='SAKIT';
                                 break;
-                                case 3:
+                                case 2:
                                $cat='KURANG SEHAT';
                                  case 3:
+                                break;
+
                                $cat='POTENSI SEHAT';
                                 break;
                                  case 4:
                                $cat='SEHAT';
                                 break;
-                                    case 5:
+                                  case 5:
                                $cat='SEHAT BERKELANJUTAN';
                                 break;
 
@@ -162,7 +164,7 @@
 
 
                             @endphp
-                            {{$cat}}
+                            {{$cat}} 
                         </td>
                         <td class="{{$d->nilai_fcr>=1?'bg-green':'bg-yellow'}}">
                           {{$d->nilai_fcr>=1?'SUDAH FCR':'BELUM FCR'}}
@@ -207,4 +209,24 @@
 
     </script>
  --}}
+
+ <script type="text/javascript">
+
+    var table = $('#table_pdam').DataTable();
+     
+    
+
+
+  @php 
+    if(isset($_GET['kat'])){
+      @endphp
+      setTimeout(function(){
+        table.search("{{$_GET['kat']}}").draw();
+      },1000);
+
+      @php
+    }
+  @endphp
+
+  </script>
 @stop
