@@ -1,11 +1,12 @@
 
 <div id="column_chart"></div> 
 <script type="text/javascript">
+  var url_list=<?php echo json_encode($list_url) ?>;
   Highcharts.chart('column_chart', {
                    chart: {
                           zoomType: 'xy',
                           scrollablePlotArea: {
-                              minWidth:(4* 110),
+                              minWidth:(<?php echo count($category) ?>* 110),
                               scrollPositionX: 1
                           },
                           backgroundColor:'#fff',
@@ -15,14 +16,15 @@
                       enabled: true
                     },
                   title: {
-                      text: ''
+                      text: 'DATA RKPD TAHUN {{$tahun}}',
                   },
                   subtitle: {
                       text: ''
                   },
+                  
                   colors:['#80b918','#bfd200','#fff'],
                   xAxis: {
-                      categories: ['a','b','c'],
+                      categories: <?php  echo json_encode($category)?>,
                       label:{
                         style: {
                                 color: '#222'
@@ -84,26 +86,40 @@
                       useHTML: true
                   },
                  plotOptions: {
+
                       line: {
                           lineWidth: 1,
                           dataLabels: {
                               enabled: true
                           },
-                      },
+                           cursor: 'pointer',
+                            point: {
+                                events: {
+                                    click: function () {
+                                      console.log(this);
+                                        // location.href = 'https://en.wikipedia.org/wiki/' +
+                                        location.href = url_list[this.index];
+
+                                            this.options.key;
+                                    }
+                                }
+                            }
+                        },
                        column: {
                           dataLabels: {
                               enabled: true
                           },
+                           cursor: 'pointer',
+                                point: {
+                            events: {
+                                click: function () {
+                                    location.href = url_list[this.index];
+                                }
+                            }
+                          }
                       }
                   },
-                  series:[
-
-                    {
-                      name:'program',
-                      data:[1,2,3]
-
-                    }
-                  ],
+                  series:<?php echo json_encode($data) ?>,
                    responsive: {
                       rules: [{
                           condition: {

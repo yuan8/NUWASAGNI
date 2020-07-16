@@ -38,6 +38,8 @@ Route::middleware('auth:web')->group(function(){
 		Route::get('/ikfd-pemda/{tahun}', 'FRONT\DASH@ikfd')->name('dash.ikfd');
 		Route::get('/pdam_sat/{tahun}', 'FRONT\DASH@pdam_sat')->name('dash.pdam_sat');
 		Route::get('/rkpd/{tahun}', 'FRONT\DASH@rkpd')->name('dash.rkpd');
+		Route::get('/jadwal/{tahun}', 'FRONT\DASH@jadwal')->name('dash.jadwal');
+
 
 
 

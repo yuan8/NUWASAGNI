@@ -243,18 +243,80 @@ class DASH extends Controller
     	$data=DB::connection('rkpd')->table('rkpd.master_'.$tahun.'_kegiatan as k')
     	->whereRAW("(kodepemda in (".$id_pemda_l.") and id_urusan= ".$id_urusan." and id_sub_urusan=".$id_sub_urusan." ) or (kodepemda in (".$id_pemda_l.") and  kode_lintas_urusan=".$id_sub_urusan." )")
     	->select(
+            DB::raw('k.kodepemda'),
     		DB::RAW("(select nama from public.master_daerah as d where d.id=k.kodepemda ) as nama_daerah"),
     		DB::raw("(select nama from public.master_daerah as p where p.id = left(k.kodepemda,2)) as nama_provinsi"),
     		DB::RAW("kodepemda,count(distinct(k.id_program)) as jumlah_proram,count(*) as jumlah_kegiatan,sum(k.pagu) as jumlah_anggaran"))
     	->groupBy('kodepemda')
     	->get();
 
+
+        $cat=[];
+        $data_return=array(
+            '0'=>array(
+                'name'=>'JUMLAH PROGRAM',
+                'data'=>[],
+                'yAxis'=>1,
+                'type'=>'column'
+
+            ),
+             '1'=>array(
+                'name'=>'JUMLAH KEGIATAN',
+                'data'=>[],
+                'yAxis'=>1,
+                'type'=>'column'
+
+
+            ),
+             '2'=>array(
+                'name'=>'TOTAL ANGGRAN',
+                'data'=>[],
+                'type'=>'line',
+                'yAxis'=>0,
+                'color'=>'#05668d'
+
+
+            )
+        );
+
+        $list=[];
+
+        foreach($data as $d){
+            $data_return['0']['data'][]=$d->jumlah_proram;
+            $data_return['1']['data'][]=$d->jumlah_anggaran;
+            $data_return['2']['data'][]=$d->jumlah_kegiatan;
+            $cat[]=$d->nama_daerah;
+            $list[]=route('d.detail',['kodepemda'=>$d->kodepemda]);
+
+
+
+        }
+
+
+
+
+
     	return array(
     		'code'=>200,
     		'data'=>view('front.dash.rkpd')->with([
-    			'data'=>$data
+    			'data'=>($data_return),
+                'category'=>$cat,
+                'tahun'=>$tahun,
+                'list_url'=>$list
     		])->render()
     	);
+
+
+    }
+
+
+
+    public function jadwal($tahun){
+
+        return array(
+            'code'=>200,
+            'data'=>view('front.dash.jadwal')->render()
+        );
 
 
     }

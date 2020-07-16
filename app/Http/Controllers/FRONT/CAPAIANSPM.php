@@ -18,7 +18,7 @@ class CAPAIANSPM extends Controller
     		DB::raw("(select nama from public.master_daerah as p where p.id = left(fgd.kodepemda,2)) as nama_provinsi"),
     		"fgd.*"
     	)
-    	->where('d.id','!=',null)
+    	->whereRaw('d.id is not null')
     	->get();
 
 
