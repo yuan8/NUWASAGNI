@@ -16,7 +16,7 @@
                       enabled: true
                     },
                   title: {
-                      text: 'DATA RKPD TAHUN {{$tahun}}',
+                      text: 'DATA RKPD AIR MINUM TAHUN {{$tahun}}',
                   },
                   subtitle: {
                       text: ''
