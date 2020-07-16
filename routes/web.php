@@ -84,6 +84,8 @@ Route::middleware('auth:web')->group(function(){
 
 	Route::prefix('kinerja-air-minum')->group(function(){
 		Route::get('/indikator-rkpd','FRONT\KINERJA@index')->name('kinerja-rkpd.index');
+		Route::get('/indikator-rkpd/{kode_daerah}','FRONT\KINERJA@detail')->name('kinerja-rkpd.detail');
+
 		Route::get('/spm','FRONT\CAPAIANSPM@index')->name('spm.kinerja-rkpd.index');
 
 	});
