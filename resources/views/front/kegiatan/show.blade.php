@@ -44,7 +44,7 @@
 			                    <a href="{{route('k.show',['id'=>$l->id])}}" class="product-title">{{$l->title}}
 			                    <span class=" pull-right">{{Carbon\Carbon::parse($l->created_at)->format('d F Y H:i A')}}</span></a>
 			                    <span class="product-description">
-			                       {!!$l->content!!}
+			                       {!!$l->meta_content!!}
 			                     </span>
 			                  </div>
 			                </li>
