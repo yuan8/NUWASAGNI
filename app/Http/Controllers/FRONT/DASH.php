@@ -299,7 +299,7 @@ class DASH extends Controller
     	return array(
     		'code'=>200,
     		'data'=>view('front.dash.rkpd')->with([
-    			'data'=>array_values($data_return),
+    			'data'=>($data_return),
                 'category'=>$cat,
                 'tahun'=>$tahun,
                 'list_url'=>$list
