@@ -2,7 +2,7 @@
 <table class="table table-condensed table-bordered">
 	<thead>
 		<tr>
-			<th>TANGGAN</th>
+			<th>TANGGAL</th>
 			<th>ACARA</th>
 		</tr>
 	</thead>
