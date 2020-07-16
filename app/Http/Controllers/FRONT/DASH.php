@@ -246,21 +246,21 @@ class DASH extends Controller
             DB::raw('k.kodepemda'),
     		DB::RAW("(select nama from public.master_daerah as d where d.id=k.kodepemda ) as nama_daerah"),
     		DB::raw("(select nama from public.master_daerah as p where p.id = left(k.kodepemda,2)) as nama_provinsi"),
-    		DB::RAW("kodepemda,count(distinct(k.id_program)) as jumlah_proram,count(*) as jumlah_kegiatan,sum(k.pagu) as jumlah_anggaran"))
+    		DB::RAW("kodepemda,count(distinct(k.id_program)) as jumlah_program,count(*) as jumlah_kegiatan,sum(k.pagu) as jumlah_anggaran"))
     	->groupBy('kodepemda')
     	->get();
 
 
         $cat=[];
         $data_return=array(
-            '0'=>array(
+            0=>array(
                 'name'=>'JUMLAH PROGRAM',
                 'data'=>[],
                 'yAxis'=>1,
                 'type'=>'column'
 
             ),
-             '1'=>array(
+             1=>array(
                 'name'=>'JUMLAH KEGIATAN',
                 'data'=>[],
                 'yAxis'=>1,
@@ -268,7 +268,7 @@ class DASH extends Controller
 
 
             ),
-             '2'=>array(
+             2=>array(
                 'name'=>'TOTAL ANGGRAN',
                 'data'=>[],
                 'type'=>'line',
@@ -282,9 +282,9 @@ class DASH extends Controller
         $list=[];
 
         foreach($data as $d){
-            $data_return['0']['data'][]=$d->jumlah_proram;
-            $data_return['1']['data'][]=$d->jumlah_anggaran;
-            $data_return['2']['data'][]=$d->jumlah_kegiatan;
+            $data_return[0]['data'][]=(int)$d->jumlah_program;
+            $data_return[1]['data'][]=(int)$d->jumlah_anggaran;
+            $data_return[2]['data'][]=(int)$d->jumlah_kegiatan;
             $cat[]=$d->nama_daerah;
             $list[]=route('d.detail',['kodepemda'=>$d->kodepemda]);
 
@@ -299,7 +299,7 @@ class DASH extends Controller
     	return array(
     		'code'=>200,
     		'data'=>view('front.dash.rkpd')->with([
-    			'data'=>($data_return),
+    			'data'=>array_values($data_return),
                 'category'=>$cat,
                 'tahun'=>$tahun,
                 'list_url'=>$list
