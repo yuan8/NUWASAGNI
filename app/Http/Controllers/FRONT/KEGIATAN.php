@@ -11,8 +11,9 @@ class KEGIATAN extends Controller
     //
 
     public function index(){
-        $data=DB::table('album')->paginate(10);
-        
+        $data=DB::table('album')->orderBy('id','desc')->paginate(10);
+
+
         return view('front.kegiatan.index')->with('data',$data);
 
     }
@@ -23,7 +24,6 @@ class KEGIATAN extends Controller
     public function show($id){
     	$data=DB::table('album')->find($id);
 
-        // dd(json_decode($data->content));
 
     	if($data){
     		$data_lain=DB::table('album')->where('id','!=',$data->id)->orderBy('id','DESC')->limit(10)->get();
