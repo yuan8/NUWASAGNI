@@ -283,8 +283,8 @@ class DASH extends Controller
 
         foreach($data as $d){
             $data_return[0]['data'][]=(int)$d->jumlah_program;
-            $data_return[1]['data'][]=(int)$d->jumlah_anggaran;
-            $data_return[2]['data'][]=(int)$d->jumlah_kegiatan;
+            $data_return[1]['data'][]=(int)$d->jumlah_kegiatan;
+            $data_return[2]['data'][]=(int)$d->jumlah_anggaran;
             $cat[]=$d->nama_daerah;
             $list[]=route('d.detail',['kodepemda'=>$d->kodepemda]);
 
