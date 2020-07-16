@@ -106,10 +106,49 @@ class DASH extends Controller
     	$data_return=[];
 
 
+        foreach (['SANGAT RENDAH','RENDAH','SEDANG','TINGGI','SANGAT TINGGI'] as $key => $value) {
+                switch (strtoupper($value)) {
+                    case 'SANGAT RENDAH':
+                        $color='#900C3F';
+                        # code...
+                        break;
+                    case 'RENDAH':
+                        $color='#FF5733';
+                        # code...
+                        break;
+                    case 'SEDANG':
+                        $color='#FFC300';
+                        # code...
+                        break;
+                    case 'TINGGI':
+                        $color='#DAF7A6';
+                        # code...
+                        break;
+                    case 'SANGAT TINGGI':
+                        $color=' #7DFF33';
+                        # code...
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
+
+
+            if(!isset($data_return[$value])){
+                $data_return[$value]=[
+                    'nama'=>strtoupper($value),
+                    'data'=>[],
+                    'color'=>$color
+                ];
+            }
+        }
+
+
     	foreach ($data as $key => $d) {
     		# code...
+            $d->kategori=strtoupper(trim($d->kategori));
     		switch (strtoupper($d->kategori)) {
-    			case 'SANGAT RENDA':
+    			case 'SANGAT RENDAH':
     				$color='#900C3F';
     				# code...
     				break;
@@ -134,26 +173,34 @@ class DASH extends Controller
     				break;
     		}
 
-    		if(!isset($data_retun[$d->kategori])){
-    			$data_return[$d->kategori]=[
-    				'nama'=>strtoupper($d->kategori),
-    				'data'=>[]
-    			];
-    		}
+    		
+            if(!isset($data_return[strtoupper($d->kategori)]) ){
+                dd($d);
+            }
+
 
     		$dom=('<h3><b>'.$d->nama_daerah.' - '.$d->tahun.'</b></h3><br>'.
     		"<h5><b>".$d->nama_provinsi."</b></h5><br><hr>".
     		"Nilai IKFD : ".$d->nilai."<br>".
-    		"<b>".strtoupper($d->kategori)."</b>");
+    		"<b>KATEGORI : ".strtoupper($d->kategori)."</b>");
 
-    		$data_return[$d->kategori]['data']=[(int)$d->kodepemda,$d->nama_daerah,$d->nilai,strtoupper($d->kategori),strtoupper($d->kategori),route('ikfd.index',['tahun'=>($tahun-1),'kodepemda'=>$d->kodepemda]),$color,$dom];
+    		$data_return[strtoupper($d->kategori)]['data'][]=[
+                (int)$d->kodepemda,
+                $d->nama_daerah,
+                $d->nilai,
+                strtoupper($d->kategori),
+                route('ikfd.index',['tahun'=>($tahun-1),'q'=>$d->kodepemda])
+                ,$color,
+                $dom];
 
     	}
 
     	return array(
 	    		'code'=>200,
+
 	    		'data'=>view('front.dash.ikfd')->with([
-		    		'data'=>array_values($data_return)
+		    		'data'=>$data_return,
+                    'tahun'=>$tahun
 		    	])->render()
     	);
     }

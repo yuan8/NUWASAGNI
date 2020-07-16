@@ -7,103 +7,6 @@
 
 @section('content')
 <style type="text/css">
-.swiper-container {
-    height: 400px;
-   /* margin-left: -15px!important;
-    margin-right: -15px!important;*/
-    /*margin-top: -15px!important;*/
-    background: #f1f1f1;
-}
-
-.swiper-container .swiper-slide img{
-    position: absolute;
-    top:-50%;
-    bottom:-50%;
-
-}
-.swiper-container-backpoint{
-    overflow: hidden;
-}
-
-.panel{
-    border-radius: 0px;
-}
-.box-content-img {
-    height: 100%;
-    overflow: hidden!important;
-    text-align: center;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: auto 100%;
-}
-.box-content-img img:after{
-
-}
-.box-content-img .back-op{
-    height: 100%!important;
-    width: auto!important;
-    left:0;
-    right: 0;
-    top:0;
-    bottom: 0;
-    margin: auto;
-    position: absolute;
-    overflow: hidden;
-    z-index: 1;
-  background: #474461c2;
-
-}
-
-.box-content-img .back-op:hover{
-  background: #252433c2;
-
-}
-
-.box-content-img .content-dom{
-  position: absolute;
-  bottom: 15px;
-  width: 100%;
-  z-index: 2;
-  color:#fff!important;
-  font-weight: bold;
-  vertical-align: bottom;
-  padding: 10px;
-
-
-}
-.swiper-title-slide{
-  position: absolute;
-  background: rgba(255,255,255,0.8);
-  width: 100%;
-  text-align: center;
-  font-weight: bold;
-  padding: 15px;
-
-}
-.swiper-content-slide{
-  position: absolute;
-  background: rgba(255,255,255,0.8);
-  width: 100%;
-  text-align: center;
-  font-weight: bold;
-  bottom: 0px;
-  padding: 15px;
- 
-}
-
-.swiper-content-slide h5{
-     line-height: 1.5em;
-    height: 3em;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    width: 100%;
-}
-
-.box-content-img .content-dom a,.box-content-img .content-dom small{
-  color:#fff;
-  width:100%;
-}
 
 </style>
 {{-- <div class="row bg-yellow" style="margin-top: -15px;">
@@ -112,88 +15,89 @@
     </div>
 </div>
  --}}
+ <h1 class="text-center">PROFILE PEMDA </h1>
 
-</div>
-<div class="row ">
-    <div style="border-top:3px solid #222;">
-    <ul  class="nav nav-tabs bg-yellow ">
-        <li class="active"><a data-toggle="tab" href="#home" class="text-dark" aria-expanded="true"><b>SEMUA</b></a></li>
-        <li class=""><a data-toggle="tab" href="#menu1" class="text-dark" aria-expanded="false"><b>PRIORITAS TAHUN {{HP::fokus_tahun()}}</b></a></li>
-        <li class=""><a data-toggle="tab" href="#menu2" class="text-dark" aria-expanded="false"><b>PRIORITAS  TAHUN {{HP::fokus_tahun()+1}}</b></a></li>
-    </ul>
+<div class="row no-gutter">
+  <div class="col-md-12" >
+      <div style="border-top:3px solid #222;">
+              <ul  class="nav nav-tabs bg-yellow col-md-12">
+                  <li class="active"><a data-toggle="tab" href="#home" class="text-dark" aria-expanded="true"><b>SEMUA</b></a></li>
+                  <li class=""><a data-toggle="tab" href="#menu1" class="text-dark" aria-expanded="false"><b>PRIORITAS TAHUN {{HP::fokus_tahun()}}</b></a></li>
+                  <li class=""><a data-toggle="tab" href="#menu2" class="text-dark" aria-expanded="false"><b>PRIORITAS  TAHUN {{HP::fokus_tahun()+1}}</b></a></li>
+              </ul>
 
-<div class="tab-content">
-    <div id="home" class="tab-pane fade active in">
-        <div id="map_index" >
+          <div class="tab-content col-md-12">
+              <div id="home" class="tab-pane fade active in">
+                  <div id="map_index" >
 
-        </div>
-    </div>
-    <div id="menu1" class="tab-pane fade">
-       <div id="map_index_1" >
-
-        </div>
-    </div>
-    <div id="menu2" class="tab-pane fade">
-        <div id="map_index_2" >
-
-        </div>
-    </div>
-
-</div>
-</div>
-
-<div class="col-md-12">
-  <div class="box box-warning">
-    <div class="box-header with-border">
-      <div class="row">
-            <div class="col-md-2">
-              <div class="form-group">
-                <label>REGIONAL</label>
-                <select id="regional_filter" class="filter form-control">
-                  <option value="">SEMUA</option>
-                 
-
-                </select>
+                  </div>
               </div>
-            </div>
-            <div class="col-md-2">
-              <div class="form-group">
-                <label>KAT</label>
-                <select id="tahun_bantuan_filter" class="filter form-control">
-                  <option value="xxx">SEMUA</option>
-                  <option value="{{HP::fokus_tahun()}}">{{HP::fokus_tahun()}}</option>
-                  <option value="{{HP::fokus_tahun()+1}}">{{HP::fokus_tahun()+1}}</option>
-                </select>
+              <div id="menu1" class="tab-pane fade">
+                 <div id="map_index_1" >
+
+                  </div>
               </div>
-            </div>
+              <div id="menu2" class="tab-pane fade">
+                  <div id="map_index_2" >
+
+                  </div>
+              </div>
+
+          </div>
       </div>
+</div>
+</div>
+
+<div class="box box-warning">
+  <div class="box-header with-border">
+    <div class="row">
+          <div class="col-md-2">
+            <div class="form-group">
+              <label>REGIONAL</label>
+              <select id="regional_filter" class="filter form-control">
+                <option value="">SEMUA</option>
+               
+
+              </select>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label>NUWSP PRIORITAS</label>
+              <select id="tahun_bantuan_filter" class="filter form-control">
+                <option value="xxx">SEMUA</option>
+                <option value="X" >BUKAN PRIORITAS</option>
+                <option value="{{HP::fokus_tahun()}}" {{ isset($_GET['prioritas'])?($_GET['prioritas']==HP::fokus_tahun()?'selected':''):''}}>{{HP::fokus_tahun()}}</option>
+                <option value="{{HP::fokus_tahun()+1}}"   {{isset($_GET['prioritas'])?($_GET['prioritas']==(HP::fokus_tahun()+1)?'selected':''):''}}>{{HP::fokus_tahun()+1}}</option>
+              </select>
+            </div>
+          </div>
     </div>
-    <div class="box-body table-responsive">
-      <table class="table-condensed table table-bordered" id="map_table_index" style="width: 100%; font-size:11px;">
-        <thead>
-          <tr>
-            <th>REGIONAL</th>
-            <th>KODE</th>
-            <th>NAMA DAERAH</th>
-            <th>TIPOLOGI PEMDA</th>
-            <th>LUAS WILAYAH</th>
-            <th>JUMLAH PENDUDUK ADM</th>
-            <th>IKFD TAHUN {{HP::fokus_tahun()}}</th>
-            <th>KONDISI PDAM</th>
-            <th>TARGET NUWSP PRIORITAS</th>
-            <th>DOKUMEN KEBIJAKAN</th>
-            <th>DATA RKPD</th>
-          </tr>
-        </thead>
-        <tbody>
-          
-        </tbody>
-      </table>
-    </div>
+  </div>
+  <div class="box-body table-responsive">
+    <table class="table-condensed table table-bordered" id="map_table_index" style="width: 100%; font-size:11px;">
+      <thead>
+        <tr>
+          <th>REGIONAL</th>
+          <th>KODE</th>
+          <th>NAMA DAERAH</th>
+          <th>TIPOLOGI PEMDA</th>
+          <th>LUAS WILAYAH</th>
+          <th>JUMLAH PENDUDUK ADM</th>
+          <th>IKFD TAHUN {{HP::fokus_tahun()}}</th>
+          <th>KONDISI PDAM</th>
+          <th>TARGET NUWSP PRIORITAS</th>
+          <th>DOKUMEN KEBIJAKAN</th>
+          <th>DATA RKPD</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+      </tbody>
+    </table>
   </div>
 </div>
 
-</div>
 
 
 <hr>
@@ -424,7 +328,7 @@ var c={};
 
 
 
-    $(function(){
+ 
         API_CON.post('{{route('web_api.nuwas.daerah.target.2')}}').then(function(res){
         var data_map_source=res.data;
         var data_all=JSON.stringify(res.data.data);
@@ -438,7 +342,6 @@ var c={};
           }
         }
 
-        console.log(data_chace);
 
 
         map_table_index=$('#map_table_index').DataTable({
@@ -600,7 +503,11 @@ var c={};
 
         setTimeout(function(){
             var data=map_table_index.rows({ filter : 'applied', order:'applied'}).data();
+
+
             build_data_map((data));
+             $('.filter').trigger('change');
+
 
         },500);
 
@@ -672,7 +579,6 @@ var c={};
 
           
 
-    });
 
 
 
@@ -956,6 +862,8 @@ var c={};
 
 <link rel="stylesheet" type="text/css" href="{{asset('vendor/swiper/cs.css')}}">
 <script src="{{asset('vendor/swiper/js.js')}}"></script>
+
+
 
 
   

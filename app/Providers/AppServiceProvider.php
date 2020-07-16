@@ -264,11 +264,7 @@ class AppServiceProvider extends ServiceProvider
                             'text'=>'PROGRAM KEGIATAN '.HP::fokus_tahun().'',
                             'url'=> route('d.index')
                         ],
-                        [
-                            'text'=>'PAD - TABLE',
-                            'url'=> route('f.pad.index')
-
-                        ],
+                       
                       
                     ]
                     
@@ -308,7 +304,12 @@ class AppServiceProvider extends ServiceProvider
                          [
                             'text'=>'IKFD '.(HP::fokus_tahun()-1),
                             'url'=> route('ikfd.index',['tahun'=>HP::fokus_tahun()-1])
-                        ]
+                        ],
+                         [
+                            'text'=>'PAD - TABLE',
+                            'url'=> route('f.pad.index')
+
+                        ],
 
 
                     ]
@@ -319,7 +320,7 @@ class AppServiceProvider extends ServiceProvider
                   $event->menu->add([
                     'text' => 'CAPAIAN SPM',
                     'icon'=>'fa fa-tint',
-                    'url'=>''
+                    'url'=>route('spm.kinerja-rkpd.index')
                     
                 ]);
 
@@ -328,10 +329,12 @@ class AppServiceProvider extends ServiceProvider
                   $korsub=[
                      [
                       'text'=>'JADWAL KEGIATAN TEAM NUWSP '.HP::fokus_tahun(),
+                      'url'=>'#'
                       
                     ],
                     [
                       'text'=>'HASIL KEGIATAN TEAM NUWSP '.HP::fokus_tahun(),
+                      'url'=>route('k.index')
                     ]
                   ];
                   foreach ($kor as $key => $k) {

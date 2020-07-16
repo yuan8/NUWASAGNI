@@ -82,6 +82,8 @@ Route::middleware('auth:web')->group(function(){
 
 	Route::prefix('kinerja-air-minum')->group(function(){
 		Route::get('/indikator-rkpd','FRONT\KINERJA@index')->name('kinerja-rkpd.index');
+		Route::get('/spm','FRONT\CAPAIANSPM@index')->name('spm.kinerja-rkpd.index');
+
 	});
 
 	Route::prefix('bppspam')->group(function(){
@@ -169,6 +171,8 @@ Route::prefix('output')->group(function(){
 
 Route::prefix('kegiatan')->group(function(){
 	Route::get('show/{id}','FRONT\KEGIATAN@show')->name('k.show');
+	Route::get('/','FRONT\KEGIATAN@index')->name('k.index');
+
 });
 
 
