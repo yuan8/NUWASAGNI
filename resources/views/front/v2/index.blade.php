@@ -210,7 +210,7 @@
     </div>
 
 </div>
-<div class="row no-gutter" style="border-bottom: 3px solid #222">
+<div class="row no-gutter" style="border-bottom: 3px solid #222; padding-left: 10px; padding-right: 10px;">
   <div class="col-md-7" >
     <div class="box box-solid bg-blue-gradient">
       <div class="box-body" id="jadwal_team"></div>
@@ -225,7 +225,6 @@
     </div>
 </div>
 
-<h3 class="text-center">DATA RKPD {{HP::fokus_tahun()}}</h3>
 <div class="row no-gutter" id="rkpd" style="border-bottom: 3px solid #222"></div>
 
 <div class="row no-gutter" >
@@ -405,7 +404,6 @@ var c={};
 </div><!-- /.modal -->
 
 
-<script type="text/javascript" src="{{asset('vendor/hightchart/3d.js')}}"></script>
 
 <script type="text/javascript">
     
@@ -447,6 +445,16 @@ var c={};
           $('#ikfd').html(res.data);
         }
       });
+
+
+        $.get('{{route('dash.jadwal',['tahun'=>HP::fokus_tahun()])}}',function(res){
+
+        if(res.code==200){
+          $('#jadwal_team').html(res.data);
+        }
+      });
+
+       
 
       
 
