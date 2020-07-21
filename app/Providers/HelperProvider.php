@@ -94,49 +94,84 @@ class HelperProvider extends ServiceProvider
           return $text;
         }
 
-    static function get_tahun_rpjmn($tahun=null){
+  static function get_tahun_rpjmn($tahun=null){
         if($tahun==null){
             $tahun=static::fokus_tahun();
         }
 
-        $tahun_start=2019;
-        $ok=true;
+        $tahun=(int)$tahun;
 
-        do{
-            $tahun_start+=1;
-            $tahun_finish=$tahun_start;
-            $tahun_finish+=4;
-            $tahun_start=$tahun_finish-4;
+        $poin_start=2020;
+        $point_finish=$poin_start+4;
+
+        // 2020 - 2024
+        // 2025 - 2029
+
+        if(($poin_start+4)>=$tahun){
+            $index=($poin_start - $tahun)+1;
             
-            if(($tahun_start<=$tahun)and($tahun_finish>=$tahun)){
-                $ok=false;
+        }else{
+              do{
+                $poin_start+=5;
+                $point_finish=$poin_start+4;
+                if(($poin_start<=$tahun)and($point_finish>=$tahun)){
+                    $ok=false;
 
-            }
+                }
 
-        }while($ok);
+            }while($ok);
 
-        $index=($tahun-$tahun_start)+1;
+        }
+        $index=($poin_start - $tahun)+1;
+
 
         return [
             'tahun_akses'=>$tahun,
             'index'=>$index,
-            'start'=>$tahun_start,
-            'finish'=>$tahun_finish
+            'start'=>$poin_start,
+            'finish'=>$point_finish,
+            'table'=>static::get_rpjmn_table(null,$tahun),
+            'table_indikator'=>static::get_rpjmn_table('indikator',$tahun),
         ];
         
     }
+    
 
     static function get_rpjmn_table($tambahan=null,$tahun=null){
         if($tahun==null){
             $tahun=static::fokus_tahun();
         }
-        $tahun_start=2020;
-        $jumlah_tahun_range=(int)explode('.', (''.($tahun-$tahun_start)/5))[0];
-        $dekade=0;
-        $tahun_ahir=$tahun_start+(($jumlah_tahun_range+1)*4 );
-        return ('master_'.(($tahun_start)+(4*$jumlah_tahun_range)).'_'.$tahun_ahir.'_rpjmn'.(!empty($tambahan)?'_'.$tambahan:'') );
-    }
 
+        $tahun=(int)$tahun;
+
+        $poin_start=2020;
+        $point_finish=$poin_start+4;
+
+        // 2020 - 2024
+        // 2025 - 2029
+
+        if(($poin_start+4)>=$tahun){
+
+             return ('master_'.(($poin_start)).'_'.$point_finish.'_rpjmn'.(!empty($tambahan)?'_'.$tambahan:'') );
+
+        }else{
+              do{
+                $poin_start+=5;
+                $point_finish=$poin_start+4;
+                if(($poin_start<=$tahun)and($point_finish>=$tahun)){
+                    $ok=false;
+
+                }
+
+            }while($ok);
+
+        }
+
+        return ('master_'.(($poin_start)).'_'.$point_finish.'_rpjmn'.(!empty($tambahan)?'_'.$tambahan:'') );
+
+       
+       
+    }
     static function banil($old=0,$new=0){
         
         if($old==null){
