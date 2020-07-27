@@ -20,7 +20,6 @@ class DUKUNGAN extends Controller
 			DB::raw("concat(jenis_bantuan,'||',tahun::text,'||',nilai_bantuan) as jenis_bantuan")
 		)
 		->where('tahun','<=',($tahun+1))
-		->orWhere('tahun',null)
 		->get()->pluck(['jenis_bantuan'],'kode_daerah')->toArray();
 
 
@@ -35,8 +34,8 @@ class DUKUNGAN extends Controller
 			DB::RAW("(case when d.kode_daerah_parent is not null then  (select nama from public.master_daerah as pr where pr.id=d.kode_daerah_parent) else d.nama end) as nama_provinsi"),
 			DB::raw("count(distinct(k.id_program)) as jumlah_program"),
 			DB::raw("count(k.id) as jumlah_kegiatan"),
-			DB::raw("sum(k.pagu) as jumlah_anggaran"),
-			DB::raw("(select sum(pagu) from rkpd.master_".$tahun."_kegiatan as ka where ka.kodepemda=d.id) as jumlah_anggaran_total "),
+			DB::raw("sum(k.pagu::numeric) as jumlah_anggaran"),
+			DB::raw("(select sum(pagu::numeric) from rkpd.master_".$tahun."_kegiatan as ka where ka.kodepemda=d.id) as jumlah_anggaran_total "),
 			DB::raw("(select count(*) from rkpd.master_".$tahun."_kegiatan as ka where ka.kodepemda=d.id limit 1) as terdapat_data_rkpd_di_sistem "),
 			DB::raw("(select max(st.status) from rkpd.master_".$tahun."_status as st where st.kodepemda=d.id) as status_data_sipd "),
 			DB::raw("replace('".route('d.detail',['kode_daerah'=>'xxxxxx'])."','xxxxxx',d.id) as link_detail")
