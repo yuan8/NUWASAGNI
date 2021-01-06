@@ -73,6 +73,12 @@ Route::prefix('dash-admin')->middleware('auth:web')->group(function(){
 
 		});
 	});
+	Route::prefix('data-indikator')->group(function(){
+		Route::get('/','DASH\dataindikator\dataindikator@index')->name('dashboard.dataindikator.index');
+		Route::get('/dataindikator/{id}','DASH\dataindikator\dataindikator@dataindikator')->name('dashboard.dataindikator.dataindikator');
+		Route::get('/modal/{kode}/{tahun}','DASH\dataindikator\dataindikator@modal')->name('dashboard.modal');
+		Route::post('/update-modal/','DASH\dataindikator\dataindikator@update')->name('dashboard.indikator.update');
+	});
 
 	Route::prefix('output')->group(function(){
 		Route::get('/map','DASH\OUTPUT\MAP@index')->name('d.out.map.index');

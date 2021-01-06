@@ -12,10 +12,10 @@
     <div class="text-center text-uppercase header-page">
     	<p class="text-center">KONDISI {{strtoupper($pdam->nama_pdam)}} ({{strtoupper($pdam->kategori_pdam)}}) - PERIODE LAPORAN {{Carbon\Carbon::parse($pdam->periode_laporan)->format('F Y')}}</p>
     </div>
- 
 
 
-   
+
+
 @stop
 
 @section('content')
@@ -55,14 +55,14 @@ if($pdam->open_hours!=null){
 			 	<thead>
 			 	<tr>
 			 		<th colspan="2" class="text-center">LAPORAN SEBELUMNYA</th>
-			 		<th colspan="8" class="text-center text-uppercase">DATA TERAHIR {{Carbon\Carbon::parse($pdam->periode_laporan)->format('F Y')}}</th>
+			 		<th colspan="8" class="text-center text-uppercase">DATA TERAHIR {{Carbon\Carbon::parse($pdam->periode_laporan)->format('F Y')}} sdd</th>
 			 	</tr>
 				<tr>
 					<th>
 						PERIODE LAP SEBELUMYA
 					</th>
 					<th>
-						TANGGAL UPDATE LAP SEBELUNYA
+						TANGGAL UPDATE LAP SEBELUMNYA
 					</th>
 					<th>
 						KETEGORI PDAM
@@ -96,12 +96,12 @@ if($pdam->open_hours!=null){
 							@if($trafik['periode_laporan'])
 								{{Carbon\Carbon::parse($trafik['periode_laporan'])->format('F Y')}}
 							@endif
-						</td>
+						</td> 
 						<td>
 							@if($trafik['updated_input_at'])
 							{{Carbon\Carbon::parse($trafik['updated_input_at'])->format('d F Y')}}
 							@endif
-							
+
 						</td>
 						<td>
 							@if($trafik['kategori_pdam_trf']==1)
@@ -203,7 +203,7 @@ if($pdam->open_hours!=null){
 			      <li class="active" ><a href="{{route('p.laporan_sat',['íd'=>$pdam->id_laporan_terahir])}}">PROFILE PDAM</a></li>
 			      <li class=""><a href="{{route('p.simspam.perpipaan',['id'=>$pdam->kode_daerah])}}">JARINGAN PERPIPAAN</a></li>
 			      <li><a href="#">JARINGAN NON PERPIPAAN</a></li>
-		
+
 			    </ul>
 			  </div>
 	</nav> --}}
@@ -238,10 +238,10 @@ if($pdam->open_hours!=null){
 								<tr>
 									<th>NAMA PDAM</th>
 									<td>{{strtoupper($pdam->nama_pdam)}}
-										
+
 									</td>
 
-									
+
 								</tr>
 								<tr>
 									<th>Alamat</th>
@@ -253,7 +253,7 @@ if($pdam->open_hours!=null){
 										@endif
 									</td>
 
-									
+
 								</tr>
 								<tr>
 									<th>No Telp</th>
@@ -293,7 +293,7 @@ if($pdam->open_hours!=null){
 								<br>
 								<small>INPUT - {{Carbon\Carbon::parse($e->updated_input_at)->format('d F Y')}}</small>
 							</a>
-							@endforeach	
+							@endforeach
 							<h5 class="text-center">----</h5>
 							<hr>
 						@endif
@@ -307,9 +307,9 @@ if($pdam->open_hours!=null){
 								<br>
 								<small>INPUT - {{Carbon\Carbon::parse($e->updated_input_at)->format('d F Y')}}</small>
 							</a>
-							@endforeach	
+							@endforeach
 						</div>
-					</div>				
+					</div>
 				</div>
 			</div>
 
@@ -366,683 +366,683 @@ if($pdam->open_hours!=null){
 					            <th colspan="4">Gunakan data dari hasil evaluasi kinerja BPPSPAM</th>
 					        </tr>
 					        <tr>
-    
+
 							    <td>{{HP::sat_indikator('sat_nilai_kinerja_ttl_dr_bppspam_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_nilai_kinerja_ttl_dr_bppspam_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_nilai_kinerja_ttl_dr_bppspam_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_nilai_kinerja_ttl_dr_bppspam_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_nilai_kinerja_ttl_dr_bppspam_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_nilai_aspek_keuangan_dr_bppspam_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_nilai_aspek_keuangan_dr_bppspam_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_nilai_aspek_keuangan_dr_bppspam_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_nilai_aspek_keuangan_dr_bppspam_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_nilai_aspek_keuangan_dr_bppspam_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_nilai_aspek_pel_dr_bppspam_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_nilai_aspek_pel_dr_bppspam_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_nilai_aspek_pel_dr_bppspam_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_nilai_aspek_pel_dr_bppspam_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_nilai_aspek_pel_dr_bppspam_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_nilai_aspek_operasional_dr_bppspam_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_nilai_aspek_operasional_dr_bppspam_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_nilai_aspek_operasional_dr_bppspam_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_nilai_aspek_operasional_dr_bppspam_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_nilai_aspek_operasional_dr_bppspam_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_nilai_aspek_sdm_dr_bppspam_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_nilai_aspek_sdm_dr_bppspam_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_nilai_aspek_sdm_dr_bppspam_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_nilai_aspek_sdm_dr_bppspam_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_nilai_aspek_sdm_dr_bppspam_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_status_kinerja_pdam_tahun_sbl_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_status_kinerja_pdam_tahun_sbl_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_status_kinerja_pdam_tahun_sbl_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_status_kinerja_pdam_tahun_sbl_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_status_kinerja_pdam_tahun_sbl_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_status_kinerja_pdam_2_tahun_sbl_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_status_kinerja_pdam_2_tahun_sbl_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_status_kinerja_pdam_2_tahun_sbl_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_status_kinerja_pdam_2_tahun_sbl_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_status_kinerja_pdam_2_tahun_sbl_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_status_kinerja_pdam_3_tahun_sbl_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_status_kinerja_pdam_3_tahun_sbl_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_status_kinerja_pdam_3_tahun_sbl_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_status_kinerja_pdam_3_tahun_sbl_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_status_kinerja_pdam_3_tahun_sbl_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_jumlah_pd_di_wilayah_administratif_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_jumlah_pd_di_wilayah_administratif_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_jumlah_pd_di_wilayah_administratif_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_pd_di_wilayah_administratif_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_pd_di_wilayah_administratif_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_jumlah_pd_di_wilayah_pel_teknis_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_jumlah_pd_di_wilayah_pel_teknis_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_jumlah_pd_di_wilayah_pel_teknis_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_pd_di_wilayah_pel_teknis_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_pd_di_wilayah_pel_teknis_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_jumlah_pd_trl_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_jumlah_pd_trl_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_jumlah_pd_trl_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_pd_trl_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_pd_trl_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_jumlah_jiwa_per_keluarga_data_bps_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_jumlah_jiwa_per_keluarga_data_bps_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_jumlah_jiwa_per_keluarga_data_bps_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_jiwa_per_keluarga_data_bps_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_jiwa_per_keluarga_data_bps_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_jumlah_pelanggan_ttl_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_jumlah_pelanggan_ttl_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_jumlah_pelanggan_ttl_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_pelanggan_ttl_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_pelanggan_ttl_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_jumlah_sam_baru_kum_slm_per_lap_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_jumlah_sam_baru_kum_slm_per_lap_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_jumlah_sam_baru_kum_slm_per_lap_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_sam_baru_kum_slm_per_lap_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_sam_baru_kum_slm_per_lap_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_jumlah_sam_rumah_tangga_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_jumlah_sam_rumah_tangga_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_jumlah_sam_rumah_tangga_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_sam_rumah_tangga_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_sam_rumah_tangga_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_jumlah_sistem_yg_beroperasi_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_jumlah_sistem_yg_beroperasi_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_jumlah_sistem_yg_beroperasi_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_sistem_yg_beroperasi_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_sistem_yg_beroperasi_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_jumlah_ikk_atau_cabang_yg_diop_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_jumlah_ikk_atau_cabang_yg_diop_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_jumlah_ikk_atau_cabang_yg_diop_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_ikk_atau_cabang_yg_diop_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_ikk_atau_cabang_yg_diop_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_volume_air_yg_diproduksi_kum_slm_per_lap_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_volume_air_yg_diproduksi_kum_slm_per_lap_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_volume_air_yg_diproduksi_kum_slm_per_lap_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_volume_air_yg_diproduksi_kum_slm_per_lap_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_volume_air_yg_diproduksi_kum_slm_per_lap_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_apakah_tersedia_meter_induk_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_apakah_tersedia_meter_induk_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_apakah_tersedia_meter_induk_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_apakah_tersedia_meter_induk_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_apakah_tersedia_meter_induk_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_volume_air_yg_dds_kum_slm_per_lap_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_volume_air_yg_dds_kum_slm_per_lap_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_volume_air_yg_dds_kum_slm_per_lap_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_volume_air_yg_dds_kum_slm_per_lap_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_volume_air_yg_dds_kum_slm_per_lap_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_volume_air_yg_terjual_kum_slm_per_lap_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_volume_air_yg_terjual_kum_slm_per_lap_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_volume_air_yg_terjual_kum_slm_per_lap_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_volume_air_yg_terjual_kum_slm_per_lap_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_volume_air_yg_terjual_kum_slm_per_lap_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_kapasitas_pengambilan_air_baku_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_kapasitas_pengambilan_air_baku_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_kapasitas_pengambilan_air_baku_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_kapasitas_pengambilan_air_baku_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_kapasitas_pengambilan_air_baku_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_kapasitas_produksi_air_yg_terpasang_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_kapasitas_produksi_air_yg_terpasang_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_kapasitas_produksi_air_yg_terpasang_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_kapasitas_produksi_air_yg_terpasang_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_kapasitas_produksi_air_yg_terpasang_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_jam_operasional_pel_ratarata_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_jam_operasional_pel_ratarata_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_jam_operasional_pel_ratarata_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_jam_operasional_pel_ratarata_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_jam_operasional_pel_ratarata_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_ttl_pemakaian_lstrk_kum_slm_per_lap_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_ttl_pemakaian_lstrk_kum_slm_per_lap_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_ttl_pemakaian_lstrk_kum_slm_per_lap_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_ttl_pemakaian_lstrk_kum_slm_per_lap_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_ttl_pemakaian_lstrk_kum_slm_per_lap_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_ttl_pemakaian_bbm_kum_slm_per_lap_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_ttl_pemakaian_bbm_kum_slm_per_lap_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_ttl_pemakaian_bbm_kum_slm_per_lap_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_ttl_pemakaian_bbm_kum_slm_per_lap_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_ttl_pemakaian_bbm_kum_slm_per_lap_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_ttl_by_lstrk_kum_slm_per_lap_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_ttl_by_lstrk_kum_slm_per_lap_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_ttl_by_lstrk_kum_slm_per_lap_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_ttl_by_lstrk_kum_slm_per_lap_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_ttl_by_lstrk_kum_slm_per_lap_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_tarif_lstrk_pln_u_pdam_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_tarif_lstrk_pln_u_pdam_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_tarif_lstrk_pln_u_pdam_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_tarif_lstrk_pln_u_pdam_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_tarif_lstrk_pln_u_pdam_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_ttl_by_bbm_kum_slm_per_lap_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_ttl_by_bbm_kum_slm_per_lap_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_ttl_by_bbm_kum_slm_per_lap_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_ttl_by_bbm_kum_slm_per_lap_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_ttl_by_bbm_kum_slm_per_lap_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_hg_bbm_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_hg_bbm_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_hg_bbm_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_hg_bbm_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_hg_bbm_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_ttl_by_usaha_tanpa_pensut_kum_slm_per_lap_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_ttl_by_usaha_tanpa_pensut_kum_slm_per_lap_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_ttl_by_usaha_tanpa_pensut_kum_slm_per_lap_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_ttl_by_usaha_tanpa_pensut_kum_slm_per_lap_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_ttl_by_usaha_tanpa_pensut_kum_slm_per_lap_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_ttl_by_usaha_dg_pensut_kum_slm_per_lap_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_ttl_by_usaha_dg_pensut_kum_slm_per_lap_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_ttl_by_usaha_dg_pensut_kum_slm_per_lap_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_ttl_by_usaha_dg_pensut_kum_slm_per_lap_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_ttl_by_usaha_dg_pensut_kum_slm_per_lap_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_tarif_air_ratarata_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_tarif_air_ratarata_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_tarif_air_ratarata_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_tarif_air_ratarata_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_tarif_air_ratarata_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_pdpt_air_data_rek_ditagih_kum_slm_prd_lap_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_pdpt_air_data_rek_ditagih_kum_slm_prd_lap_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_pdpt_air_data_rek_ditagih_kum_slm_prd_lap_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_pdpt_air_data_rek_ditagih_kum_slm_prd_lap_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_pdpt_air_data_rek_ditagih_kum_slm_prd_lap_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_penerimaan_dr_pjl_air_kum_slm_per_lap_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_penerimaan_dr_pjl_air_kum_slm_per_lap_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_penerimaan_dr_pjl_air_kum_slm_per_lap_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_penerimaan_dr_pjl_air_kum_slm_per_lap_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_penerimaan_dr_pjl_air_kum_slm_per_lap_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_pdpt_yg_ln_kum_slm_per_lap_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_pdpt_yg_ln_kum_slm_per_lap_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_pdpt_yg_ln_kum_slm_per_lap_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_pdpt_yg_ln_kum_slm_per_lap_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_pdpt_yg_ln_kum_slm_per_lap_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_apakah_pemda_mempunyai_rispam_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_apakah_pemda_mempunyai_rispam_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_apakah_pemda_mempunyai_rispam_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_apakah_pemda_mempunyai_rispam_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_apakah_pemda_mempunyai_rispam_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_tahun_rispam_diterbitkan_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_tahun_rispam_diterbitkan_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_tahun_rispam_diterbitkan_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_tahun_rispam_diterbitkan_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_tahun_rispam_diterbitkan_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_lamanya_masa_berlaku_rispam_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_lamanya_masa_berlaku_rispam_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_lamanya_masa_berlaku_rispam_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_lamanya_masa_berlaku_rispam_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_lamanya_masa_berlaku_rispam_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_apakah_pemda_sedang_menyiapkan_rispam_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_apakah_pemda_sedang_menyiapkan_rispam_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_apakah_pemda_sedang_menyiapkan_rispam_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_apakah_pemda_sedang_menyiapkan_rispam_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_apakah_pemda_sedang_menyiapkan_rispam_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_tahun_rispam_akan_diterbitkan_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_tahun_rispam_akan_diterbitkan_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_tahun_rispam_akan_diterbitkan_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_tahun_rispam_akan_diterbitkan_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_tahun_rispam_akan_diterbitkan_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_jumlah_pd_proyeksi_di_tahun_tg_dlm_rispam_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_jumlah_pd_proyeksi_di_tahun_tg_dlm_rispam_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_jumlah_pd_proyeksi_di_tahun_tg_dlm_rispam_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_pd_proyeksi_di_tahun_tg_dlm_rispam_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_pd_proyeksi_di_tahun_tg_dlm_rispam_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_tg_pop_yg_akan_trl_dg_jar_ppp_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_tg_pop_yg_akan_trl_dg_jar_ppp_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_tg_pop_yg_akan_trl_dg_jar_ppp_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_tg_pop_yg_akan_trl_dg_jar_ppp_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_tg_pop_yg_akan_trl_dg_jar_ppp_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_tg_pop_yg_akan_trl_dg_jar_bkn_ppp_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_tg_pop_yg_akan_trl_dg_jar_bkn_ppp_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_tg_pop_yg_akan_trl_dg_jar_bkn_ppp_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_tg_pop_yg_akan_trl_dg_jar_bkn_ppp_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_tg_pop_yg_akan_trl_dg_jar_bkn_ppp_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_tg_cakupan_pel_jar_ppp_di_tahun_tg_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_tg_cakupan_pel_jar_ppp_di_tahun_tg_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_tg_cakupan_pel_jar_ppp_di_tahun_tg_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_tg_cakupan_pel_jar_ppp_di_tahun_tg_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_tg_cakupan_pel_jar_ppp_di_tahun_tg_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_tg_cakupan_pel_jar_bkn_ppp_di_tahun_tg_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_tg_cakupan_pel_jar_bkn_ppp_di_tahun_tg_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_tg_cakupan_pel_jar_bkn_ppp_di_tahun_tg_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_tg_cakupan_pel_jar_bkn_ppp_di_tahun_tg_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_tg_cakupan_pel_jar_bkn_ppp_di_tahun_tg_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_alk_apbd_u_penyertaan_modal_pdam_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_alk_apbd_u_penyertaan_modal_pdam_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_alk_apbd_u_penyertaan_modal_pdam_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_alk_apbd_u_penyertaan_modal_pdam_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_alk_apbd_u_penyertaan_modal_pdam_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_alk_dak_u_pny_air_minum_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_alk_dak_u_pny_air_minum_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_alk_dak_u_pny_air_minum_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_alk_dak_u_pny_air_minum_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_alk_dak_u_pny_air_minum_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_alk_apbd_lainnya_u_pny_air_minum_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_alk_apbd_lainnya_u_pny_air_minum_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_alk_apbd_lainnya_u_pny_air_minum_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_alk_apbd_lainnya_u_pny_air_minum_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_alk_apbd_lainnya_u_pny_air_minum_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_jumlah_ttl_apbd_pemda_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_jumlah_ttl_apbd_pemda_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_jumlah_ttl_apbd_pemda_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_ttl_apbd_pemda_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_jumlah_ttl_apbd_pemda_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_kapasitas_fkl_pemda_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_kapasitas_fkl_pemda_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_kapasitas_fkl_pemda_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_kapasitas_fkl_pemda_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_kapasitas_fkl_pemda_ket)}}</td>
-							    
+
 							</tr>
 							<tr>
-							    
+
 							    <td>{{HP::sat_indikator('sat_dana_investasi_non_pemerintah_nilai')}}</td>
-							    
+
 							    <td class="text-center">{{ $data->sat_dana_investasi_non_pemerintah_tahun }}</td>
-							    
+
 							    <td class="text-right"> {{ number_format($data->sat_dana_investasi_non_pemerintah_nilai,2,'.',',')}}</td>
-							    
+
 							    <td>{{ ($data->sat_dana_investasi_non_pemerintah_satuan)}}</td>
-							    
+
 							    <td>{{ ($data->sat_dana_investasi_non_pemerintah_ket)}}</td>
-							    
+
 							</tr>
 
-					       
+
 
 					    </tbody>
 					</table>

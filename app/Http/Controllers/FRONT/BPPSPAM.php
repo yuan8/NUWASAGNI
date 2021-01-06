@@ -48,7 +48,7 @@ class BPPSPAM extends Controller
             ],
             
         ];
-
+         DB::connection()->enableQueryLog(); 
     	$data=DB::table('daerah_nuwas as d')
         ->select(
             'k.kode_daerah',
@@ -70,7 +70,8 @@ class BPPSPAM extends Controller
         ->groupby('k.kode_daerah')
         ->orderBy(DB::raw("max(k.tahun)"),'desc')
         ->where('k.tahun','<',($tahun-1))->get();
-
+        $query = DB::connection()->getQueryLog();
+      //  dd(end($query));
 
         foreach ($data as $key => $d) {
 
@@ -96,7 +97,7 @@ class BPPSPAM extends Controller
         }else{
             $tahun=HP::fokus_tahun();
         }
-
+DB::connection()->enableQueryLog(); 
         $data_profile=DB::table('daerah_nuwas as d')
         ->select(
             'k.kode_daerah',
@@ -120,7 +121,8 @@ class BPPSPAM extends Controller
         ->orderBy(DB::RAW('k.tahun'),'desc')
         ->where('d.kode_daerah',$kode_daerah)
         ->where('k.tahun','<',($tahun-1))->first();
-
+$query = DB::connection()->getQueryLog();
+      //  dd(end($query));
         $pdam_else=[];
         if($data_profile){
 

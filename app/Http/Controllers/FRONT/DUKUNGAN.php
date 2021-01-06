@@ -14,6 +14,7 @@ class DUKUNGAN extends Controller
 		$id_urusan=3;
 		$id_sub_urusan=12;
 		$tahun=HP::fokus_tahun();
+		DB::enableQueryLog();  
 		$kode_daerah=DB::table('public.daerah_nuwas')
 		->select(
 			'kode_daerah',
@@ -21,8 +22,9 @@ class DUKUNGAN extends Controller
 		)
 		->where('tahun','<=',($tahun+1))
 		->get()->pluck(['jenis_bantuan'],'kode_daerah')->toArray();
-
-
+ $query = DB::getQueryLog();
+        // dd(end($query));
+	   DB::connection('sinkron_prokeg')->enableQueryLog();  
 		$data=DB::connection('sinkron_prokeg')->table('public.master_daerah as d')
 		->leftJoin('public.master_regional as r','r.kode_daerah','=','d.id')
 		->leftJoin(DB::raw("(select * from rkpd.master_".$tahun."_kegiatan as ka   where (kode_lintas_urusan=".$id_sub_urusan." and  ka.status=5) or ((id_sub_urusan=".$id_sub_urusan." and  ka.status=5))   ) as k"),'k.kodepemda','=','d.id')
@@ -43,7 +45,8 @@ class DUKUNGAN extends Controller
 		->whereIn('d.id',array_keys($kode_daerah))
 		->groupBy('d.id')
 		->get();
-
+		 $query = DB::connection('sinkron_prokeg')->getQueryLog();
+        //dd(end($query));
 		$data_return=[];
 		$kode_provinsi=[];
 		$regional=[];
@@ -98,7 +101,7 @@ class DUKUNGAN extends Controller
 			DB::RAW("(case when d.kode_daerah_parent is not null then  (select nama from public.master_daerah as pr where pr.id=d.kode_daerah_parent) else d.nama end) as nama_provinsi")
 		)
 		->where('d.id',$kodepemda)->first();
-
+		DB::connection('sinkron_prokeg')->enableQueryLog(); 
 		$data=DB::connection('sinkron_prokeg')->table($schema.'master_'.$tahun.'_program as p')
 		->leftJoin($schema.'master_'.$tahun.'_program_capaian as c','p.id','=','c.id_program')
 		->leftJoin($schema.'master_'.$tahun.'_kegiatan as k','p.id','=','k.id_program')
@@ -150,11 +153,12 @@ class DUKUNGAN extends Controller
 		->orderBy('c.id_program','asc')
 		->orderBy('k.id','asc')
 		->orderBy('i.id_kegiatan','asc');
-
+		
 		$data=$data->whereRaw(
 				"(k.id_sub_urusan =".$id_sub_urusan."  and k.kodepemda ='".$kodepemda."') OR ((k.kode_lintas_urusan =".$id_sub_urusan."  and k.kodepemda ='".$kodepemda."'))")->get();
 
-
+$query = DB::connection('sinkron_prokeg')->getQueryLog();
+       // dd(end($query));
 		return view('front.v2.dukungan.detail')->with(['data'=>$data,'daerah'=>$daerah,'tahun'=>$tahun]);
 
 	}

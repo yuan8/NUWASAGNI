@@ -19,11 +19,12 @@ class MASTER extends Controller
     public function index(Request $request){
     	$tahun=HP::fokus_tahun();
 
+     DB::enableQueryLog();  
     	$pemda=DB::table('daerah_nuwas')->get()->pluck('kode_daerah');
 
 
- 
         $id_urusan=[3,4];
+          DB::connection('myfinal')->enableQueryLog();   
         $data=DB::connection('myfinal')->table('master_'.$tahun.'_kegiatan as k')->select(
             DB::raw("sum(pagu) as pagu"),
             DB::raw("count(distinct(id_program)) as jumlah_program"),
@@ -38,6 +39,8 @@ class MASTER extends Controller
         ->whereIn('k.kodepemda',$pemda)
         ->whereIn('k.id_urusan',$id_urusan)
         ->get();
+         $query = DB::connection('myfinal')->getQueryLog();
+       // dd(end($query));
 
         return view('dash.prokeg.master.index')->with('data',$data);
     	// return 

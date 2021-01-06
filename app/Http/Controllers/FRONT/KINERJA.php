@@ -19,16 +19,15 @@ class KINERJA extends Controller
     	}else{
     		$tahun=HP::fokus_tahun();
     	}
-
-    	$data=DB::table('daerah_nuwas')->select(DB::RAW("(COUNT(*)) AS jumlah_daerah,sum(case when tahun=".$tahun." then 1 else 0 end ) as jumlah_prioritas, string_agg(concat('\"',kode_daerah,'\"'),',') as list_kode_pemda"))->first();
-
+      DB::enableQueryLog();  
+        $data=DB::table('daerah_nuwas')->select(DB::RAW("(COUNT(*)) AS jumlah_daerah,sum(case when tahun=".$tahun." then 1 else 0 end ) as jumlah_prioritas, string_agg(concat('\"',kode_daerah,'\"'),',') as list_kode_pemda"))->first();
+        $query = DB::getQueryLog();
+       // dd(end($query));
     	$id_pemda_l=str_replace('"', "'", $data->list_kode_pemda);
-
-   
-
+ 
     	
 
-
+      DB::connection('rkpd')->enableQueryLog();   
     	$data=DB::connection('rkpd')->table('rkpd.master_'.$tahun."_kegiatan as k")
     	->leftJoin("rkpd.master_".$tahun.'_kegiatan_indikator as i',"k.id",'=','i.id_kegiatan')
     	->whereRaw(
@@ -45,10 +44,10 @@ class KINERJA extends Controller
     	)
     	->groupBy('k.kodepemda')
 		->get();
+        $query = DB::connection('rkpd')->getQueryLog();
+        //dd(end($query));
 
-
-
-
+ 
 		return view('front.kinerja.index')->with('data',$data);
 
 
@@ -74,8 +73,10 @@ class KINERJA extends Controller
         $id_sub_urusan=12;
         $id_urusan=3;
 
+        DB::enableQueryLog(); 
         $data=DB::table('daerah_nuwas')->select(DB::RAW("(COUNT(*)) AS jumlah_daerah,sum(case when tahun=".$tahun." then 1 else 0 end ) as jumlah_prioritas, string_agg(concat('\"',kode_daerah,'\"'),',') as list_kode_pemda"))->first();
-
+        $query = DB::getQueryLog();
+        //dd(end($query));
         $id_pemda_l=str_replace('"', "'", $data->list_kode_pemda);
 
    
@@ -85,7 +86,7 @@ class KINERJA extends Controller
         )->first();
 
 
-
+        DB::connection('rkpd')->enableQueryLog(); 
     	$data=DB::connection('rkpd')->table('rkpd.master_'.$tahun."_kegiatan as k")
     	->leftJoin("rkpd.master_".$tahun.'_kegiatan_indikator as i',"k.id",'=','i.id_kegiatan')
     	->leftJoin("rkpd.master_".$tahun."_program as p",'p.id','=','k.id_program')
@@ -119,7 +120,8 @@ class KINERJA extends Controller
         ->orderBy('k.id','asc')
         ->orderBy('i.jenis','asc')
 		->get();
-
+         $query = DB::connection('rkpd')->getQueryLog();
+        //dd(end($query));
         return view('front.kinerja.detail')->with(['data'=>$data,'tipe'=>$tipe,'daerah'=>$daerah]);
 
 

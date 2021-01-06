@@ -1,5 +1,4 @@
-
-<div id="column_chart"></div> 
+ <div id="column_chart"></div> 
 <script type="text/javascript">
   var url_list=<?php echo json_encode($list_url) ?>;
   Highcharts.chart('column_chart', {

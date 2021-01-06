@@ -14,9 +14,10 @@ class DASH extends Controller
     public function existing($tahun){
 
 
-    	
+    	 DB::enableQueryLog();  
     	$data=DB::table('daerah_nuwas')->select(DB::RAW("(COUNT(*)) AS jumlah_daerah,sum(case when tahun=".$tahun." then 1 else 0 end ) as jumlah_prioritas, string_agg(concat('\"',kode_daerah,'\"'),',') as list_kode_pemda"))->first();
-
+$query = DB::getQueryLog();
+       // dd(end($query));
     	$id_pemda_l=str_replace('"', "'", $data->list_kode_pemda);
     	$id_pemda=explode(',', $data->list_kode_pemda);
 
@@ -26,21 +27,24 @@ class DASH extends Controller
 
     	$daerah_nuwas=$data->jumlah_daerah;
     	$daerah_prioritas=$data->jumlah_prioritas;
-
+ DB::connection('rkpd')->enableQueryLog(); 
     	$data=DB::connection('rkpd')->table('rkpd.master_'.$tahun.'_kegiatan as k')
     	->select(DB::raw("sum(pagu) as anggaran_total,count(distinct(kodepemda)) as jumlah_pemda"))
     	->whereRAW("(kodepemda in (".$id_pemda_l.") and id_urusan= ".$id_urusan." and id_sub_urusan=".$id_sub_urusan." ) or (kodepemda in (".$id_pemda_l.") and  kode_lintas_urusan=".$id_sub_urusan." )")
     	->first();
-
+ $query = DB::connection('rkpd')->getQueryLog();
+     //   dd(end($query));
     	$total_anggaran=$data->anggaran_total;
     	$total_pemda=$data->jumlah_pemda;
 
-    	$data_jumlah_sl=DB::connection('bppspam')->table(DB::raw("(select max(kode_daerah) as kode_daerah,max(tahun) as tahun ,max(jumlah_unit) as jumlah_sl
+    DB::connection('bppspam')->enableQueryLog(); 
+        	$data_jumlah_sl=DB::connection('bppspam')->table(DB::raw("(select max(kode_daerah) as kode_daerah,max(tahun) as tahun ,max(jumlah_unit) as jumlah_sl
 			 FROM bppspam.bppspam_data_keterangan  where  tahun < ".$tahun." and kode_daerah  in (".$id_pemda_l.") group by kode_daerah  
 			 order by tahun desc) as d "))
     	->select(DB::raw("sum(d.jumlah_sl) as jumlah_sl"))
     	->pluck('jumlah_sl')->first();
-
+          $query = DB::connection('bppspam')->getQueryLog();
+       //dd(end($query));
 
 
     	
@@ -235,11 +239,13 @@ class DASH extends Controller
 
     	$id_urusan=3;
     	$id_sub_urusan=12;
+         DB::enableQueryLog();   
     	$data=DB::table('daerah_nuwas')->select(DB::RAW("(COUNT(*)) AS jumlah_daerah,sum(case when tahun=".$tahun." then 1 else 0 end ) as jumlah_prioritas, string_agg(concat('\"',kode_daerah,'\"'),',') as list_kode_pemda"))->first();
-
+         $query = DB::getQueryLog();
+        // dd(end($query));
     	$id_pemda_l=str_replace('"', "'", $data->list_kode_pemda);
     	
-
+        DB::connection('rkpd')->enableQueryLog(); 
     	$data=DB::connection('rkpd')->table('rkpd.master_'.$tahun.'_kegiatan as k')
     	->whereRAW("(kodepemda in (".$id_pemda_l.") and id_urusan= ".$id_urusan." and id_sub_urusan=".$id_sub_urusan." ) or (kodepemda in (".$id_pemda_l.") and  kode_lintas_urusan=".$id_sub_urusan." )")
     	->select(
@@ -249,7 +255,9 @@ class DASH extends Controller
     		DB::RAW("kodepemda,count(distinct(k.id_program)) as jumlah_program,count(*) as jumlah_kegiatan,sum(k.pagu) as jumlah_anggaran"))
     	->groupBy('kodepemda')
     	->get();
-
+        
+        $query = DB::connection('rkpd')->getQueryLog();
+        // dd(end($query));
 
         $cat=[];
         $data_return=array(

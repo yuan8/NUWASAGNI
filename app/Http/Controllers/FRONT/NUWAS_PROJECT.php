@@ -215,7 +215,7 @@ class NUWAS_PROJECT extends Controller
     public function api_daerah_target_2_tahun($get_data_only=false){
         $tahun=(int)HP::fokus_tahun();
 
-
+        DB::enableQueryLog();  
         $data=DB::table('daerah_nuwas as n')
         ->leftJoin(DB::raw("(select * from public.master_regional as u where length(u.kode_daerah)>3) as r"),'r.kode_daerah','=','n.kode_daerah')
         ->select(
@@ -229,7 +229,8 @@ class NUWAS_PROJECT extends Controller
         )->where('tahun','<=',$tahun+1)
         ->orWhere('tahun',null)
         ->get();
-
+         $query = DB::getQueryLog();
+      // dd(end($query));
 
         $data_return=array(
             'all'=>[

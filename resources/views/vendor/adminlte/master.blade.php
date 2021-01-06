@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@yield('title_prefix', config('adminlte.title_prefix', ''))
-@yield('title', config('adminlte.title', 'AdminLTE 2'))
+@yield('title', config('adminlte.title', ''))
 @yield('title_postfix', config('adminlte.title_postfix', ''))</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -106,7 +106,7 @@
 <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/AdminLTE.min.css') }}">
 
 
-<!-- <script src="{{ asset('vendor/adminlte/vendor/jquery/dist/jquery.min.js') }}"></script> -->
+<script src="{{ asset('vendor/adminlte/vendor/jquery/dist/jquery.min.js') }}"></script>
 <script type="text/javascript" src="{{asset('L_MAP/asset/jq.js')}}"></script>
 <script type="text/javascript" src="{{asset('vendor/editorHtml/browser.js?v='.date('i'))}}"></script>
 
@@ -167,6 +167,21 @@ return num.replace(/ /g,',');
     
 </script>
 <script src="{{ asset('vendor/adminlte/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<!-- <script type="text/javascript" src="{{asset('js/jquery.inputmask.js')}}"></script>
+ <script type="text/javascript" src="{{asset('js/jquery.inputmask.date.extensions.js')}}"></script>
+ <script type="text/javascript" src="{{asset('js/jquery.inputmask.extensions.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/moment.min.js')}}"></script>
+ <script type="text/javascript" src="{{asset('js/daterangepicker.js')}}"></script>
+  <script type="text/javascript" src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/icheck.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/bootstrap-colorpicker.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/bootstrap-timepicker.min.js')}}"></script>
+-->
+
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap-toggle/css/bootstrap-toggle.min.css') }}">
+	<script src="{{ asset('vendor/bootstrap-toggle/js/bootstrap-toggle.min.js') }}"></script>
+    <script type="text/javascript" src="{{asset('js/jquery.mask.min.js')}}"></script>
+
 
 <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.flash.min.js"></script>

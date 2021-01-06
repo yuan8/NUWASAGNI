@@ -27,7 +27,7 @@ class FILE extends Controller
                     DB::raw("concat(c.nama,
                         (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) as nama_daerah")
                 )->orderBy('c.id','ASC')->get();
-                dd($daerah);
+                //dd($daerah);
 
                 $data=DB::table('public.dokumen_kebijakan_daerah as f')->select('f.*',
                 DB::raw("CONCAT('".url('')."/',f.path) as path_file"),
@@ -143,7 +143,7 @@ class FILE extends Controller
       public function update($jenis=null,$id=null,Request $request){
 
         $tahun=HP::fokus_tahun();
-            dd($request->file('file')->getClientOriginalName());
+           // dd($request->file('file')->getClientOriginalName());
 
         if($jenis){
             $tahun_mulai=$request->tahun_mulai;

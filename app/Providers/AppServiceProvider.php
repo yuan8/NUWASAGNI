@@ -150,6 +150,10 @@ class AppServiceProvider extends ServiceProvider
                     "text"=>'UPLOAD FILE LAIN LAIN',
                     'url'=>route('d.kb.f.index',['jenis'=>'LAIN_LAIN'])
                  ]);
+		$event->menu->add([
+                    "text"=>'DATA INDIKATOR',
+                    'url'=>route('dashboard.dataindikator.index')
+                 ]);
 
 
                 $event->menu->add('PELAKSANAAN');

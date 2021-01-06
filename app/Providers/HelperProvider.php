@@ -109,7 +109,7 @@ class HelperProvider extends ServiceProvider
 
         if(($poin_start+4)>=$tahun){
             $index=($poin_start - $tahun)+1;
-            
+
         }else{
               do{
                 $poin_start+=5;
@@ -133,9 +133,9 @@ class HelperProvider extends ServiceProvider
             'table'=>static::get_rpjmn_table(null,$tahun),
             'table_indikator'=>static::get_rpjmn_table('indikator',$tahun),
         ];
-        
+
     }
-    
+
 
     static function get_rpjmn_table($tambahan=null,$tahun=null){
         if($tahun==null){
@@ -169,11 +169,11 @@ class HelperProvider extends ServiceProvider
 
         return ('master_'.(($poin_start)).'_'.$point_finish.'_rpjmn'.(!empty($tambahan)?'_'.$tambahan:'') );
 
-       
-       
+
+
     }
     static function banil($old=0,$new=0){
-        
+
         if($old==null){
             return 0;
         }
@@ -191,13 +191,56 @@ class HelperProvider extends ServiceProvider
             return 0;
         }
     }
+	static public function role(){
+		if(Auth::User()){
+			if(!empty(session('role'))){
+				if(session('role')){
+				return (int) session('role');
+				}else{
+					Auth::logout();
+					header("Location:".route('login'));
+					exit();
+					return 0;
+				}
+			} else{
+				Auth::logout();
+                header("Location: ".route('login'));
+                exit();
+                return 0;
+			}
+		}
+		else{
+			return 0;
+		}
+	}
+	static public function user(){
+		if(Auth::User()){
+			if(!empty(session('user'))){
+				if(session('user')){
+				return (int) session('user');
+				}else{
+					Auth::logout();
+					header("Location:".route('login'));
+					exit();
+					return 0;
+				}
+			} else{
+				Auth::logout();
+                header("Location: ".route('login'));
+                exit();
+                return 0;
+			}
+		}
+		else{
+			return 0;
+		}
+	}
 
-    static public function fokus_tahun(){
-
+	static public function fokus_tahun(){
         if(Auth::User()){
             if(!empty(session('fokus_tahun'))){
                 if(session('fokus_tahun')){
-                    
+
                     return (int) session('fokus_tahun');
                 }else{
                     Auth::logout();
@@ -214,11 +257,11 @@ class HelperProvider extends ServiceProvider
             }
         }else{
 
-          
+
           return 0;
 
         }
-    
+
     }
 
 
@@ -259,45 +302,45 @@ class HelperProvider extends ServiceProvider
             $hari_ini2 = "Sunday";
 
         break;
- 
-        case 'MON':         
+
+        case 'MON':
             $hari_ini = "Senin";
             $hari_ini2 = "Monday";
 
         break;
- 
+
         case 'TUE':
             $hari_ini = "Selasa";
             $hari_ini2 = "Tuesday";
 
         break;
- 
+
         case 'WED':
             $hari_ini = "Rabu";
             $hari_ini2 = "Wednesday";
 
         break;
- 
+
         case 'THU':
             $hari_ini = "Kamis";
             $hari_ini2 = "Thursday";
 
         break;
- 
+
         case 'FRI':
             $hari_ini = "Jumat";
             $hari_ini2 = "Friday";
 
         break;
- 
+
         case 'SAT':
             $hari_ini = "Sabtu";
             $hari_ini2 = "Saturday";
 
         break;
-        
+
         default:
-            $hari_ini = "Tidak di ketahui";  
+            $hari_ini = "Tidak di ketahui";
             $hari_ini2 = "No Day";
 
         break;
@@ -318,8 +361,15 @@ class HelperProvider extends ServiceProvider
             return 0;
         }
     }
- 
+
     return $hari_ini;
+
+    }
+
+
+    public static function satuan_bppspam($data){
+
+      return 'm';
 
     }
 

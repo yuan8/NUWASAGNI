@@ -13,14 +13,17 @@ class TYPOLOGI extends Controller
 
     public function index(){
     	$tahun=HP::fokus_tahun();
-
-    	$kode_daerah=DB::table('public.daerah_nuwas')
+     	DB::connection()->enableQueryLog(); 
+        $kode_daerah=DB::table('public.daerah_nuwas')
 		->where('tahun',$tahun)
 		->select('kode_daerah','jenis_bantuan','nilai_bantuan')
 		->get()
 		->pluck('jenis_bantuan','kode_daerah')
 		->toArray();
+        $query = DB::connection()->getQueryLog();
+         //dd(end($query));
 
+          DB::connection('sinkron_prokeg')->enableQueryLog(); 
     	$data=DB::connection('sinkron_prokeg')
     	->table('public.tipologi_dinas as td')
     	->select(
@@ -33,7 +36,8 @@ class TYPOLOGI extends Controller
     	->whereIn('td.kode_daerah',array_keys($kode_daerah))
     	->orderBy('td.kode_daerah','asc')
     	->get();
-
+ $query = DB::connection('sinkron_prokeg')->getQueryLog();
+         //dd(end($query));
 
 
     	return view('front.v2.tipologi.index')

@@ -10,7 +10,7 @@ class CAPAIANSPM extends Controller
 {
     //
     public function index(){
-
+        DB::connection('fgd')->enableQueryLog();
     	$data=DB::connection('fgd')->table('fgd.data_fgd as fgd')
     	->leftJoin('public.daerah_nuwas as d','fgd.kodepemda','=','d.kode_daerah')
     	->select(
@@ -20,8 +20,8 @@ class CAPAIANSPM extends Controller
     	)
     	->whereRaw('d.id is not null')
     	->get();
-
-
+ $query = DB::connection('fgd')->getQueryLog();
+// dd(end($query));
     	return view('front.fgd.index')->with([
     		'data'=>$data
     	]);

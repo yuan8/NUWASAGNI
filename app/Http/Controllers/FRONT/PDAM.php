@@ -17,6 +17,7 @@ class PDAM extends Controller
         }else{
             $tahun=HP::fokus_tahun();
         }
+        DB::connection()->enableQueryLog(); 
     	$data=DB::table('pdam as dt')
         ->leftJoin('audit_sat as sat','sat.id','=','dt.id_laporan_terahir')
     	->leftJoin('master_daerah as d','d.id','=','dt.kode_daerah')
@@ -34,15 +35,19 @@ class PDAM extends Controller
         ->where('nws.id','!=',null)
         ->where('dt.id_laporan_terahir','!=',null)
         ->orderBy('kode_daerah','ASC')->get();
+        $query = DB::connection()->getQueryLog();
+      // dd(end($query));
 
+         DB::connection()->enableQueryLog(); 
         $ids=DB::table('daerah_nuwas as nws')
         ->select("nws.*")
         ->leftjoin(DB::raw("(select kode_daerah from public.audit_sat group by kode_daerah) as sat"),'sat.kode_daerah','=','nws.kode_daerah')
         ->where('sat.kode_daerah','!=',null)
         ->get()->pluck('kode_daerah');
+$query = DB::connection()->getQueryLog();
+      //dd(end($query));
 
-
-
+         DB::connection()->enableQueryLog(); 
          $pdam_rekap=(array)DB::table('pdam')
         ->leftJoin('audit_sat as pen','pen.id','=','pdam.id_laporan_terahir' )
         ->select(DB::raw("(CASE WHEN max(pen.kategori_pdam) is not null THEN max(pen.kategori_pdam) else'TIDAK MEMILIKI KATEGORI' end ) as kategori_pdam"),'pen.kategori_pdam_kode',
@@ -52,7 +57,8 @@ class PDAM extends Controller
         ->orderBy('pen.kategori_pdam_kode','DESC')
         ->whereIn('pdam.kode_daerah',$ids)
         ->get()->toArray();
-
+$query = DB::connection()->getQueryLog();
+      // dd(end($query));
          $pd_a=[];
 
 
@@ -70,21 +76,21 @@ class PDAM extends Controller
     }
 
     public function sat($id,Request $request){
-         if($request->tahun){
+          if($request->tahun){
             $tahun=$request->tahun;
         }else{
             $tahun=HP::fokus_tahun();
         }
-
+        
         $db=DB::table('pdam')
         ->where('kode_daerah',$id)
         ->first();
-
+       
 
         if($db){
             $id=$db->id_laporan_terahir;
         }
-
+         DB::connection()->enableQueryLog(); 
         $data=DB::table('audit_sat as d')
             ->leftJoin('master_daerah as dae','dae.id','=','d.kode_daerah')
               ->select('d.*','dae.nama as nama_daerah',
@@ -93,8 +99,11 @@ class PDAM extends Controller
 
         ->where('d.id',$id)
         ->first();
+ $query = DB::connection()->getQueryLog();
+        //dd(end($query));
 
         if($data){
+              DB::connection()->enableQueryLog(); 
              $pdam=DB::table('pdam as d')
              ->leftJoin('daerah_nuwas as n',function($q) use ($tahun){
                 return $q->on('n.kode_daerah','=','d.kode_daerah')
@@ -111,17 +120,23 @@ class PDAM extends Controller
             )
                
             ->first();
-
+  $query = DB::connection()->getQueryLog();
+                //dd(end($query));
             $prof_pdam=[];
             
-
-            if(($pdam)and(isset($pdam->id_laporan_terahir_2))){
+             if(($pdam)and(isset($pdam->id_laporan_terahir_2))){
+                 DB::connection()->enableQueryLog(); 
                 $old_pdam=DB::table('audit_sat')
                 ->where('id',$pdam->id_laporan_terahir_2)
                 ->first();
+                  $query = DB::connection()->getQueryLog();
+                // dd(end($query));
+
+                 DB::connection()->enableQueryLog(); 
                  $last_pdam=DB::table('audit_sat')
                 ->where('id',$pdam->id_laporan_terahir)
                 ->first();
+                
 
                 $prof_pdam['kategori_pdam_past']=$old_pdam->kategori_pdam;
                 $prof_pdam['kategori_pdam_present']=$last_pdam->kategori_pdam;
@@ -143,10 +158,12 @@ class PDAM extends Controller
                 $prof_pdam['pertumbuhan_sambungan_rumah']=((($last_pdam->sat_jumlah_sam_rumah_tangga_nilai-$old_pdam->sat_jumlah_sam_rumah_tangga_nilai)/$last_pdam->sat_jumlah_sam_rumah_tangga_nilai)*100);
 
             }else if($pdam){
+                DB::connection()->enableQueryLog(); 
                  $last_pdam=DB::table('audit_sat')
                 ->where('id',$pdam->id_laporan_terahir)
                 ->first();
-
+                $query = DB::connection()->getQueryLog();
+               // dd(end($query));
                 $prof_pdam['kategori_pdam_past']=$last_pdam->kategori_pdam;
                 $prof_pdam['kategori_pdam_present']=$last_pdam->kategori_pdam;
                 $prof_pdam['kategori_pdam_trf']=0;
@@ -164,23 +181,21 @@ class PDAM extends Controller
                 $prof_pdam['pertumbuhan_sambungan_rumah']=0;
                 $prof_pdam['periode_laporan']=null;
                 $prof_pdam['updated_input_at']=null;
-
+                $query = DB::connection()->getQueryLog();
+                // dd(end($query));
 
             }
 
             $pdam_else=[];
 
-
-             $else=DB::table('audit_sat as d')
+              $else=DB::table('audit_sat as d')
            
             ->where('d.kode_daerah',$data->kode_daerah)
             ->where('d.id','!=',$data->id)
             ->orderBy('d.periode_laporan','DESC')
             ->orderBy('d.updated_input_at','DESC')
             ->get();
-
-
-            return view('front.pdam.laporan_sat')->with(
+             return view('front.pdam.laporan_sat')->with(
                 [
                     'data'=>$data,
                     'pdam_else'=>$pdam_else,
@@ -286,9 +301,7 @@ class PDAM extends Controller
             }else{
                 $tooltip=$d['nama_daerah'].'<br>'.'TIDAK TERDAPAT DATA';
             }
-
-
-            if((strlen($d['id_daerah'])<3) ){
+             if((strlen($d['id_daerah'])<3) ){
                 $map_data['series'][1]['data'][]=[
                     $d['id_daerah'],
                     $d['nama_daerah'],
@@ -298,10 +311,9 @@ class PDAM extends Controller
                     $color,
                    $tooltip
                 ];
+             }else{
 
-            }else{
-
-                  $map_data['series'][0]['data'][]=[
+                       $map_data['series'][0]['data'][]=[
                     $d['id_daerah'],
                     $d['nama_daerah'],
                     $d['nama_pdam'],

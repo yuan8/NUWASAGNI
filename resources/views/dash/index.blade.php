@@ -1,6 +1,6 @@
 @extends('adminlte::dash')
 
-@section('title', 'AdminLTE')
+@section('title', 'NUWSP')
 
 @section('content_header')
 @stop

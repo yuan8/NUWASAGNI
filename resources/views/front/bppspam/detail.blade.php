@@ -18,7 +18,7 @@
                                 case 1:
                                $cat='SAKIT';
                                 break;
-                                case 3:
+                                case 2:
                                $cat='KURANG SEHAT';
                                  case 3:
                                $cat='POTENSI SEHAT';
@@ -30,7 +30,7 @@
                                $cat='SEHAT BERKELANJUTAN';
                                 break;
 
-                              
+
                               default:
                                 # code...
                                 break;
@@ -44,10 +44,10 @@
     </div>
 
 
- 
 
 
-   
+
+
 @stop
 
 @section('content')
@@ -83,10 +83,10 @@
 								<tr>
 									<th>NAMA PDAM</th>
 									<td>{{strtoupper($pdam->nama_pdam)}}
-										
+
 									</td>
 
-									
+
 								</tr>
 								<tr>
 									<th>Alamat</th>
@@ -98,7 +98,7 @@
 										@endif
 									</td>
 
-									
+
 								</tr>
 								<tr>
 									<th>No Telp</th>
@@ -138,14 +138,14 @@
 								<br>
 								<small>INPUT - {{Carbon\Carbon::parse($e->updated_input_at)->format('d F Y')}}</small>
 							</a>
-							@endforeach	
+							@endforeach
 							<h5 class="text-center">----</h5>
 							<hr>
 						@endif
 
 
-						
-					</div>				
+
+					</div>
 				</div>
 			</div>
 
@@ -154,14 +154,14 @@
 
 		<div class="col-md-9">
 			<ul class="nav nav-tabs">
-				@php 
+				@php
 					$fi=0;
 				@endphp
 			  @foreach($data as $key=>$value)
 
 			 		 <li class="{{$fi==0?'active':''}}}"><a data-toggle="tab" href="#{{$key}}">{{strtoupper(str_replace('_', ' ', $key))}}</a></li>
 
-			 	 	@php 
+			 	 	@php
 					$fi=1;
 					@endphp
 
@@ -169,7 +169,7 @@
 			  @endforeach
 			</ul>
 			<div class="row">
-					
+
 				<div class="tab-content col-md-12">
 						 @foreach($data as $key=>$value)
 						   <div id="{{$key}}" class="tab-pane fade {{$fi==1?'in active':''}}">
@@ -178,17 +178,19 @@
 								<div class="row ">
 									<div class="col-md-6">
 
-						   	
+
 							   	<table class="table">
 							   		<thead>
 							   			<tr>
 							   				<th>INDIKATOR</th>
 							   				<th>NIlAI</th>
+												<th>SATUAN</th>
+
 
 							   			</tr>
 							   		</thead>
 							   		<tbody>
-							   			@php 
+							   			@php
 							   				$index_k=0;
 
 							   			@endphp
@@ -197,13 +199,21 @@
 										   			@if(!in_array($k, ['kode_buku','kode_hal','tahun','id','kode_daerah','id_pdam','kategori']))
 										   			<tr>
 										   				<td>{{strtoupper(str_replace('_', ' ', $k))}}</td>
-										   				<td>{{strtoupper(str_replace('_', ' ', $d))}}</td>
+															@if(HP::satuan_bppspam($k)!='%')
+															<td>{{number_format((float)strtoupper(str_replace('_', ' ', $d)))}}</td>
+															@else
+															<td>{{number_format((float)strtoupper(str_replace('_', ' ', $d))*100,2)}}</td>
+
+															@endif
+										   				<!-- <td>{{strtoupper(str_replace('_', ' ', $d))}}</td> -->
+															<td>{{(HP::satuan_bppspam($k))}}</td>
+
 										   			</tr>
-												   
+
 									   				@endif
 									   			@endif
 
-									   			@php 
+									   			@php
 									   				$index_k+=1;
 
 									   			@endphp
@@ -215,31 +225,41 @@
 
 							<div class="col-md-6">
 
-							   	
+
 							   	<table class="table">
 							   		<thead>
 							   			<tr>
 							   				<th>INDIKATOR</th>
 							   				<th>NIlAI</th>
+												<th>SATUAN</th>
+
 
 							   			</tr>
 							   		</thead>
 							   		<tbody>
-							   			@php 
+							   			@php
 							   				$index_k2=0;
 
 							   			@endphp
 							   			@foreach($value as $k=> $d)
 							   					@if($index_k2>18)
 										   			@if(!in_array($k, ['kode_buku','kode_hal','tahun','id','kode_daerah','id_pdam','kategori']))
-										   			<tr>
-										   				<td>{{strtoupper(str_replace('_', ' ', $k))}}</td>
-										   				<td>{{strtoupper(str_replace('_', ' ', $d))}}</td>
-										   			</tr>
-												  
+														<tr>
+															<td>{{strtoupper(str_replace('_', ' ', $k))}}</td>
+															@if(HP::satuan_bppspam($k)!='%')
+															<td>{{number_format((float)strtoupper(str_replace('_', ' ', $d)))}}</td>
+															@else
+															<td>{{number_format((float)strtoupper(str_replace('_', ' ', $d))*100 )}}</td>
+
+															@endif
+															<!-- <td>{{strtoupper(str_replace('_', ' ', $d))}}</td> -->
+															<td>{{(HP::satuan_bppspam($k))}}</td>
+
+														</tr>
+
 									   				@endif
 									   			@endif
-									   			@php 
+									   			@php
 									   				$index_k2+=1;
 
 									   			@endphp
@@ -252,12 +272,12 @@
 								</div>
 
 
-							  	@php 
+							  	@php
 								$fi=0;
 								@endphp
 
 
-					
+
 							</div>
 						@endforeach
 

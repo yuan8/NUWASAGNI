@@ -32,7 +32,7 @@ class RAKORTEK extends Controller
         $tahun=2021;
 
 
-
+         DB::connection('rakortek')->enableQueryLog(); 
         $data=DB::connection('rakortek')->table('view_'.$tahun."_rakortek_hasil as rk")
         ->select(
             DB::raw("
@@ -42,7 +42,8 @@ class RAKORTEK extends Controller
         ->where('kodepemda',$kodepemda)        
         ->orderBy('kodepemda','asc')
         ->get();
-
+        $query = DB::connection('rakortek')->getQueryLog();
+        //dd(end($query));
 
         return view('front.rakortek.detail')->with([
         'data'=>$data,
@@ -61,10 +62,13 @@ class RAKORTEK extends Controller
         }
 
         $tahun=2021;
-
+        DB::enableQueryLog();   
         $data=DB::table('daerah_nuwas')->select(DB::RAW("(COUNT(*)) AS jumlah_daerah,sum(case when tahun=".$tahun." then 1 else 0 end ) as jumlah_prioritas, string_agg(concat('\"',kode_daerah,'\"'),',') as list_kode_pemda"))->first();
-
+         $query = DB::getQueryLog();
+       // dd(end($query));
         $id_pemda_l=str_replace('"', "'", $data->list_kode_pemda);
+
+         DB::connection('rakortek')->enableQueryLog();  
 
         $data=DB::connection('rakortek')->table('view_'.$tahun."_rakortek_hasil")
         ->select(
@@ -79,7 +83,8 @@ class RAKORTEK extends Controller
         ->whereRAW("kodepemda in (".$id_pemda_l.")")
         ->orderBy('kodepemda','asc')
         ->get();
-
+        $query = DB::connection('rakortek')->getQueryLog();
+      // dd(end($query));
        return view('front.rakortek.index')->with([
         'data'=>$data,
         'tahun'=>$tahun

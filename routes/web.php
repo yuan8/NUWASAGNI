@@ -10,9 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/',function(){
+	return redirect('/v/');
+});
 
 
-Auth::routes();
 Route::get('xxx',function(){
 	return HP::sat_indikator('$text');
 });
@@ -25,7 +27,7 @@ Route::middleware('auth:web')->get('logout',function(){
 
 
 Route::middleware('auth:web')->group(function(){
-	
+
 	Route::prefix('data-pad')->group(function(){
 		Route::get('/data', 'FRONT\PAD@index')->name('f.pad.index');
 		Route::get('/detail/{kode_daerah}', 'FRONT\PAD@detail')->name('pad.detail');
@@ -44,13 +46,13 @@ Route::middleware('auth:web')->group(function(){
 
 
 
-		
+
 	});
 
 
-	Route::get('/home',function(){
-		return redirect('/');
-	});
+	// Route::get('/home',function(){
+	// 	return redirect('/v/');
+	// });
 
 
 
@@ -138,7 +140,7 @@ Route::middleware('auth:web')->group(function(){
 
 		Route::get('/program-kegiatan-per-sub_urusan/{id}/{id_urusan}', 'FRONT\PROKEG@dearah_per_sub_urusan')->name('p.prokeg.per.sub_urusan_kota');
 		Route::get('/program-kegiatan-per-daerah-sub-urusan-per-program/{id}/{id_urusan}', 'FRONT\PROKEG@dearah_per_program')->name('p.prokeg.per.sub_urusan_kota.prgram');
-		
+
 		Route::get('/program-kegiatan-list-p/{id}', 'FRONT\PROKEG@detail_program')->name('pr.program.det');
 
 		Route::get('/urusan', 'FRONT\PROKEG@index')->name('p.prokeg.urusan');
@@ -179,13 +181,14 @@ Route::prefix('kegiatan')->group(function(){
 
 });
 
+// Route::get('login',function(){
+// 	return redirect('/v/');
+// })->name('login');
+//
 
-
-
-
+Route::auth();
 
 
 include __dir__.'/webDash.php';
 include __dir__.'/webBot.php';
 include __dir__.'/apiWeb.php';
-

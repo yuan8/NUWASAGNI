@@ -16,7 +16,7 @@ class NOMENKLATUR extends Controller
         }else{
             $tahun=HP::fokus_tahun();
         }
-
+        DB::connection('sinkron_prokeg')->enableQueryLog();   
         $data=DB::connection('sinkron_prokeg')->table('public.master_nomenklatur_kabkota as nom')
         ->where('bidang_urusan','03')
         ->where('program','03')
@@ -27,7 +27,8 @@ class NOMENKLATUR extends Controller
         )
         ->orderBy('id','asc')
         ->get();
-
+        $query = DB::connection('sinkron_prokeg')->getQueryLog();
+       // dd(end($query));
         return view('front.nomenklatur.index')->with('data',$data);
 
     }

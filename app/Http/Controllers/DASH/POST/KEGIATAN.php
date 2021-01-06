@@ -12,9 +12,7 @@ use HP;
 use Carbon\Carbon;
 class KEGIATAN extends Controller
 {
-    //
-
-
+  
     public function striky(Request $request){
 
         if($request->id){
@@ -106,7 +104,7 @@ class KEGIATAN extends Controller
             ];
 
         }else{
-           
+
             $out='kegiatan';
             if(strpos($request->headers->get('referer'),'output/post')!==false){
                 $out='ouput';
@@ -139,7 +137,7 @@ class KEGIATAN extends Controller
 
            }
 
-            
+
         }
 
     }
@@ -171,7 +169,7 @@ class KEGIATAN extends Controller
              $data=DB::table('album')->find($id);
 
              if($data){
-               
+
                 $tahun=HP::fokus_tahun();
                 $valid=Validator::make($request->all(),[
                     'title'=>'required|string',
@@ -181,7 +179,7 @@ class KEGIATAN extends Controller
 
                 if($valid->fails()){
                     Alert::error('error');
-                    
+
                     return back()->withInput();
 
                 }else{
@@ -276,7 +274,7 @@ class KEGIATAN extends Controller
 
     	if($valid->fails()){
     		Alert::error('error');
-    		
+
             return back()->withInput();
 
     	}else{
